@@ -17,16 +17,7 @@ function getHabitCompletionRate({
 	return completions / totalDays;
 }
 
-export default function HabitsList({ habits, onOpenModal, asTopHabits }) {
-	const handleCreateClick = (e) => {
-		e.stopPropagation();
-		onOpenModal();
-	};
-	const handleEditClick = (id) => (e) => {
-		e.stopPropagation();
-		onOpenModal(id);
-	};
-
+export default function HabitsList({ habits, onCreateBtnClick, asTopHabits }) {
 	habits.forEach(
 		(habit) => (habit.completionRate = getHabitCompletionRate(habit))
 	);
@@ -46,7 +37,7 @@ export default function HabitsList({ habits, onOpenModal, asTopHabits }) {
 							variant='primary'
 							size='sm'
 							IconLeft={IconPlus}
-							onClick={handleCreateClick}>
+							onClick={onCreateBtnClick}>
 							Create new
 						</Button>
 					)}
@@ -60,7 +51,7 @@ export default function HabitsList({ habits, onOpenModal, asTopHabits }) {
 							habitName={habit.habitName}
 							habitDescription={habit.habitDescription}
 							habitCategory={habit.habitCategory}
-							onEditClick={handleEditClick(habit.id)}
+							// onEditClick={() => onOpenModal(habit.id)}
 						/>
 					</li>
 				))}

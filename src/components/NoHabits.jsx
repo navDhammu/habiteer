@@ -15,7 +15,7 @@ export default function NoHabits() {
 				Get started by creating your first habit
 			</div>
 			<Button size='sm' variant='primary' onClick={handleOpen}>
-				Start
+				Create First Habit
 			</Button>
 			{isModalOpen && (
 				<Modal onClose={handleClose}>

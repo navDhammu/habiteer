@@ -211,7 +211,7 @@ export default function HabitForm({ data = null, onClose }) {
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className='my-4 w-[500px] overflow-scroll'>
+			className='my-4 w-[500px] overflow-scroll rounded-lg bg-white p-6'>
 			<Header
 				heading={isEditMode ? 'Edit Habit' : 'Create New Habit'}
 				onXClick={onClose}

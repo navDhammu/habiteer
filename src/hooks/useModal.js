@@ -2,8 +2,7 @@ import { useState } from 'react';
 
 export default function useModal() {
 	const [isModalOpen, setIsOpen] = useState(false);
-	const handleOpen = (e) => {
-		e.stopPropagation();
+	const handleOpen = () => {
 		setIsOpen(true);
 	};
 	const handleClose = (e) => {
