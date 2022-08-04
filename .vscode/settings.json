@@ -1,0 +1,17 @@
+{
+	"editor.quickSuggestions": { "strings": true },
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"prettier.jsxSingleQuote": true,
+	"prettier.singleQuote": true,
+	"prettier.useTabs": true,
+	"prettier.tabWidth": 4,
+	"prettier.useEditorConfig": false,
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": true
+	},
+	"editor.tabSize": 4
+}

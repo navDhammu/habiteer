@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer components {
+	.input {
+		@apply w-full rounded-md border bg-stone-50 p-3 focus:outline-sky-500;
+	}
+	.label { */
+/* @apply font-buttons text-base font-bold uppercase text-gray-500; */
+/* @apply font-headings text-sm font-semibold capitalize text-gray-500;
+	}
+	.heading {
+	}
+} */
+
+/* .icon {
+	@apply h-4 w-4;
+} */
