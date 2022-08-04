@@ -60,7 +60,6 @@ export default function Dashboard({ habits }) {
 					<h1 className='text-2xl font-bold capitalize text-slate-800 md:text-3xl'>
 						Welcome {!isNewUser ? 'back, ' : ''}
 						{auth.currentUser.displayName}
-						{console.log('display name', auth.currentUser)}
 					</h1>
 					<p className='mt-2 text-slate-600'>
 						Here is an overview of your habits and progress

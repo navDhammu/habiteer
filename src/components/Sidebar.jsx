@@ -1,4 +1,3 @@
-import { LogoutIcon } from '@heroicons/react/outline';
 import {
 	IconCalendar,
 	IconChartBar,
@@ -7,7 +6,6 @@ import {
 } from '@tabler/icons';
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
-import { auth } from '../firebase';
 import useModal from '../hooks/useModal';
 import Dashboard from '../pages/dashboard';
 import Allhabits from '../pages/habits';
@@ -88,13 +86,6 @@ export default function Sidebar({ className, isMobile }) {
 					))}
 				</ul>
 			</nav>
-			<Button
-				className='self-start'
-				variant='text'
-				IconLeft={LogoutIcon}
-				onClick={() => auth.signOut()}>
-				logout
-			</Button>
 		</aside>
 	);
 }

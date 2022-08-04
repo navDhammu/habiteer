@@ -14,9 +14,7 @@ export default function LoginForm() {
 		});
 
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className='mt-8h-4/5 flex w-4/5 flex-col gap-6 p-8'>
+		<form onSubmit={handleSubmit} className='flex w-4/5 flex-col gap-6'>
 			<h2 className='text-3xl font-bold'>Login</h2>
 			<InputField
 				value={data.email || ''}

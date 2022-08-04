@@ -1,3 +1,4 @@
+import { signOut } from '@firebase/auth';
 import {
 	IconBellMinus,
 	IconChevronDown,
@@ -42,8 +43,10 @@ export default function Header({ onMenuClick, className }) {
 					{auth.currentUser.displayName || auth.currentUser.email}
 				</span>
 				<PopupMenu isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
-					<Button size='sm'>settings</Button>
-					<Button size='sm'>logout</Button>
+					<Button size='sm'>profile</Button>
+					<Button size='sm' onClick={() => signOut(auth)}>
+						logout
+					</Button>
 				</PopupMenu>
 			</Button>
 		</header>
