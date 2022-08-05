@@ -3,7 +3,7 @@ import clsx from 'clsx';
 const styles = {
 	variants: {
 		filled: 'bg-slate-100 hover:bg-slate-200',
-		outline: 'border hover:border-sky-500',
+		outline: 'shadow bg-white hover:border border-slate-400',
 	},
 	sizes: {
 		sm: 'p-1',
@@ -15,17 +15,17 @@ const styles = {
 		md: '20px',
 		lg: '26px',
 	},
-	// shape: {
-	// 	rounded: 'rounded-full',
-	// 	square: 'border',
-	// },
+	shape: {
+		rounded: 'rounded-full',
+		square: 'rounded-md',
+	},
 };
 
 export default function IconButton({
 	className,
 	Icon,
 	variant = '',
-	// shape = 'rounded',
+	shape = 'square',
 	size = 'md',
 	onClick,
 	disabled,
@@ -39,9 +39,9 @@ export default function IconButton({
 				onClick();
 			}}
 			className={clsx(
-				'rounded-full transition-all disabled:pointer-events-none',
+				'transition-all disabled:pointer-events-none',
 				styles.variants[variant],
-				// styles.shape[shape],
+				styles.shape[shape],
 				styles.sizes[size],
 				className
 			)}>

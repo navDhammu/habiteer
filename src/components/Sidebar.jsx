@@ -7,6 +7,7 @@ import {
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 import useModal from '../hooks/useModal';
+import Checklist from '../pages/checklist';
 import Dashboard from '../pages/dashboard';
 import Allhabits from '../pages/habits';
 import Stats from '../pages/stats';
@@ -25,7 +26,7 @@ export const links = [
 		label: 'checklist',
 		to: '/checklist',
 		Icon: IconChecklist,
-		Component: Dashboard,
+		Component: Checklist,
 	},
 	{
 		label: 'My Habits',

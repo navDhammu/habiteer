@@ -25,7 +25,7 @@ export default function AppLayout({ habits }) {
 	};
 
 	return (
-		<div className='flex'>
+		<div className='bg- flex'>
 			{windowWidth < 1024 && showMobileSidebar ? (
 				<Modal
 					position='left'
@@ -38,14 +38,7 @@ export default function AppLayout({ habits }) {
 
 			<div className='flex flex-1 flex-col'>
 				<Header onMenuClick={handleMenuClick} />
-				{habits.length > 0 ? (
-					<main className='bg-slate-100 p-8'>
-						{' '}
-						<Outlet />{' '}
-					</main>
-				) : (
-					<NoHabits />
-				)}
+				{habits.length > 0 ? <Outlet /> : <NoHabits />}
 			</div>
 		</div>
 	);

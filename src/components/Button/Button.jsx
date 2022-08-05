@@ -19,10 +19,10 @@ const VARIANTS = {
 	primary:
 		'bg-indigo-500 text-white disabled:bg-indigo-200 hover:bg-indigo-600 active:bg-indigo-800',
 	secondary:
-		'border border-sky-500 text-sky-500 hover:bg-sky-50 active:bg-sky-100 disabled:text-gray-300 disabled:border-gray-300 disabled:bg-gray-50',
+		'border border-indigo-500 text-indigo-500 hover:bg-indigo-50 active:bg-indigo-100 disabled:text-gray-300 disabled:border-gray-300 disabled:bg-gray-50',
 	tertiary:
 		'border border-gray-400 text-gray-400 hover:bg-gray-50 active:bg-gray-100 disabled:text-gray-300 disabled:border-gray-300 disabled:bg-gray-50',
-	text: 'text-sky-600 hover:underline',
+	text: 'text-indigo-600 hover:underline',
 	'primary-red':
 		'bg-red-500 text-white disabled:bg-red-200 hover:bg-red-600 active:bg-red-800',
 	'secondary-red':
