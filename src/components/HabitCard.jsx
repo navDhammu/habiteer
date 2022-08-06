@@ -1,6 +1,9 @@
-import { PencilIcon } from '@heroicons/react/outline';
+import { IconArchive, IconPencil, IconTrash } from '@tabler/icons';
+import useWindowWidth from '../hooks/useWindowWidth';
 import { toStringPercent } from '../utils';
+import { getHabitCompletionRate } from '../utils/habits';
 import Button from './Button/Button';
+import IconButton from './Button/IconButton';
 import ProgressIndicator from './ProgressIndicator';
 
 export default function HabitCard({
@@ -8,21 +11,21 @@ export default function HabitCard({
 	habitCategory,
 	habitDescription,
 	onEditClick,
-	completionRate,
+	...habit
 }) {
+	const windowWidth = useWindowWidth();
+	const completionRate = getHabitCompletionRate(habit);
+
 	return (
-		<article className='rounded-2xl border bg-stone-100 py-4 px-6'>
+		<article className='py-4 px-6'>
 			<header className='flex items-center'>
 				<div className='flex-1'>
 					<h2>
 						<strong className='text-lg capitalize text-slate-700'>
 							{habitName}
 						</strong>
-						<span className='ml-2 rounded-2xl border border-sky-400 bg-sky-100 px-2 py-1 text-sm capitalize'>
+						{/* <span className='ml-2 rounded-2xl border border-sky-400 bg-sky-100 px-2 py-1 text-sm capitalize'>
 							{habitCategory}
-						</span>
-						{/* <span className='ml-4 rounded-md border border-green-500 bg-green-100 p-1 text-sm text-green-500'>
-							Active
 						</span> */}
 					</h2>
 
@@ -30,13 +33,39 @@ export default function HabitCard({
 						{habitDescription}
 					</h3>
 				</div>
-				<Button
-					variant='text'
-					size='sm'
-					onClick={onEditClick}
-					IconLeft={PencilIcon}>
-					Edit
-				</Button>
+				{windowWidth > 640 ? (
+					<>
+						<Button
+							className='mr-2'
+							variant='tertiary'
+							size='sm'
+							onClick={onEditClick}
+							IconLeft={IconPencil}>
+							Edit
+						</Button>
+						<Button
+							className='mr-2'
+							variant='tertiary'
+							size='sm'
+							onClick={onEditClick}
+							IconLeft={IconArchive}>
+							Archive
+						</Button>
+						<Button
+							variant='secondary-danger'
+							size='sm'
+							onClick={onEditClick}
+							IconLeft={IconTrash}>
+							Delete
+						</Button>
+					</>
+				) : (
+					<>
+						<IconButton Icon={IconPencil} />
+						<IconButton Icon={IconArchive} />
+						<IconButton Icon={IconTrash} />
+					</>
+				)}
 			</header>
 			<section className='my-4'>
 				<div className='flex justify-between'>

@@ -5,3 +5,9 @@
 body {
 	background-color: rgb(241, 245, 249);
 }
+
+@layer components {
+	.main-heading {
+		@apply mb-6 text-2xl font-bold text-slate-800;
+	}
+}

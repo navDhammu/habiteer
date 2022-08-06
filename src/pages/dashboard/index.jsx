@@ -1,7 +1,6 @@
 import { differenceInDays, format, parse } from 'date-fns';
 import { useState } from 'react';
 import HabitForm from '../../components/HabitForm';
-import HabitsList from '../../components/HabitsList';
 import CardLayout from '../../components/Layout/CardLayout';
 import Modal from '../../components/Modal';
 import { auth } from '../../firebase';
@@ -41,7 +40,8 @@ export default function Dashboard({ habits }) {
 	}, 0);
 
 	return (
-		<>
+		<main className='p-4 md:p-6 lg:p-8'>
+			<h1 className='main-heading'>Dashboard</h1>
 			{isModalOpen && (
 				<Modal onClose={handleCloseModal}>
 					<HabitForm
@@ -55,7 +55,7 @@ export default function Dashboard({ habits }) {
 					/>
 				</Modal>
 			)}
-			<header className='flex justify-between rounded-lg bg-indigo-200 p-4'>
+			<header className='flex justify-between rounded-lg bg-indigo-200 p-6'>
 				<div>
 					<h1 className='text-2xl font-bold capitalize text-slate-800 md:text-3xl'>
 						Welcome {!isNewUser ? 'back, ' : ''}
@@ -91,14 +91,14 @@ export default function Dashboard({ habits }) {
 					</div>
 				</CardLayout>
 			</section>
-			<HabitsList
+			{/* <HabitsList
 				habits={habits}
 				onOpenModal={handleOpenModal}
 				asTopHabits
-			/>
+			/> */}
 			{/* {showNotification && (
 				<Notification type='success' message='Habit success' />
 			)} */}
-		</>
+		</main>
 	);
 }

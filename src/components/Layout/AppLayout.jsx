@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import Header from '../Header';
 import Modal from '../Modal';
 import NoHabits from '../NoHabits';
 import Sidebar from '../Sidebar';
 
 export default function AppLayout({ habits }) {
-	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const windowWidth = useWindowWidth();
 	const [showMobileSidebar, setShowMobileSidebar] = useState(false);
 	const route = useLocation();
 
-	useEffect(() => {
-		window.addEventListener('resize', () =>
-			setWindowWidth(window.innerWidth)
-		);
-	}, []);
+	// useEffect(() => {
+	// 	window.addEventListener('resize', () =>
+	// 		setWindowWidth(window.innerWidth)
+	// 	);
+	// }, []);
 
 	useEffect(() => {
 		setShowMobileSidebar(false);
