@@ -50,8 +50,8 @@ export default function Sidebar({ className, isMobile }) {
 			className={`sticky left-0 top-0 ${
 				isMobile ? 'flex' : 'hidden'
 			} h-screen w-[250px] flex-col bg-slate-800 p-4 transition-all lg:flex ${className}`}>
-			<div className='my-4 text-2xl font-bold text-indigo-500'>
-				Habiterize
+			<div className='my-4 text-2xl font-bold text-indigo-500 underline'>
+				Habiterr
 			</div>
 			{isModalOpen && (
 				<Modal onClose={handleClose} className='rounded-2xl bg-white'>
