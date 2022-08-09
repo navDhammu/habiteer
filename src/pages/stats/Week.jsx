@@ -7,10 +7,10 @@ import {
 } from '@firebase/firestore';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
-import AlertDialogue from '../../components/AlertDialogue';
 import IconButton from '../../components/Button/IconButton';
 import HabitForm from '../../components/HabitForm';
-import Modal from '../../components/Modal';
+import AlertDialogue from '../../components/Modals/AlertDialogue';
+import Modal from '../../components/Modals/Modal';
 import PopupMenu from '../../components/PopupMenu';
 import { db } from '../../firebase';
 import {

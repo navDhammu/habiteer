@@ -3,7 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/Layout/AppLayout';
-import { links } from './components/Sidebar';
+import { links } from './components/Layout/Sidebar';
 import { auth, db } from './firebase';
 import { habitsCollection } from './firebase/firestoreReferences';
 import Login from './pages/login';

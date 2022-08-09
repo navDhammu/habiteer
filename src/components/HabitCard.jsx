@@ -1,9 +1,9 @@
 import { IconArchive, IconPencil, IconTrash } from '@tabler/icons';
-import useWindowWidth from '../hooks/useWindowWidth';
+import { useContext } from 'react';
 import { toStringPercent } from '../utils';
 import { getHabitCompletionRate } from '../utils/habits';
 import Button from './Button/Button';
-import IconButton from './Button/IconButton';
+import { ModalContext, MODAL_TYPES } from './Modals/GlobalModal';
 import ProgressIndicator from './ProgressIndicator';
 
 export default function HabitCard({
@@ -13,8 +13,14 @@ export default function HabitCard({
 	onEditClick,
 	...habit
 }) {
-	const windowWidth = useWindowWidth();
+	const { handleShowModal } = useContext(ModalContext);
 	const completionRate = getHabitCompletionRate(habit);
+
+	const handleEditClick = () => handleShowModal(MODAL_TYPES.HABIT_FORM);
+	const handleArchiveClick = () =>
+		handleShowModal(MODAL_TYPES.ARCHIVE_HABIT, { habitName });
+	const handleDeleteClick = () =>
+		handleShowModal(MODAL_TYPES.DELETE_HABIT, { habitName });
 
 	return (
 		<article className='py-4 px-6'>
@@ -33,39 +39,32 @@ export default function HabitCard({
 						{habitDescription}
 					</h3>
 				</div>
-				{windowWidth > 640 ? (
-					<>
-						<Button
-							className='mr-2'
-							variant='tertiary'
-							size='sm'
-							onClick={onEditClick}
-							IconLeft={IconPencil}>
-							Edit
-						</Button>
-						<Button
-							className='mr-2'
-							variant='tertiary'
-							size='sm'
-							onClick={onEditClick}
-							IconLeft={IconArchive}>
-							Archive
-						</Button>
-						<Button
-							variant='secondary-danger'
-							size='sm'
-							onClick={onEditClick}
-							IconLeft={IconTrash}>
-							Delete
-						</Button>
-					</>
-				) : (
-					<>
-						<IconButton Icon={IconPencil} />
-						<IconButton Icon={IconArchive} />
-						<IconButton Icon={IconTrash} />
-					</>
-				)}
+
+				<Button
+					className='mr-2'
+					variant='tertiary'
+					size='sm'
+					onClick={handleEditClick}
+					IconLeft={IconPencil}>
+					Edit
+				</Button>
+
+				<Button
+					className='mr-2'
+					variant='tertiary'
+					size='sm'
+					onClick={handleArchiveClick}
+					IconLeft={IconArchive}>
+					Archive
+				</Button>
+				<Button
+					className='mr-2'
+					variant='tertiary'
+					size='sm'
+					onClick={handleDeleteClick}
+					IconLeft={IconTrash}>
+					Delete
+				</Button>
 			</header>
 			<section className='my-4'>
 				<div className='flex justify-between'>

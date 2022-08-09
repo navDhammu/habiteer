@@ -1,27 +1,11 @@
 import { differenceInDays, format, parse } from 'date-fns';
-import { useState } from 'react';
-import HabitForm from '../../components/HabitForm';
 import CardLayout from '../../components/Layout/CardLayout';
-import Modal from '../../components/Modal';
 import { auth } from '../../firebase';
 
 export default function Dashboard({ habits }) {
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [editingHabitId, setEditingHabitId] = useState(null);
-
 	const isNewUser =
 		auth.currentUser.metadata.creationTime ===
 		auth.currentUser.metadata.lastSignInTime;
-
-	const handleCloseModal = () => {
-		setIsModalOpen(false);
-		setEditingHabitId(null);
-	};
-
-	const handleOpenModal = (habitId = null) => {
-		setIsModalOpen(true);
-		setEditingHabitId(habitId);
-	};
 
 	const totalCompletions = habits.reduce(
 		(prev, curr) => prev + curr.completions,
@@ -42,19 +26,6 @@ export default function Dashboard({ habits }) {
 	return (
 		<main className='p-4 md:p-6 lg:p-8'>
 			<h1 className='main-heading'>Dashboard</h1>
-			{isModalOpen && (
-				<Modal onClose={handleCloseModal}>
-					<HabitForm
-						data={
-							editingHabitId
-								? habits.find(
-										(habit) => habit.id === editingHabitId
-								  )
-								: null
-						}
-					/>
-				</Modal>
-			)}
 			<header className='flex justify-between rounded-lg bg-indigo-200 p-6'>
 				<div>
 					<h1 className='text-2xl font-bold capitalize text-slate-800 md:text-3xl'>

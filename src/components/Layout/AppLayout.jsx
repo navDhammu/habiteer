@@ -1,46 +1,19 @@
-import { useEffect, useState } from 'react';
-import { Outlet, useLocation } from 'react-router';
-import useWindowWidth from '../../hooks/useWindowWidth';
-import Header from '../Header';
-import Modal from '../Modal';
+import { Outlet } from 'react-router';
+import GlobalModal from '../Modals/GlobalModal';
 import NoHabits from '../NoHabits';
-import Sidebar from '../Sidebar';
+import Header from './Header';
+import Sidebar from './Sidebar';
 
 export default function AppLayout({ habits }) {
-	const windowWidth = useWindowWidth();
-	const [showMobileSidebar, setShowMobileSidebar] = useState(false);
-	const route = useLocation();
-
-	// useEffect(() => {
-	// 	window.addEventListener('resize', () =>
-	// 		setWindowWidth(window.innerWidth)
-	// 	);
-	// }, []);
-
-	useEffect(() => {
-		setShowMobileSidebar(false);
-	}, [route]);
-
-	const handleMenuClick = () => {
-		setShowMobileSidebar(!showMobileSidebar);
-	};
-
 	return (
-		<div className='bg- flex'>
-			{windowWidth < 1024 && showMobileSidebar ? (
-				<Modal
-					position='left'
-					onClose={() => setShowMobileSidebar(false)}>
-					<Sidebar isMobile />
-				</Modal>
-			) : (
+		<GlobalModal>
+			<div className='flex'>
 				<Sidebar />
-			)}
-
-			<div className='flex flex-1 flex-col'>
-				<Header onMenuClick={handleMenuClick} />
-				{habits.length > 0 ? <Outlet /> : <NoHabits />}
+				<div className='flex flex-1 flex-col'>
+					<Header />
+					{habits.length > 0 ? <Outlet /> : <NoHabits />}
+				</div>
 			</div>
-		</div>
+		</GlobalModal>
 	);
 }

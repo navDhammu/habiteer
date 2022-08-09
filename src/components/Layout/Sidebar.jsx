@@ -3,17 +3,17 @@ import {
 	IconChartBar,
 	IconChecklist,
 	IconLayoutDashboard,
+	IconPlus,
 } from '@tabler/icons';
 import clsx from 'clsx';
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import useModal from '../hooks/useModal';
-import Checklist from '../pages/checklist';
-import Dashboard from '../pages/dashboard';
-import Allhabits from '../pages/habits';
-import Stats from '../pages/stats';
-import Button from './Button/Button';
-import HabitForm from './HabitForm';
-import Modal from './Modal';
+import Checklist from '../../pages/checklist';
+import Dashboard from '../../pages/dashboard';
+import Allhabits from '../../pages/habits';
+import Stats from '../../pages/stats';
+import Button from '../Button/Button';
+import { ModalContext, MODAL_TYPES } from '../Modals/GlobalModal';
 
 export const links = [
 	{
@@ -42,31 +42,30 @@ export const links = [
 	},
 ];
 
-export default function Sidebar({ className, isMobile }) {
-	const { isModalOpen, handleClose, handleOpen } = useModal();
+// const SIDEBAR_BREAKPOINT = 1023;
+
+export default function Sidebar({ className }) {
+	const { modal, handleShowModal, handleHideModal } =
+		useContext(ModalContext);
+	const isMobileSidebar = modal.type === MODAL_TYPES.SIDEBAR;
 
 	return (
 		<aside
-			className={`sticky left-0 top-0 ${
-				isMobile ? 'flex' : 'hidden'
-			} h-screen w-[250px] flex-col bg-slate-800 p-4 transition-all lg:flex ${className}`}>
+			className={clsx(
+				isMobileSidebar ? 'absolute flex' : 'sticky hidden lg:flex',
+				'left-0 top-0 h-screen w-[250px] flex-col bg-slate-800 p-4 transition-all',
+				className
+			)}>
 			<div className='my-4 text-2xl font-bold text-indigo-500 underline'>
 				Habiterr
 			</div>
-			{isModalOpen && (
-				<Modal onClose={handleClose} className='rounded-2xl bg-white'>
-					<HabitForm />
-				</Modal>
-			)}
-
 			<Button
-				className=''
 				variant='primary'
-				size='lg'
-				onClick={handleOpen}>
+				size='md'
+				IconLeft={IconPlus}
+				onClick={() => handleShowModal(MODAL_TYPES.HABIT_FORM)}>
 				Create Habit
 			</Button>
-
 			<nav className='my-8 flex-1 text-sm'>
 				<ul className='flex flex-col'>
 					{links.map(({ to, Icon, label }) => (

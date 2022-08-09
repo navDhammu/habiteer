@@ -7,16 +7,16 @@ import {
 	IconSearch,
 	IconUser,
 } from '@tabler/icons';
-import { useState } from 'react';
-import { auth } from '../firebase';
-import Button from './Button/Button';
-import IconButton from './Button/IconButton';
-import PopupMenu from './PopupMenu';
+import { useContext, useState } from 'react';
+import { auth } from '../../firebase';
+import Button from '../Button/Button';
+import IconButton from '../Button/IconButton';
+import { ModalContext, MODAL_TYPES } from '../Modals/GlobalModal';
+import PopupMenu from '../PopupMenu';
 
 export default function Header({ onMenuClick, className }) {
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
-	const toggleUserMenu = () => setIsUserMenuOpen(!isUserMenuOpen);
+	const { handleShowModal } = useContext(ModalContext);
 
 	return (
 		<header
@@ -25,7 +25,7 @@ export default function Header({ onMenuClick, className }) {
 			<IconButton
 				className='lg:hidden'
 				Icon={IconMenu2}
-				onClick={onMenuClick}
+				onClick={() => handleShowModal(MODAL_TYPES.SIDEBAR)}
 				size='md'
 			/>
 
@@ -38,11 +38,13 @@ export default function Header({ onMenuClick, className }) {
 			<Button
 				IconLeft={IconUser}
 				IconRight={IconChevronDown}
-				onClick={toggleUserMenu}>
+				onClick={() => setIsUserMenuOpen(true)}>
 				<span className='hidden text-xs font-semibold uppercase text-slate-600 md:inline'>
 					{auth.currentUser.displayName || auth.currentUser.email}
 				</span>
-				<PopupMenu isOpen={isUserMenuOpen} onClose={toggleUserMenu}>
+				<PopupMenu
+					isOpen={isUserMenuOpen}
+					onClose={() => setIsUserMenuOpen(false)}>
 					<Button size='sm'>profile</Button>
 					<Button size='sm' onClick={() => signOut(auth)}>
 						logout
