@@ -24,10 +24,6 @@ const formData = {
 	validations: {
 		name: {
 			required: true,
-			pattern: {
-				value: '^[A-Za-z]*$',
-				message: "You're not allowed ...",
-			},
 		},
 		email: {
 			required: true,
@@ -39,13 +35,8 @@ const formData = {
 		password: {
 			required: true,
 			pattern: {
-				value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{7,}$/,
-				message: 'Weak password',
-			},
-			custom: {
-				isValid: (formData) =>
-					formData.password === formData.confirmPassword,
-				message: 'Passwords must match',
+				value: /^(?=.*[a-z])([a-z]){8,}$/,
+				message: 'Password must be atleast 8 characters',
 			},
 		},
 		confirmPassword: {

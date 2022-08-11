@@ -1,6 +1,6 @@
+import { AiOutlineSchedule } from 'react-icons/ai';
 import { FaWpforms } from 'react-icons/fa';
 import { GiStairsGoal } from 'react-icons/gi';
-import { AiOutlineSchedule } from 'react-icons/ai';
 
 const info = {
 	1: {
@@ -19,7 +19,7 @@ const info = {
 export default function StepHeader({ step }) {
 	return (
 		<>
-			<div className='h-12 w-12 self-center rounded-full border border-sky-500 p-2 text-sky-500'>
+			<div className='h-12 w-12 self-center rounded-full border border-indigo-500 p-2 text-indigo-500'>
 				{info[step].icon}
 			</div>
 			<h2 className='text-center'>

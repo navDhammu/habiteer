@@ -5,7 +5,7 @@ import { AiOutlineExclamation } from 'react-icons/ai';
 
 const tabStyles = {
 	li: {
-		selected: 'border-b-4 border-sky-500 text-sky-500',
+		selected: 'border-b-2 border-indigo-500 text-indigo-500',
 		firstRender: 'text-gray-400',
 		getStyles(conditions) {
 			return this[getFirstTrue(Object.keys(this), conditions)];
@@ -15,7 +15,7 @@ const tabStyles = {
 		firstRender: 'border-gray-400',
 		complete: 'border-green-500 bg-white',
 		error: 'border-red-500 bg-white',
-		selected: 'border-sky-500',
+		selected: 'border-indigo-500',
 		getStyles(conditions) {
 			const { firstRender, selected } = conditions;
 			if (firstRender) {
@@ -26,7 +26,6 @@ const tabStyles = {
 	},
 	indicatorIcon: {
 		complete: <CheckIcon className='w-5 font-bold text-green-500' />,
-		// error: <AiOutlineExclamation size='1em' color='red' />,
 		error: <AiOutlineExclamation className='w-6 text-red-500' />,
 		getStyles({ firstRender, complete }) {
 			if (firstRender) return null;
@@ -50,14 +49,14 @@ export default function Header({ tabs, onTabClick, heading }) {
 						<li
 							key={step}
 							className={clsx(
-								'flex-1',
+								'-mb-[2px] flex-1',
 								li.getStyles(conditions)
 							)}>
 							<button
 								type='button'
 								onClick={() => onTabClick(step)}
 								className={clsx(
-									'flex h-full w-full cursor-pointer items-center justify-center gap-2 py-2 text-xs font-bold uppercase hover:border-b-4 hover:border-b-sky-200'
+									'flex h-full w-full cursor-pointer items-center justify-center gap-2 py-2'
 								)}>
 								<span
 									className={clsx(
