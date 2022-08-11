@@ -1,7 +1,9 @@
+import { signInWithEmailAndPassword } from '@firebase/auth';
 import { useState } from 'react';
 import { Navigate } from 'react-router';
 import svg from '../../assets/illustration-running.svg';
 import Button from '../../components/Button/Button';
+import { auth } from '../../firebase';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
@@ -23,16 +25,31 @@ export default function Login({ isLoggedIn }) {
 					Habiterr
 				</h1>
 				{mode === 'login' ? <LoginForm /> : <SignupForm />}
-				<footer className='flex items-center'>
-					<p>
-						{mode === 'login'
-							? 'Dont have an account?'
-							: 'Already have an account?'}
-					</p>
-					<Button onClick={handleSwitchMode} variant='text'>
-						{mode === 'login' ? 'Sign up' : 'Sign in'}
+				<div className='flex flex-col items-center gap-2'>
+					<div className='flex items-center'>
+						<p>
+							{mode === 'login'
+								? 'Dont have an account?'
+								: 'Already have an account?'}
+						</p>
+						<Button onClick={handleSwitchMode} variant='text'>
+							{mode === 'login' ? 'Sign up' : 'Sign in'}
+						</Button>
+					</div>
+
+					<span>OR</span>
+					<Button
+						variant='secondary'
+						onClick={() =>
+							signInWithEmailAndPassword(
+								auth,
+								'test@test.com',
+								'test123'
+							)
+						}>
+						Continue as test user
 					</Button>
-				</footer>
+				</div>
 			</section>
 		</div>
 	);

@@ -40,7 +40,6 @@ export default function LoginForm() {
 				</div>
 			)}
 			<Button
-				className='rounded-xl'
 				variant='primary'
 				type='submit'
 				disabled={isSubmitting}

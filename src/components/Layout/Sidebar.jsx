@@ -8,6 +8,7 @@ import {
 import clsx from 'clsx';
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 import Checklist from '../../pages/checklist';
 import Dashboard from '../../pages/dashboard';
 import Allhabits from '../../pages/habits';
@@ -56,10 +57,10 @@ export default function Sidebar({ className }) {
 				'left-0 top-0 h-screen w-[250px] flex-col bg-slate-800 p-4 transition-all',
 				className
 			)}>
-			<div className='my-4 text-2xl font-bold text-indigo-500 underline'>
-				Habiterr
-			</div>
+			<img src={logo} alt='logo' />
+
 			<Button
+				className='mt-4'
 				variant='primary'
 				size='md'
 				IconLeft={IconPlus}
