@@ -1,10 +1,3 @@
-import {
-	deleteField,
-	getDocs,
-	orderBy,
-	query,
-	writeBatch,
-} from '@firebase/firestore';
 import { DotsVerticalIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import IconButton from '../../components/Button/IconButton';
@@ -12,12 +5,6 @@ import HabitForm from '../../components/HabitForm';
 import AlertDialogue from '../../components/Modals/AlertDialogue';
 import Modal from '../../components/Modals/Modal';
 import PopupMenu from '../../components/PopupMenu';
-import { db } from '../../firebase';
-import {
-	datesCollection,
-	getDateDoc,
-	getHabitDoc,
-} from '../../firebase/firestoreReferences';
 import { weekDaysArray } from '../../utils/days';
 
 export function Week({ habits }) {
@@ -83,18 +70,17 @@ function Habit({ habit }) {
 	const handleCloseModal = () => setSelectedMenuItem(null);
 
 	const handleHabitDelete = () => {
-		const habitDoc = getHabitDoc(habit.id);
-		const datesRef = datesCollection();
-		const q = query(datesRef, orderBy(`${habit.id}`));
-		getDocs(q).then((snapshot) => {
-			const batch = writeBatch(db);
-			snapshot.forEach((doc) => {
-				batch.update(getDateDoc(doc.id), { [habit.id]: deleteField() });
-			});
-			batch.delete(habitDoc);
-			batch.commit().then(handleCloseModal);
-		});
-
+		// const habitDoc = getHabitDoc(habit.id);
+		// const datesRef = datesCollection();
+		// const q = query(datesRef, orderBy(`${habit.id}`));
+		// getDocs(q).then((snapshot) => {
+		// 	const batch = writeBatch(db);
+		// 	snapshot.forEach((doc) => {
+		// 		batch.update(getDateDoc(doc.id), { [habit.id]: deleteField() });
+		// 	});
+		// 	batch.delete(habitDoc);
+		// 	batch.commit().then(handleCloseModal);
+		// });
 		// deleteDoc()
 		// 	.then(handleCloseModal)
 		// 	.catch((err) => console.log(err));

@@ -26,7 +26,8 @@ export default function Footer({
 							size='sm'
 							variant='secondary-red'
 							IconLeft={TrashIcon}
-							onClick={onDeleteClick}>
+							// onClick={onDeleteClick}
+						>
 							Delete
 						</Button>
 					</div>

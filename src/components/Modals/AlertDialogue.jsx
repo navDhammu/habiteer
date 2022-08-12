@@ -5,9 +5,11 @@ export default function AlertDialogue({
 	variant,
 	heading,
 	body,
-	confirmButton,
+	onConfirm,
+	confirmBtnLabel,
 	onClose,
 }) {
+	console.log(onConfirm);
 	return (
 		<div className='absolute top-1/2 left-1/2 flex h-44 w-96 min-w-max -translate-y-1/2 -translate-x-1/2 transform flex-col justify-between rounded-lg bg-white p-4'>
 			<h1 className='text-xl'>{heading}</h1>
@@ -19,11 +21,12 @@ export default function AlertDialogue({
 				</Button>
 				<Button
 					size='sm'
+					onClick={onConfirm}
 					variant={clsx({
 						'primary-danger': variant === 'danger',
 						primary: variant === 'info',
 					})}>
-					{confirmButton}
+					{confirmBtnLabel}
 				</Button>
 			</div>
 		</div>

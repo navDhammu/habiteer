@@ -1,26 +1,27 @@
 import { IconArchive, IconPencil, IconTrash } from '@tabler/icons';
 import { useContext } from 'react';
+import { deleteHabit } from '../firebase/dbOperations';
 import { toStringPercent } from '../utils';
 import { getHabitCompletionRate } from '../utils/habits';
 import Button from './Button/Button';
 import { ModalContext, MODAL_TYPES } from './Modals/GlobalModal';
 import ProgressIndicator from './ProgressIndicator';
 
-export default function HabitCard({
-	habitName,
-	habitCategory,
-	habitDescription,
-	onEditClick,
-	...habit
-}) {
-	const { handleShowModal } = useContext(ModalContext);
-	const completionRate = getHabitCompletionRate(habit);
+export default function HabitCard(props) {
+	const { handleShowModal, handleHideModal } = useContext(ModalContext);
+	const completionRate = getHabitCompletionRate(props);
 
-	const handleEditClick = () => handleShowModal(MODAL_TYPES.HABIT_FORM);
+	const handleEditClick = () =>
+		handleShowModal(MODAL_TYPES.HABIT_FORM, { data: props });
 	const handleArchiveClick = () =>
-		handleShowModal(MODAL_TYPES.ARCHIVE_HABIT, { habitName });
+		handleShowModal(MODAL_TYPES.ARCHIVE_HABIT, {
+			habitName: props.habitName,
+		});
 	const handleDeleteClick = () =>
-		handleShowModal(MODAL_TYPES.DELETE_HABIT, { habitName });
+		handleShowModal(MODAL_TYPES.DELETE_HABIT, {
+			habitName: props.habitName,
+			onConfirm: () => deleteHabit(props.id).then(handleHideModal),
+		});
 
 	return (
 		<article className='py-4 px-6'>
@@ -28,7 +29,7 @@ export default function HabitCard({
 				<div className='flex-1'>
 					<h2>
 						<strong className='text-lg capitalize text-slate-700'>
-							{habitName}
+							{props.habitName}
 						</strong>
 						{/* <span className='ml-2 rounded-2xl border border-sky-400 bg-sky-100 px-2 py-1 text-sm capitalize'>
 							{habitCategory}
@@ -36,7 +37,7 @@ export default function HabitCard({
 					</h2>
 
 					<h3 className='text-sm text-gray-400'>
-						{habitDescription}
+						{props.habitDescription}
 					</h3>
 				</div>
 

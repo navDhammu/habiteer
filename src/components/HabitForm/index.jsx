@@ -1,11 +1,8 @@
-import { addDoc, deleteDoc, setDoc, updateDoc } from '@firebase/firestore';
+import { deleteDoc } from '@firebase/firestore';
 import { format } from 'date-fns';
 import { useReducer } from 'react';
-import {
-	getDateDoc,
-	getHabitDoc,
-	habitsCollection,
-} from '../../firebase/firestoreReferences';
+import { createHabit, editHabit } from '../../firebase/dbOperations';
+import { getHabitDoc } from '../../firebase/firestoreReferences';
 import Footer from './Footer';
 import Header from './Header';
 import { reducer } from './reducer';
@@ -165,41 +162,21 @@ export default function HabitForm({ data = null, onClose }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		let dbData = {};
+		let habitDetails = {};
 		Object.values(steps).forEach(({ isFirstRender, ...keys }) => {
 			Object.entries(keys).forEach(
-				([key, { value }]) => (dbData[key] = value)
+				([key, { value }]) => (habitDetails[key] = value)
 			);
 		});
 
 		switch (mode) {
 			case 'create':
-				addDoc(habitsCollection(), {
-					createdOn: new Date(),
-					completions: 0,
-					currentStreak: 0,
-					bestStreak: 0,
-					...dbData,
-				})
-					.then((doc) => {
-						setDoc(
-							getDateDoc(new Date()),
-							{
-								[doc.id]: {
-									name: dbData.habitName,
-									isComplete: false,
-								},
-							},
-							{ merge: true }
-						).then(onClose);
-					})
-					.catch((err) => console.log('error', err));
+				createHabit(habitDetails)
+					.then(onClose)
+					.catch((err) => console.log(err));
 				break;
 			case 'edit':
-				updateDoc(getHabitDoc(data.id), {
-					lastUpdated: new Date(),
-					...dbData,
-				})
+				editHabit(data.id, habitDetails)
 					.then(onClose)
 					.catch((err) => console.log(err));
 				break;

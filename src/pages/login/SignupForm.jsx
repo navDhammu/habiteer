@@ -35,7 +35,7 @@ const formData = {
 		password: {
 			required: true,
 			pattern: {
-				value: /^(?=.*[a-z])([a-z]){8,}$/,
+				value: /^(?=.*).{8,}$/,
 				message: 'Password must be atleast 8 characters',
 			},
 		},

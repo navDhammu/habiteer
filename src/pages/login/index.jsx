@@ -44,7 +44,7 @@ export default function Login({ isLoggedIn }) {
 							signInWithEmailAndPassword(
 								auth,
 								'test@test.com',
-								'test123'
+								'test1234'
 							)
 						}>
 						Continue as test user

@@ -16,22 +16,24 @@ export const MODAL_TYPES = {
 const DIALOGUE_COMPONENTS = {
 	[MODAL_TYPES.HABIT_FORM]: HabitForm,
 	[MODAL_TYPES.SIDEBAR]: Sidebar,
-	[MODAL_TYPES.DELETE_HABIT]: ({ habitName, onClose }) => (
+	[MODAL_TYPES.DELETE_HABIT]: ({ habitName, onClose, onConfirm }) => (
 		<AlertDialogue
 			variant='danger'
 			heading='Delete Habit'
 			body={`Are you sure you want to delete ${habitName}`}
 			onClose={onClose}
-			confirmButton='Delete'
+			onConfirm={onConfirm}
+			confirmBtnLabel='Delete'
 		/>
 	),
-	[MODAL_TYPES.ARCHIVE_HABIT]: ({ habitName, onClose }) => (
+	[MODAL_TYPES.ARCHIVE_HABIT]: ({ habitName, onClose, onConfirm }) => (
 		<AlertDialogue
 			variant='info'
 			heading='Archive Habit'
 			body={`Are you sure you want to archive ${habitName}`}
 			onClose={onClose}
-			confirmButton='Archive'
+			onConfirm={onConfirm}
+			confirmBtnLabel='Archive'
 		/>
 	),
 };

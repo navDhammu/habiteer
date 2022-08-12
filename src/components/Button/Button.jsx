@@ -53,10 +53,11 @@ export default function Button({
 				SIZES[size].btn,
 				VARIANTS[variant]
 			)}
-			onClick={(e) => {
-				e.stopPropagation();
-				onClick();
-			}}
+			onClick={onClick}
+			// onClick={(e) => {
+			// 	e.stopPropagation();
+			// 	onClick();
+			// }}
 			disabled={disabled}>
 			{IconLeft && <IconLeft className={SIZES[size].icon} />}
 			<span>{children}</span>
