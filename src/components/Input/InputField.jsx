@@ -20,7 +20,7 @@ function InputField(
 		errorMsg,
 		helperText,
 		children,
-		isRequired,
+		required,
 		...rest
 	},
 	ref
@@ -36,7 +36,7 @@ function InputField(
 
 	return (
 		<div className={`relative flex flex-col ${rest.classnames}`}>
-			<Label htmlFor={id} isRequired={isRequired}>
+			<Label htmlFor={id} isRequired={required}>
 				{label}
 			</Label>
 			<div className='relative'>
@@ -49,6 +49,7 @@ function InputField(
 						value={value}
 						onChange={onChange}
 						placeholder={placeholder}
+						required={required}
 						{...rest}
 					/>
 				)}
@@ -72,5 +73,5 @@ function InputField(
 export default forwardRef(InputField);
 
 // InputField.propTypes = {
-// 	onClear: PropTypes.func.isRequired,
+// 	onClear: PropTypes.func.required,
 // };

@@ -3,7 +3,7 @@ import clsx from 'clsx';
 export default function Checkbox({
 	label,
 	hideCheckbox,
-	value,
+	name,
 	checked,
 	onChange,
 }) {
@@ -16,7 +16,7 @@ export default function Checkbox({
 				<input
 					className={hideCheckbox ? 'hidden' : ''}
 					type='checkbox'
-					value={value}
+					name={name}
 					checked={checked}
 					onChange={onChange}
 				/>

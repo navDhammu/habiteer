@@ -1,18 +1,47 @@
 import { IconArchive, IconPencil, IconTrash } from '@tabler/icons';
+import { eachDayOfInterval, getDay, isFuture, parse } from 'date-fns';
 import { useContext } from 'react';
 import { deleteHabit } from '../firebase/dbOperations';
 import { toStringPercent } from '../utils';
-import { getHabitCompletionRate } from '../utils/habits';
 import Button from './Button/Button';
 import { ModalContext, MODAL_TYPES } from './Modals/GlobalModal';
 import ProgressIndicator from './ProgressIndicator';
 
+function getHabitCompletionRate({
+	trackingStartDate,
+	completions,
+	repeatDays,
+}) {
+	const totalDays = eachDayOfInterval({
+		start: parse(trackingStartDate, 'yyyy-MM-dd', new Date()),
+		end: new Date(),
+	}).filter((date) =>
+		repeatDays.some((day) => {
+			console.log(day);
+			return day.id === getDay(date);
+		})
+	).length;
+	console.log(totalDays);
+	return completions / totalDays;
+}
+
 export default function HabitCard(props) {
 	const { handleShowModal, handleHideModal } = useContext(ModalContext);
-	const completionRate = getHabitCompletionRate(props);
+	const trackingStartDate = parse(
+		props.trackingStartDate,
+		'yyyy-MM-dd',
+		new Date()
+	);
+
+	const completionRate = isFuture(trackingStartDate)
+		? null
+		: getHabitCompletionRate(props);
 
 	const handleEditClick = () =>
-		handleShowModal(MODAL_TYPES.HABIT_FORM, { data: props });
+		handleShowModal(MODAL_TYPES.HABIT_FORM, {
+			initialValues: props,
+			mode: 'EDIT',
+		});
 	const handleArchiveClick = () =>
 		handleShowModal(MODAL_TYPES.ARCHIVE_HABIT, {
 			habitName: props.habitName,
@@ -40,7 +69,6 @@ export default function HabitCard(props) {
 						{props.habitDescription}
 					</h3>
 				</div>
-
 				<Button
 					className='mr-2'
 					variant='tertiary'

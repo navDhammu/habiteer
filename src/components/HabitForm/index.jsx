@@ -1,211 +1,153 @@
-import { deleteDoc } from '@firebase/firestore';
+import { IconPlus } from '@tabler/icons';
 import { format } from 'date-fns';
-import { useReducer } from 'react';
+import { useState } from 'react';
 import { createHabit, editHabit } from '../../firebase/dbOperations';
-import { getHabitDoc } from '../../firebase/firestoreReferences';
-import Footer from './Footer';
-import Header from './Header';
-import { reducer } from './reducer';
-import Goal from './steps/Goal';
-import NameDescription from './steps/NameDescription';
-import Schedule from './steps/Schedule';
-import { validations } from './validations';
+import useForm from '../../hooks/useForm';
+import Button from '../Button/Button';
+import Checkbox from '../Input/Checkbox';
+import InputField from '../Input/InputField';
+import InputFieldDropdown from '../Input/InputFieldDropdown';
+import InputGroup from '../Input/InputGroup';
 
-const INITIAL_FORM_DATA = [
-	{ habitName: '', habitDescription: '', habitCategory: '', step: 1 },
-	{
-		trackingStartDate: format(new Date(), 'yyyy-MM-dd', new Date()),
-		repeatDays: [1, 2, 3, 4, 5, 6, 0],
-		step: 2,
-	},
-	{
-		goalStartDate: '',
-		goalEndDate: '',
-		step: 3,
-	},
-];
+const DATE_FORMAT = 'yyyy-MM-dd';
 
-function initState(data) {
-	return INITIAL_FORM_DATA.reduce(
-		(prev, current) => {
-			const { step, ...fields } = current;
-			const next = { ...prev, [step]: {} };
-			for (let [key, value] of Object.entries(fields)) {
-				next[step][key] = {
-					value: data?.[key] || value,
-					isTouched: false,
-					error: null,
-				};
-			}
-			next[step].isFirstRender = true;
-			return next;
+const initialEmptyValues = {
+	habitName: '',
+	habitDescription: '',
+	habitCategory: '',
+	trackingStartDate: '',
+	repeatDays: [
+		{ id: 0, name: 'Sunday', checked: false },
+		{ id: 1, name: 'Monday', checked: false },
+		{ id: 2, name: 'Tuesday', checked: false },
+		{ id: 3, name: 'Wednesday', checked: false },
+		{ id: 4, name: 'Thursday', checked: false },
+		{ id: 5, name: 'Friday', checked: false },
+		{ id: 6, name: 'Saturday', checked: false },
+	],
+};
+
+const customValidations = {
+	repeatDays: {
+		isValid(data) {
+			return data.some(({ checked }) => checked);
 		},
-		{ currentStep: 1 }
-	);
-}
+		message: 'At least one day must be selected',
+	},
+};
 
-export default function HabitForm({ data = null, onClose }) {
-	const [formData, dispatch] = useReducer(reducer, data, initState);
+const onSubmit = (mode) => (data) => {
+	switch (mode) {
+		case 'CREATE':
+			return createHabit(data);
+		case 'EDIT':
+			return editHabit(data);
+		default:
+			throw new Error(`invalid mode ${mode}`);
+	}
+};
 
-	const mode = data ? 'edit' : 'create';
-	const isEditMode = data ? true : false;
-
-	const { currentStep, ...steps } = formData;
-
-	const isStepValid = (step) => {
-		const entries = Object.entries(formData[step]);
-		if (
-			entries.some(([key, data]) => {
-				const { value, isTouched, error } = data;
-				const isRequired = validations[key]?.isRequired;
-				return error || (isRequired && !isTouched && !value);
-			})
-		) {
-			return false;
-		} else {
-			return true;
-		}
-	};
-	const stepNumbers = Object.keys(steps).map((step) => parseInt(step));
-	const completedSteps = stepNumbers.filter((num) => isStepValid(num));
-	const isEveryStepComplete = stepNumbers.every((num) =>
-		completedSteps.includes(num)
-	);
-	const isStepComplete = (step) => completedSteps.includes(step);
-
-	const handleInput = (step) => (key) => (arg) => {
-		let value;
-		if (arg instanceof Date) {
-			value = format(arg, 'yyyy-MM-dd', new Date());
-		} else if (arg.target) {
-			value = arg.target.value;
-		}
-		dispatch({
-			type: 'INPUT',
-			payload: { step, key, value },
-		});
-	};
-
-	const handleMultiSelect = (step) => (key) => (e) => {
-		dispatch({
-			type: 'MULTI_SELECT',
-			payload: {
-				step,
-				key,
-				change: {
-					value: parseInt(e.target.value),
-					checked: e.target.checked,
-				},
-			},
-		});
-	};
-	const handleStepChange = (newStep) => {
-		dispatch({ type: 'STEP_CHANGE', payload: { newStep } });
-	};
-
-	const views = stepNumbers.map((step) => {
-		const complete = isStepComplete(step);
-		const tabData = {
-			step,
-			firstRender: formData[step].isFirstRender,
-			selected: step === currentStep,
-			complete,
-			error: !complete,
-		};
-		const componentProps = {
-			data: formData[currentStep],
-			onInput: handleInput(currentStep),
-		};
-		switch (step) {
-			case 1:
-				return {
-					component: <NameDescription {...componentProps} />,
-					tab: {
-						label: 'Name',
-						...tabData,
-					},
-				};
-			case 2:
-				return {
-					component: (
-						<Schedule
-							{...componentProps}
-							onMultiSelect={handleMultiSelect(2)}
-						/>
-					),
-					tab: {
-						label: 'Schedule',
-						...tabData,
-					},
-				};
-			case 3:
-				return {
-					component: <Goal {...componentProps} />,
-					tab: {
-						label: 'Goal',
-						...tabData,
-					},
-				};
-
-			default:
-				break;
-		}
+export default function HabitForm({ mode = 'CREATE', initialValues }) {
+	const {
+		data: formData,
+		errors,
+		handleChange,
+		handleInvalid,
+		handleSubmit,
+		isSubmitting,
+	} = useForm({
+		initialValues: initialValues || initialEmptyValues,
+		customValidations,
+		onSubmit: onSubmit(mode),
 	});
 
-	const { component: currentComponent } = views.find(
-		(view) => view.tab.step === currentStep
-	);
-
-	const handleDeleteHabit = () => {
-		deleteDoc(getHabitDoc(data.id)).then(() => console.log('deleted'));
-	};
-
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		let habitDetails = {};
-		Object.values(steps).forEach(({ isFirstRender, ...keys }) => {
-			Object.entries(keys).forEach(
-				([key, { value }]) => (habitDetails[key] = value)
-			);
-		});
-
-		switch (mode) {
-			case 'create':
-				createHabit(habitDetails)
-					.then(onClose)
-					.catch((err) => console.log(err));
-				break;
-			case 'edit':
-				editHabit(data.id, habitDetails)
-					.then(onClose)
-					.catch((err) => console.log(err));
-				break;
-
-			default:
-				break;
-		}
-	};
+	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
 	return (
 		<form
 			onSubmit={handleSubmit}
-			className='absolute top-1/2 left-1/2 my-4 w-[500px] -translate-x-1/2 -translate-y-1/2 transform overflow-scroll rounded-lg bg-white p-6'>
-			<Header
-				heading={isEditMode ? 'Edit Habit' : 'Create New Habit'}
-				onXClick={onClose}
-				tabs={views.map((view) => view.tab)}
-				onTabClick={handleStepChange}
-			/>
-			<section className='mt-4 mb-6 flex h-[400px] flex-col gap-4 px-10'>
-				{currentComponent}
+			className='my-4 flex w-[500px] flex-col gap-4 overflow-scroll rounded-lg bg-white p-6'>
+			<h1 className='-mx-6 border-b pl-6 font-semibold'>
+				{mode === 'CREATE' ? 'Create Habit' : 'Edit Habit'}
+			</h1>
+			<section className='space-y-2'>
+				<h2 className='text-base font-semibold'>Habit Name</h2>
+				<InputField
+					id='habit-name'
+					label='Habit Name'
+					placeholder='eg. Read for 30 minutes'
+					value={formData.habitName}
+					onChange={handleChange('habitName')}
+					onInvalid={handleInvalid('habitName')}
+					errorMsg={errors.habitName}
+					required
+				/>
+
+				<InputFieldDropdown
+					label='habit category'
+					placeholder='Choose Category'
+					listName='categories'
+					options={['Health and fitness', 'Career', 'Personal']}
+					value={formData.habitCategory}
+					onChange={handleChange('habitCategory')}
+					onInvalid={handleInvalid('habitCategory')}
+					errorMsg={errors.habitCategory}
+					required
+				/>
+
+				{!isDescriptionExpanded ? (
+					<Button
+						variant='tertiary'
+						size='sm'
+						IconRight={IconPlus}
+						onClick={() => setIsDescriptionExpanded(true)}>
+						add description
+					</Button>
+				) : (
+					<InputField
+						as='textarea'
+						label='description'
+						placeholder='Write a description or a note'
+						value={formData.habitDescription}
+						onChange={handleChange('habitDescription')}
+					/>
+				)}
 			</section>
-			<Footer
-				mode={mode}
-				onDeleteClick={handleDeleteHabit}
-				currentStep={currentStep}
-				onStepChange={handleStepChange}
-				submitDisabled={!isEveryStepComplete}
-				submit={isEditMode ? 'Save Changes' : 'Save Habit'}
-			/>
+			<section className='space-y-2'>
+				<h2 className='text-base font-semibold'>Habit Schedule</h2>
+				<InputField
+					type='date'
+					disabled={mode === 'EDIT'}
+					label='Start tracking from'
+					value={formData.trackingStartDate}
+					onChange={handleChange('trackingStartDate')}
+					onInvalid={handleInvalid('trackingStartDate')}
+					min={format(new Date(), DATE_FORMAT)}
+					required
+					errorMsg={errors.trackingStartDate}
+				/>
+				<div className='flex'>
+					<InputGroup
+						heading='Weekly Repeat Cycle'
+						isRequired
+						errorMsg={errors.repeatDays}>
+						{formData.repeatDays.map(({ id, name, checked }) => (
+							<Checkbox
+								key={id}
+								label={name}
+								name={name}
+								checked={checked}
+								onChange={handleChange('repeatDays')}
+							/>
+						))}
+					</InputGroup>
+				</div>
+			</section>
+			<footer className='flex gap-2'>
+				<Button type='submit' variant='primary' disabled={isSubmitting}>
+					{mode === 'CREATE' ? 'Save Habit' : 'Save Changes'}
+				</Button>
+				<Button variant='tertiary'>cancel</Button>
+			</footer>
 		</form>
 	);
 }

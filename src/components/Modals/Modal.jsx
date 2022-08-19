@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom';
 import { ModalContext } from './GlobalModal';
 
 export default function Modal({ children: dialogue }) {
-	const backdrop = useRef();
 	const { modal, handleHideModal } = useContext(ModalContext);
+	const backdrop = useRef();
 
 	useEffect(() => {
 		const handleClick = (e) => {
@@ -18,7 +18,7 @@ export default function Modal({ children: dialogue }) {
 		? createPortal(
 				<div
 					ref={backdrop}
-					className='fixed top-0 h-full w-full bg-gray-900 bg-opacity-70'>
+					className='fixed top-0 h-full w-full bg-gray-900 bg-opacity-30 transition-opacity'>
 					{cloneElement(dialogue, { onClose: handleHideModal })}
 				</div>,
 				document.getElementById('root')

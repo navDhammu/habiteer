@@ -1,50 +1,81 @@
 import { useState } from 'react';
 
-export default function useForm({ initialValues, validations, onSubmit }) {
+export default function useForm({
+	initialValues,
+	customValidations,
+	onSubmit,
+}) {
 	const [data, setData] = useState(initialValues || {});
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [errors, setErrors] = useState({});
 	const [errorCode, setErrorCode] = useState(null);
 
+	console.log(onSubmit);
 	const handleChange = (key) => (e) => {
-		setData({ ...data, [key]: e.target.value });
-	};
+		const isCheckbox = e.target.type === 'checkbox';
+		let value = isCheckbox ? e.target.checked : e.target.value;
 
-	const getErrorMessage = (key, value) => {
-		if (!validations?.[key]) return null;
-		const { required, pattern, custom } = validations[key];
+		//multiple checkboxes
+		if (isCheckbox && Array.isArray(data[key])) {
+			value = data[key].map((el) =>
+				e.target.name === el.name ? { ...el, checked: value } : el
+			);
+			setData({ ...data, [key]: value });
+		} else {
+			setData({
+				...data,
+				[key]: value,
+			});
+		}
 
-		switch (true) {
-			case required && !value:
-				return 'This field is required';
-			case pattern && !RegExp(pattern.value).test(value):
-				return pattern.message;
-			case custom && !custom.isValid(data):
-				return custom.message;
-			default:
-				return null;
+		// validate if error already present
+		const customError = customValidations?.[key]?.isValid(value)
+			? ''
+			: customValidations[key]?.message;
+
+		if (errors[key]) {
+			setErrors({
+				...errors,
+				[key]: customError || e.target.validationMessage,
+			});
 		}
 	};
-	const handleBlur = (key) => (e) => {
-		setErrors({ ...errors, [key]: getErrorMessage(key, e.target.value) });
+
+	const getCustomErrors = () => {
+		if (!customValidations) return;
+		let customErrors = {};
+		for (let [key, validation] of Object.entries(customValidations)) {
+			if (!validation.isValid(data[key]))
+				customErrors[key] = validation.message;
+		}
+		return customErrors;
+	};
+
+	const handleInvalid = (key) => (e) => {
+		e.preventDefault();
+		const customErrors = getCustomErrors() || {};
+		setErrors({
+			...errors,
+			[key]: e.target.validationMessage,
+			...customErrors,
+		});
 	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		let errors = {};
-		for (let [key, value] of Object.entries(data)) {
-			errors[key] = getErrorMessage(key, value);
-		}
-
-		if (Object.values(errors).some((value) => value !== null))
-			return setErrors(errors);
+		const customErrors = getCustomErrors();
+		if (Object.values(customErrors).some((value) => value))
+			return setErrors({ ...errors, ...customErrors });
 
 		setIsSubmitting(true);
 		Promise.resolve(onSubmit(data))
 			.catch((error) => {
 				setErrorCode(error.code);
 			})
-			.finally(() => setIsSubmitting(false));
+			.finally(() => {
+				console.log('finally');
+				setIsSubmitting(false);
+			});
 	};
 
 	return {
@@ -53,7 +84,7 @@ export default function useForm({ initialValues, validations, onSubmit }) {
 		errors,
 		errorCode,
 		handleChange,
-		handleBlur,
 		handleSubmit,
+		handleInvalid,
 	};
 }

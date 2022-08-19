@@ -16,7 +16,7 @@ import {
 	habitsCollection,
 } from './firestoreReferences';
 
-//Create new habhit
+//Create new habit
 export function createHabit(habitDetails) {
 	return addDoc(habitsCollection(), {
 		createdOn: new Date(),
@@ -41,8 +41,8 @@ export function createHabit(habitDetails) {
 }
 
 //edit existing habit
-export function editHabit(habitId, habitDetails) {
-	return updateDoc(getHabitDoc(habitId), {
+export function editHabit(habitDetails) {
+	return updateDoc(getHabitDoc(habitDetails.id), {
 		lastUpdated: new Date(),
 		...habitDetails,
 	});

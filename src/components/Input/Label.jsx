@@ -10,7 +10,7 @@ export default function Label({
 				isRequired
 					? 'after:ml-1 after:text-red-400 after:content-["*"]'
 					: ''
-			} mb-1 font-headings text-sm font-semibold capitalize text-gray-500`}
+			} font-headings mb-1 text-sm capitalize`}
 			{...props}>
 			{children}
 		</Component>
