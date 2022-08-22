@@ -85,6 +85,7 @@ function App() {
 							<AppLayout habits={habits} />
 						)
 					}>
+					<Route path='/' element={<Navigate to='/dashboard' />} />
 					{links.map(({ to, Component }) => (
 						<Route
 							key={to}
