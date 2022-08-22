@@ -9,29 +9,29 @@ import { habitsCollection } from './firebase/firestoreReferences';
 import Login from './pages/login';
 
 function App() {
+	const [isLoading, setIsLoading] = useState(true);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [habits, setHabits] = useState([]);
 
 	useEffect(() => {
 		const unSub = onAuthStateChanged(auth, (user) => {
-			if (user) {
-				const isNewUser =
-					user.metadata.creationTime === user.metadata.lastSignInTime;
-				if (isNewUser) {
-					setDoc(doc(db, 'users', user.uid), {
-						name: user.displayName,
-						email: user.email,
-					})
-						.catch((err) =>
-							console.log('error setting user doc', err)
-						)
-						.finally(() => setIsLoggedIn(true));
-				} else {
-					setIsLoggedIn(true);
-				}
-			} else {
+			setIsLoading(false);
+			if (!user) {
 				setIsLoggedIn(false);
 				setHabits([]);
+				return;
+			}
+			const isNewUser =
+				user.metadata.creationTime === user.metadata.lastSignInTime;
+			if (isNewUser) {
+				setDoc(doc(db, 'users', user.uid), {
+					name: user.displayName,
+					email: user.email,
+				})
+					.catch((err) => console.log('error setting user doc', err))
+					.finally(() => setIsLoggedIn(true));
+			} else {
+				setIsLoggedIn(true);
 			}
 		});
 		return unSub;
@@ -71,6 +71,8 @@ function App() {
 			return onSnapshot(q, { includeMetadataChanges: true }, handler);
 		}
 	}, [isLoggedIn]);
+
+	if (isLoading) return null;
 
 	return (
 		<BrowserRouter>
