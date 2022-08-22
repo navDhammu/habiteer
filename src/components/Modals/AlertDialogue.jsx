@@ -3,22 +3,15 @@ import Button from '../Button/Button';
 
 export default function AlertDialogue({
 	variant,
-	heading,
 	body,
 	onConfirm,
 	confirmBtnLabel,
-	onClose,
+	onCancel,
 }) {
-	console.log(onConfirm);
 	return (
-		<div className='absolute top-1/2 left-1/2 flex h-44 w-96 min-w-max -translate-y-1/2 -translate-x-1/2 transform flex-col justify-between rounded-lg bg-white p-4'>
-			<h1 className='text-xl'>{heading}</h1>
+		<div className='mt-3 space-y-3'>
 			<p>{body}</p>
-
 			<div className='flex gap-4 self-end'>
-				<Button size='sm' variant='tertiary' onClick={onClose}>
-					cancel
-				</Button>
 				<Button
 					size='sm'
 					onClick={onConfirm}
@@ -27,6 +20,9 @@ export default function AlertDialogue({
 						primary: variant === 'info',
 					})}>
 					{confirmBtnLabel}
+				</Button>
+				<Button size='sm' onClick={onCancel} variant='tertiary'>
+					cancel
 				</Button>
 			</div>
 		</div>

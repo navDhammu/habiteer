@@ -18,6 +18,10 @@ export default function Header({ onMenuClick, className }) {
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 	const { handleShowModal } = useContext(ModalContext);
 
+	const handleOpenUserMenu = (e) => {
+		e.stopPropagation();
+		setIsUserMenuOpen(true);
+	};
 	return (
 		<header
 			className={`sticky top-0 flex h-16 items-center justify-between border border-slate-200 bg-white px-8 ${className}`}>
@@ -38,7 +42,7 @@ export default function Header({ onMenuClick, className }) {
 			<Button
 				IconLeft={IconUser}
 				IconRight={IconChevronDown}
-				onClick={() => setIsUserMenuOpen(true)}>
+				onClick={handleOpenUserMenu}>
 				<span className='hidden text-xs font-semibold uppercase text-slate-600 md:inline'>
 					{auth.currentUser.displayName || auth.currentUser.email}
 				</span>

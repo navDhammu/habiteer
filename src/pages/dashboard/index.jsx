@@ -1,6 +1,5 @@
 import { differenceInDays, format, parse } from 'date-fns';
 import CardLayout from '../../components/Layout/CardLayout';
-import Tabs from '../../components/Tabs';
 import { auth } from '../../firebase';
 
 export default function Dashboard({ habits }) {
@@ -63,12 +62,6 @@ export default function Dashboard({ habits }) {
 					</div>
 				</CardLayout>
 			</section>
-			<Tabs
-				tabs={[
-					{ tabLabel: 'a', element: <div>lull</div> },
-					{ tabLabel: 'b', element: <div>kulll</div> },
-				]}
-			/>
 		</main>
 	);
 }

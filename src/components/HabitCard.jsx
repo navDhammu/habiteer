@@ -60,9 +60,6 @@ export default function HabitCard(props) {
 						<strong className='text-lg capitalize text-slate-700'>
 							{props.habitName}
 						</strong>
-						{/* <span className='ml-2 rounded-2xl border border-sky-400 bg-sky-100 px-2 py-1 text-sm capitalize'>
-							{habitCategory}
-						</span> */}
 					</h2>
 
 					<h3 className='text-sm text-gray-400'>

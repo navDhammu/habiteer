@@ -1,27 +1,25 @@
-import { cloneElement, useContext, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { ModalContext } from './GlobalModal';
+import { Dialog } from '@headlessui/react';
+import { IconX } from '@tabler/icons';
+import { useContext } from 'react';
+import IconButton from '../Button/IconButton';
+import { ModalContext, MODAL_TYPES } from './GlobalModal';
 
-export default function Modal({ children: dialogue }) {
+export default function Modal({ title, description, children }) {
 	const { modal, handleHideModal } = useContext(ModalContext);
-	const backdrop = useRef();
 
-	useEffect(() => {
-		const handleClick = (e) => {
-			if (e.target === backdrop.current) handleHideModal();
-		};
-		document.addEventListener('click', handleClick);
-		return () => document.removeEventListener('click', handleClick);
-	}, []);
-
-	return modal.type
-		? createPortal(
-				<div
-					ref={backdrop}
-					className='fixed top-0 h-full w-full bg-gray-900 bg-opacity-30 transition-opacity'>
-					{cloneElement(dialogue, { onClose: handleHideModal })}
-				</div>,
-				document.getElementById('root')
-		  )
-		: null;
+	return (
+		<Dialog
+			open={MODAL_TYPES[modal.type] !== undefined}
+			onClose={handleHideModal}
+			className='fixed inset-0 bg-black/30'>
+			<Dialog.Panel className='absolute left-1/2 top-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 transform overflow-scroll rounded-md bg-white p-6 sm:h-fit sm:w-96 md:w-2/5'>
+				<Dialog.Title className='-mx-6 -mt-3 flex items-center justify-between border-b px-6'>
+					<span className='text-lg capitalize'>{title}</span>
+					<IconButton Icon={IconX} onClick={handleHideModal} />
+				</Dialog.Title>
+				<Dialog.Description>{description}</Dialog.Description>
+				{children}
+			</Dialog.Panel>
+		</Dialog>
+	);
 }

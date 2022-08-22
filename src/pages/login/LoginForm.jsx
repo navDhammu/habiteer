@@ -7,22 +7,32 @@ import { auth } from '../../firebase';
 import useForm from '../../hooks/useForm';
 
 export default function LoginForm() {
-	const { data, errorCode, isSubmitting, handleChange, handleSubmit } =
-		useForm({
-			onSubmit: (data) =>
-				signInWithEmailAndPassword(auth, data.email, data.password),
-		});
+	const {
+		data,
+		errorCode,
+		isSubmitting,
+		handleChange,
+		handleInvalid,
+		handleSubmit,
+	} = useForm({
+		onSubmit: (data) =>
+			signInWithEmailAndPassword(auth, data.email, data.password),
+	});
 
+	console.log(data);
 	return (
-		<form onSubmit={handleSubmit} className='flex w-4/5 flex-col gap-6'>
+		<form
+			onSubmit={handleSubmit}
+			onInvalid={handleInvalid}
+			className='flex w-4/5 flex-col gap-6'>
 			<h2 className='text-3xl font-bold'>Login</h2>
 			<InputField
+				type='email'
 				value={data.email || ''}
 				onChange={handleChange('email')}
 				label='Email'
 				placeholder='name@domain.com'
 				id='username'
-				isRequired
 			/>
 			<InputField
 				value={data.password || ''}
@@ -31,7 +41,6 @@ export default function LoginForm() {
 				label='Password'
 				placeholder='atleast 8 characters'
 				id='password'
-				isRequired
 			/>
 			{errorCode?.includes('auth') && (
 				<div className='rounded-xl bg-red-100 py-2 px-4 text-red-600'>

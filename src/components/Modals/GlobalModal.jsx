@@ -13,28 +13,38 @@ export const MODAL_TYPES = {
 	SIDEBAR: 'SIDEBAR',
 };
 
-const DIALOGUE_COMPONENTS = {
-	[MODAL_TYPES.HABIT_FORM]: HabitForm,
-	[MODAL_TYPES.SIDEBAR]: Sidebar,
-	[MODAL_TYPES.DELETE_HABIT]: ({ habitName, onClose, onConfirm }) => (
-		<AlertDialogue
-			variant='danger'
-			heading='Delete Habit'
-			body={`Are you sure you want to delete ${habitName}`}
-			onClose={onClose}
-			onConfirm={onConfirm}
-			confirmBtnLabel='Delete'
-		/>
+const MODAL_COMPONENTS = {
+	[MODAL_TYPES.HABIT_FORM]: (props) => (
+		<Modal title={props.mode === 'CREATE' ? 'create habit' : 'edit habit'}>
+			<HabitForm {...props} />
+		</Modal>
 	),
-	[MODAL_TYPES.ARCHIVE_HABIT]: ({ habitName, onClose, onConfirm }) => (
-		<AlertDialogue
-			variant='info'
-			heading='Archive Habit'
-			body={`Are you sure you want to archive ${habitName}`}
-			onClose={onClose}
-			onConfirm={onConfirm}
-			confirmBtnLabel='Archive'
-		/>
+	[MODAL_TYPES.SIDEBAR]: (props) => (
+		<Modal>
+			<Sidebar {...props} />
+		</Modal>
+	),
+	[MODAL_TYPES.DELETE_HABIT]: (props) => (
+		<Modal title='Delete Habit'>
+			<AlertDialogue
+				variant='danger'
+				body={`Are you sure you want to delete "${props.habitName}"`}
+				onCancel={props.onClose}
+				onConfirm={props.onConfirm}
+				confirmBtnLabel='Delete'
+			/>
+		</Modal>
+	),
+	[MODAL_TYPES.ARCHIVE_HABIT]: (props) => (
+		<Modal title='Archive Habit'>
+			<AlertDialogue
+				variant='info'
+				body={`Are you sure you want to archive "${props.habitName}"`}
+				onConfirm={props.onConfirm}
+				onCancel={props.onClose}
+				confirmBtnLabel='Archive'
+			/>
+		</Modal>
 	),
 };
 
@@ -50,14 +60,14 @@ export default function GlobalModal({ children }) {
 		if (modal.type) handleHideModal();
 	}, [route]);
 
-	const Dialgoue = DIALOGUE_COMPONENTS[modal.type];
+	const ModalComponent = MODAL_COMPONENTS[modal.type];
 
 	return (
 		<ModalContext.Provider
 			value={{ modal, handleShowModal, handleHideModal }}>
-			<Modal>
-				<Dialgoue {...modal.props} />
-			</Modal>
+			{ModalComponent && (
+				<ModalComponent {...modal.props} onClose={handleHideModal} />
+			)}
 			{children}
 		</ModalContext.Provider>
 	);

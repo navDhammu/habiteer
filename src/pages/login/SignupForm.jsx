@@ -63,7 +63,6 @@ export default function SignupForm() {
 		handleSubmit,
 	} = useForm(formData);
 
-	console.log(errors);
 	return (
 		<form
 			onSubmit={handleSubmit}

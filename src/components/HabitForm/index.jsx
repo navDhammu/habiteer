@@ -36,18 +36,18 @@ const customValidations = {
 	},
 };
 
-const onSubmit = (mode) => (data) => {
+const onSubmit = (mode, onClose) => (data) => {
 	switch (mode) {
 		case 'CREATE':
-			return createHabit(data);
+			return createHabit(data).then(onClose);
 		case 'EDIT':
-			return editHabit(data);
+			return editHabit(data).then(onClose);
 		default:
 			throw new Error(`invalid mode ${mode}`);
 	}
 };
 
-export default function HabitForm({ mode = 'CREATE', initialValues }) {
+export default function HabitForm({ mode = 'CREATE', initialValues, onClose }) {
 	const {
 		data: formData,
 		errors,
@@ -58,17 +58,13 @@ export default function HabitForm({ mode = 'CREATE', initialValues }) {
 	} = useForm({
 		initialValues: initialValues || initialEmptyValues,
 		customValidations,
-		onSubmit: onSubmit(mode),
+		onSubmit: onSubmit(mode, onClose),
 	});
 
 	const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+
 	return (
-		<form
-			onSubmit={handleSubmit}
-			className='my-4 flex w-[500px] flex-col gap-4 overflow-scroll rounded-lg bg-white p-6'>
-			<h1 className='-mx-6 border-b pl-6 font-semibold'>
-				{mode === 'CREATE' ? 'Create Habit' : 'Edit Habit'}
-			</h1>
+		<form onSubmit={handleSubmit} className='my-4 flex flex-col gap-4'>
 			<section className='space-y-2'>
 				<h2 className='text-base font-semibold'>Habit Name</h2>
 				<InputField
@@ -146,7 +142,9 @@ export default function HabitForm({ mode = 'CREATE', initialValues }) {
 				<Button type='submit' variant='primary' disabled={isSubmitting}>
 					{mode === 'CREATE' ? 'Save Habit' : 'Save Changes'}
 				</Button>
-				<Button variant='tertiary'>cancel</Button>
+				<Button variant='tertiary' onClick={onClose}>
+					cancel
+				</Button>
 			</footer>
 		</form>
 	);

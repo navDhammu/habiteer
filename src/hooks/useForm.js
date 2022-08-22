@@ -10,7 +10,6 @@ export default function useForm({
 	const [errors, setErrors] = useState({});
 	const [errorCode, setErrorCode] = useState(null);
 
-	console.log(onSubmit);
 	const handleChange = (key) => (e) => {
 		const isCheckbox = e.target.type === 'checkbox';
 		let value = isCheckbox ? e.target.checked : e.target.value;
@@ -31,7 +30,7 @@ export default function useForm({
 		// validate if error already present
 		const customError = customValidations?.[key]?.isValid(value)
 			? ''
-			: customValidations[key]?.message;
+			: customValidations?.[key]?.message;
 
 		if (errors[key]) {
 			setErrors({
@@ -63,7 +62,7 @@ export default function useForm({
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const customErrors = getCustomErrors();
+		const customErrors = getCustomErrors() || {};
 		if (Object.values(customErrors).some((value) => value))
 			return setErrors({ ...errors, ...customErrors });
 
@@ -73,7 +72,6 @@ export default function useForm({
 				setErrorCode(error.code);
 			})
 			.finally(() => {
-				console.log('finally');
 				setIsSubmitting(false);
 			});
 	};
