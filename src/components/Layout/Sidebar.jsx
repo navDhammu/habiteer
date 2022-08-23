@@ -3,17 +3,21 @@ import {
 	IconChartBar,
 	IconChecklist,
 	IconLayoutDashboard,
+	IconLayoutSidebarLeftCollapse,
+	IconLayoutSidebarLeftExpand,
 	IconPlus,
 } from '@tabler/icons';
 import clsx from 'clsx';
-import { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
+import useWindowWidth from '../../hooks/useWindowWidth';
 import Checklist from '../../pages/checklist';
 import Dashboard from '../../pages/dashboard';
 import Allhabits from '../../pages/habits';
 import Stats from '../../pages/stats';
 import Button from '../Button/Button';
+import IconButton from '../Button/IconButton';
 import { ModalContext, MODAL_TYPES } from '../Modals/GlobalModal';
 
 export const links = [
@@ -43,22 +47,34 @@ export const links = [
 	},
 ];
 
-// const SIDEBAR_BREAKPOINT = 1023;
+const BREAKPOINT = 1024;
 
 export default function Sidebar({ className }) {
-	const { modal, handleShowModal, handleHideModal } =
-		useContext(ModalContext);
-	const isMobileSidebar = modal.type === MODAL_TYPES.SIDEBAR;
+	const windowWidth = useWindowWidth();
+	const [isHidden, setIsHidden] = useState(windowWidth < BREAKPOINT);
+	const { modal, handleShowModal } = useContext(ModalContext);
+	const location = useLocation();
+
+	useEffect(() => {
+		if (windowWidth < BREAKPOINT) {
+			setIsHidden(true);
+		} else {
+			setIsHidden(false);
+		}
+	}, [windowWidth]);
+
+	useEffect(() => {
+		if (!isHidden && windowWidth < BREAKPOINT) setIsHidden(true);
+	}, [location, modal.type]);
 
 	return (
 		<aside
 			className={clsx(
-				isMobileSidebar ? 'absolute flex' : 'sticky hidden lg:flex',
-				'left-0 top-0 h-screen w-[250px] flex-col bg-slate-800 p-4 transition-all',
+				'sticky top-0 left-0 z-50 flex h-screen flex-col bg-slate-800 transition-all',
+				isHidden ? 'w-0 overflow-x-hidden' : 'min-w-fit p-4',
 				className
 			)}>
-			<img src={logo} alt='logo' />
-
+			<img src={logo} alt='logo' className='max-w-[250px]' />
 			<Button
 				className='mt-4'
 				variant='primary'
@@ -77,7 +93,6 @@ export default function Sidebar({ className }) {
 									isActive
 										? ' bg-slate-900 text-white'
 										: 'text-gray-400'
-									// isActive && 'bg-white'
 								)
 							}
 							to={to}>
@@ -87,6 +102,21 @@ export default function Sidebar({ className }) {
 					))}
 				</ul>
 			</nav>
+			<IconButton
+				className={clsx(
+					'top-0 rounded-none',
+					isHidden
+						? 'fixed left-0'
+						: 'absolute right-0 translate-x-full transform'
+				)}
+				size='lg'
+				Icon={
+					isHidden
+						? IconLayoutSidebarLeftExpand
+						: IconLayoutSidebarLeftCollapse
+				}
+				onClick={() => setIsHidden(!isHidden)}
+			/>
 		</aside>
 	);
 }

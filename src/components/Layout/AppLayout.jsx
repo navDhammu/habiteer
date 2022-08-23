@@ -9,7 +9,7 @@ export default function AppLayout({ habits }) {
 		<GlobalModal>
 			<div className='flex'>
 				<Sidebar />
-				<div className='flex flex-1 flex-col'>
+				<div className='flex w-full flex-1 flex-col'>
 					<Header />
 					{habits.length > 0 ? <Outlet /> : <NoHabits />}
 				</div>

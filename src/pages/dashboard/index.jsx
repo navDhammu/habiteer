@@ -24,7 +24,7 @@ export default function Dashboard({ habits }) {
 	}, 0);
 
 	return (
-		<main className='p-4 md:p-6 lg:p-8'>
+		<main className='min-w-max p-4 md:p-6 lg:p-8'>
 			<h1 className='main-heading'>Dashboard</h1>
 			<header className='flex justify-between rounded-lg bg-indigo-200 p-6'>
 				<div>

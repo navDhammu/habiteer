@@ -3,7 +3,6 @@ import {
 	IconBellMinus,
 	IconChevronDown,
 	IconHelp,
-	IconMenu2,
 	IconSearch,
 	IconUser,
 } from '@tabler/icons';
@@ -11,7 +10,7 @@ import { useContext, useState } from 'react';
 import { auth } from '../../firebase';
 import Button from '../Button/Button';
 import IconButton from '../Button/IconButton';
-import { ModalContext, MODAL_TYPES } from '../Modals/GlobalModal';
+import { ModalContext } from '../Modals/GlobalModal';
 import PopupMenu from '../PopupMenu';
 
 export default function Header({ onMenuClick, className }) {
@@ -24,15 +23,7 @@ export default function Header({ onMenuClick, className }) {
 	};
 	return (
 		<header
-			className={`sticky top-0 flex h-16 items-center justify-between border border-slate-200 bg-white px-8 ${className}`}>
-			{/* hamburger icon */}
-			<IconButton
-				className='lg:hidden'
-				Icon={IconMenu2}
-				onClick={() => handleShowModal(MODAL_TYPES.SIDEBAR)}
-				size='md'
-			/>
-
+			className={`sticky top-0 flex h-16 items-center justify-between bg-white px-8 ${className}`}>
 			<div className='text-end flex-1 space-x-2 border-r pr-4'>
 				<IconButton size='md' Icon={IconSearch} variant='filled' />
 				<IconButton size='md' Icon={IconBellMinus} variant='filled' />
