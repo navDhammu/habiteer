@@ -80,7 +80,9 @@ export default function Sidebar({ className }) {
 				variant='primary'
 				size='md'
 				IconLeft={IconPlus}
-				onClick={() => handleShowModal(MODAL_TYPES.HABIT_FORM)}>
+				onClick={() =>
+					handleShowModal(MODAL_TYPES.HABIT_FORM, { mode: 'CREATE' })
+				}>
 				Create Habit
 			</Button>
 			<nav className='my-8 flex-1 text-sm'>

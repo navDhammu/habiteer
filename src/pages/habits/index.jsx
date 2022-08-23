@@ -14,7 +14,11 @@ export default function Habits({ habits }) {
 					<Button
 						variant='primary'
 						IconLeft={IconPlus}
-						onClick={() => handleShowModal(MODAL_TYPES.HABIT_FORM)}>
+						onClick={() =>
+							handleShowModal(MODAL_TYPES.HABIT_FORM, {
+								mode: 'CREATE',
+							})
+						}>
 						Create New
 					</Button>
 				</header>
