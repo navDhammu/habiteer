@@ -3,21 +3,17 @@ import {
 	IconChartBar,
 	IconChecklist,
 	IconLayoutDashboard,
-	IconLayoutSidebarLeftCollapse,
-	IconLayoutSidebarLeftExpand,
 	IconPlus,
 } from '@tabler/icons';
 import clsx from 'clsx';
-import { useContext, useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import useWindowWidth from '../../hooks/useWindowWidth';
 import Checklist from '../../pages/checklist';
 import Dashboard from '../../pages/dashboard';
 import Allhabits from '../../pages/habits';
 import Stats from '../../pages/stats';
 import Button from '../Button/Button';
-import IconButton from '../Button/IconButton';
 import { ModalContext, MODAL_TYPES } from '../Modals/GlobalModal';
 
 export const links = [
@@ -47,41 +43,28 @@ export const links = [
 	},
 ];
 
-const BREAKPOINT = 1024;
-
-export default function Sidebar({ className }) {
-	const windowWidth = useWindowWidth();
-	const [isHidden, setIsHidden] = useState(windowWidth < BREAKPOINT);
+export default function Sidebar({ className, isMobile }) {
 	const { modal, handleShowModal } = useContext(ModalContext);
-	const location = useLocation();
-
-	useEffect(() => {
-		if (windowWidth < BREAKPOINT) {
-			setIsHidden(true);
-		} else {
-			setIsHidden(false);
-		}
-	}, [windowWidth]);
-
-	useEffect(() => {
-		if (!isHidden && windowWidth < BREAKPOINT) setIsHidden(true);
-	}, [location, modal.type]);
 
 	return (
 		<aside
 			className={clsx(
-				'sticky top-0 left-0 z-50 flex h-screen flex-col bg-slate-800 transition-all',
-				isHidden ? 'w-0 overflow-x-hidden' : 'min-w-fit p-4',
+				'top-0 left-0 z-50 h-screen flex-col bg-slate-800 p-4 transition-all',
+				isMobile ? 'flex w-screen' : 'sticky hidden md:flex',
 				className
 			)}>
-			<img src={logo} alt='logo' className='max-w-[250px]' />
+			{!isMobile && (
+				<img src={logo} alt='logo' className='max-w-[250px]' />
+			)}
 			<Button
-				className='mt-4'
+				className={`mt-4 ${isMobile ? 'w-48' : ''}`}
 				variant='primary'
 				size='md'
 				IconLeft={IconPlus}
 				onClick={() =>
-					handleShowModal(MODAL_TYPES.HABIT_FORM, { mode: 'CREATE' })
+					handleShowModal(MODAL_TYPES.HABIT_FORM, {
+						mode: 'CREATE',
+					})
 				}>
 				Create Habit
 			</Button>
@@ -104,21 +87,6 @@ export default function Sidebar({ className }) {
 					))}
 				</ul>
 			</nav>
-			<IconButton
-				className={clsx(
-					'top-0 rounded-none',
-					isHidden
-						? 'fixed left-0'
-						: 'absolute right-0 translate-x-full transform'
-				)}
-				size='lg'
-				Icon={
-					isHidden
-						? IconLayoutSidebarLeftExpand
-						: IconLayoutSidebarLeftCollapse
-				}
-				onClick={() => setIsHidden(!isHidden)}
-			/>
 		</aside>
 	);
 }

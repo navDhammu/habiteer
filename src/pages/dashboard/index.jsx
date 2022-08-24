@@ -1,7 +1,7 @@
+import { IconChartLine, IconChartPie } from '@tabler/icons';
 import { differenceInDays, format, parse } from 'date-fns';
 import CardLayout from '../../components/Layout/CardLayout';
 import { auth } from '../../firebase';
-
 export default function Dashboard({ habits }) {
 	const isNewUser =
 		auth.currentUser.metadata.creationTime ===
@@ -24,7 +24,7 @@ export default function Dashboard({ habits }) {
 	}, 0);
 
 	return (
-		<main className='min-w-max p-4 md:p-6 lg:p-8'>
+		<main className='p-4 md:p-6 lg:p-8'>
 			<h1 className='main-heading'>Dashboard</h1>
 			<header className='flex justify-between rounded-lg bg-indigo-200 p-6'>
 				<div>
@@ -60,6 +60,14 @@ export default function Dashboard({ habits }) {
 						)}{' '}
 						%
 					</div>
+				</CardLayout>
+				<CardLayout heading='Progress'>
+					<IconChartLine />
+					<p>This chart is coming soon</p>
+				</CardLayout>
+				<CardLayout heading='Top habits'>
+					<IconChartPie />
+					<p>This chart is coming soon</p>
 				</CardLayout>
 			</section>
 		</main>

@@ -3,19 +3,19 @@ import {
 	IconBellMinus,
 	IconChevronDown,
 	IconHelp,
+	IconMenu2,
 	IconSearch,
 	IconUser,
+	IconX,
 } from '@tabler/icons';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { auth } from '../../firebase';
 import Button from '../Button/Button';
 import IconButton from '../Button/IconButton';
-import { ModalContext } from '../Modals/GlobalModal';
 import PopupMenu from '../PopupMenu';
 
-export default function Header({ onMenuClick, className }) {
+export default function Header({ showMobileSidebar, onMenuClick, className }) {
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-	const { handleShowModal } = useContext(ModalContext);
 
 	const handleOpenUserMenu = (e) => {
 		e.stopPropagation();
@@ -24,6 +24,12 @@ export default function Header({ onMenuClick, className }) {
 	return (
 		<header
 			className={`sticky top-0 flex h-16 items-center justify-between bg-white px-8 ${className}`}>
+			<IconButton
+				Icon={showMobileSidebar ? IconX : IconMenu2}
+				size='lg'
+				onClick={onMenuClick}
+				className='md:hidden'
+			/>
 			<div className='text-end flex-1 space-x-2 border-r pr-4'>
 				<IconButton size='md' Icon={IconSearch} variant='filled' />
 				<IconButton size='md' Icon={IconBellMinus} variant='filled' />
