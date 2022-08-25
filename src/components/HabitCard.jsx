@@ -17,11 +17,9 @@ function getHabitCompletionRate({
 		end: new Date(),
 	}).filter((date) =>
 		repeatDays.some((day) => {
-			console.log(day);
 			return day.id === getDay(date);
 		})
 	).length;
-	console.log(totalDays);
 	return completions / totalDays;
 }
 
