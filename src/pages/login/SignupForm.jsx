@@ -59,7 +59,7 @@ export default function SignupForm() {
 		errorCode,
 		isSubmitting,
 		handleChange,
-		handleBlur,
+		handleInvalid,
 		handleSubmit,
 	} = useForm(formData);
 
@@ -73,10 +73,10 @@ export default function SignupForm() {
 				label='Name'
 				value={data.name}
 				onChange={handleChange('name')}
-				onBlur={handleBlur('name')}
+				onInvalid={handleInvalid('name')}
 				placeholder='Enter your name'
 				id='name'
-				isRequired
+				required
 				errorMsg={errors.name}
 			/>
 
@@ -85,10 +85,10 @@ export default function SignupForm() {
 				type='email'
 				value={data.email}
 				onChange={handleChange('email')}
-				onBlur={handleBlur('email')}
+				onInvalid={handleInvalid('email')}
 				placeholder='Enter your email'
 				id='email'
-				isRequired
+				required
 				errorMsg={errors.email}
 			/>
 
@@ -99,21 +99,21 @@ export default function SignupForm() {
 					id='password'
 					value={data.password}
 					onChange={handleChange('password')}
-					onBlur={handleBlur('password')}
+					onInvalid={handleInvalid('password')}
 					placeholder='Password'
-					isRequired
+					required
 					errorMsg={errors.password}
 				/>
 
 				<InputField
+					type='password'
 					label='Confirm Password'
+					id='confirmPassword'
 					value={data.confirmPassword}
 					onChange={handleChange('confirmPassword')}
-					onBlur={handleBlur('confirmPassword')}
-					type='password'
-					placeholder='Re-type password'
-					id='confirmPassword'
-					isRequired
+					onInvalid={handleInvalid('confirmPassword')}
+					placeholder='confirm password'
+					required
 					errorMsg={errors.confirmPassword}
 				/>
 			</div>

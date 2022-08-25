@@ -12,7 +12,7 @@ import IconButton from '../../components/Button/IconButton';
 import ProgressIndicator from '../../components/ProgressIndicator';
 import { db } from '../../firebase';
 import { getDateDoc, getHabitDoc } from '../../firebase/firestoreReferences';
-import { toStringPercent } from '../../utils';
+import { toStringPercent } from '../../utils/misc';
 import HabitTodoList from './HabitTodoList';
 
 export default function Checklist() {
