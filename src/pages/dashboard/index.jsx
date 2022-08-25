@@ -1,7 +1,8 @@
 import { IconChartLine, IconChartPie } from '@tabler/icons';
 import { differenceInDays, format, parse } from 'date-fns';
-import CardLayout from '../../components/Layout/CardLayout';
+import Card from '../../components/Card';
 import { auth } from '../../firebase';
+
 export default function Dashboard({ habits }) {
 	const isNewUser =
 		auth.currentUser.metadata.creationTime ===
@@ -42,33 +43,50 @@ export default function Dashboard({ habits }) {
 					</div>
 				</div>
 			</header>
-			<section className='my-8 flex flex-col gap-4 sm:flex-row'>
-				<CardLayout className='' heading='Total Habits'>
+			<section className='my-8 flex max-w-2xl flex-col gap-4 sm:flex-row'>
+				<Card
+					className='flex-grow'
+					heading='Total Habits'
+					variant='stat'>
 					<div className='text-3xl font-bold text-slate-800'>
 						{habits.length}
 					</div>
-				</CardLayout>
-				<CardLayout className='' heading='Total Completions'>
+				</Card>
+				<Card
+					className='flex-grow'
+					heading='Total Completions'
+					variant='stat'>
 					<div className='text-3xl font-bold text-slate-800'>
 						{totalCompletions}
 					</div>
-				</CardLayout>
-				<CardLayout className='' heading='Avg Completion Rate'>
+				</Card>
+				<Card
+					className='flex-grow'
+					heading='Avg Completion Rate'
+					variant='stat'>
 					<div className='text-3xl font-bold text-slate-800'>
 						{Math.round(
 							(totalCompletions / totalPossibleCompletions) * 100
 						)}{' '}
 						%
 					</div>
-				</CardLayout>
-				<CardLayout heading='Progress'>
-					<IconChartLine />
+				</Card>
+			</section>
+			<section className='flex flex-col gap-4 sm:flex-row'>
+				<Card
+					className='flex-grow'
+					heading='Progress Over Time'
+					variant='chart'>
+					<IconChartLine size='100' color='rgb(165 180 252)' />
 					<p>This chart is coming soon</p>
-				</CardLayout>
-				<CardLayout heading='Top habits'>
-					<IconChartPie />
+				</Card>
+				<Card
+					className='flex-grow'
+					heading='Categories'
+					variant='chart'>
+					<IconChartPie size='100' color='rgb(165 180 252)' />
 					<p>This chart is coming soon</p>
-				</CardLayout>
+				</Card>
 			</section>
 		</main>
 	);

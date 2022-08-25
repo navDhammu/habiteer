@@ -19,7 +19,7 @@ const VARIANTS = {
 	primary:
 		'bg-indigo-500 text-white disabled:bg-indigo-200 hover:bg-indigo-600 active:bg-indigo-800',
 	secondary:
-		'border text-indigo-500 border-indigo-500 active:bg-indigo-200 hover:bg-indigo-50 active:bg-indigo-100 disabled:text-gray-300 disabled:border-gray-300 disabled:bg-gray-50',
+		'border text-indigo-500 border-indigo-500 active:bg-indigo-200 hover:bg-indigo-400 hover:text-white active:bg-indigo-500 disabled:text-gray-300 disabled:border-gray-300 disabled:bg-gray-50',
 	'secondary-danger':
 		'border text-red-400 active:bg-red-100 hover:border-slate-300 disabled:text-gray-300 disabled:border-gray-300 disabled:bg-gray-50',
 	tertiary:
@@ -54,10 +54,6 @@ export default function Button({
 				VARIANTS[variant]
 			)}
 			onClick={onClick}
-			// onClick={(e) => {
-			// 	e.stopPropagation();
-			// 	onClick();
-			// }}
 			disabled={disabled}>
 			{IconLeft && <IconLeft className={SIZES[size].icon} />}
 			<span>{children}</span>

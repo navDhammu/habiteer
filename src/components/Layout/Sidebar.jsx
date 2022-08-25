@@ -58,7 +58,7 @@ export default function Sidebar({ className, isMobile }) {
 			)}
 			<Button
 				className={`mt-4 ${isMobile ? 'w-48' : ''}`}
-				variant='primary'
+				variant='secondary'
 				size='md'
 				IconLeft={IconPlus}
 				onClick={() =>
