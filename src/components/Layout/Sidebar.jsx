@@ -72,6 +72,7 @@ export default function Sidebar({ className, isMobile }) {
 				<ul className='flex flex-col'>
 					{links.map(({ to, Icon, label }) => (
 						<NavLink
+							key={to}
 							className={({ isActive }) =>
 								clsx(
 									'flex items-center gap-4 rounded-lg p-4 capitalize',

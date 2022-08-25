@@ -6,7 +6,9 @@ export default function InputFieldDropdown({ listName, options, ...props }) {
 			<InputField list={listName} {...props} />
 			<datalist id={listName}>
 				{options.map((option) => (
-					<option value={option}>{option}</option>
+					<option key={option} value={option}>
+						{option}
+					</option>
 				))}
 			</datalist>
 		</>
