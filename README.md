@@ -30,7 +30,7 @@ Users can:
 - Ability to send invites and create habit groups with others
 
 ## Areas to improve
-- Testing
+- Testing (with jest and react testing library)
 - Better mobile user experience
 - Accessibility 
 
@@ -38,12 +38,12 @@ Users can:
 ## Reflections
 
 #### No component library
-I decided to not use existing react component libraries like material ui because I believe building those components on my own would be a good learning experience.
+Whenever possible, I try to avoid learning abstractions and focus on building a strong foundation, i.e learn javascript before a javascript framework, css before bootstrap, etc. Therefore, I decided to not use existing react component libraries like material ui because I believe building those components on my own would be a good learning experience. It took me much longer to build simple components like buttons, but in the process I learned how these libraries are built and the purpose they serve. 
 
-#### Why tailwind
-I used tailwind to speed up development time as it keeps styling and markup in one place.
+#### Tailwind css
+Already being familiar with css, I wanted to focus on react and spend less time in styling while still being able to have custom styles. Tailwind css suited my needs in this case. It was easy to learn, helped speed up development time by keeping styling and markup in one place, and also gave freedom to create unique designs.
 
-#### Why Firebase
-I decided to use firebase as my focus is in front end development and I did not want to spend time learning back end at this time. Although it is something I eventually plan on doing.
+#### Firebase
+I decided to use firebase because it provides an easy way to create a full stack app without writing backend code. As my focus is currently in front end development, I did not want to invest time learning back end, although it is something I eventually plan on doing. Nonetheless, using firebase gave me exposure to backend infrastructure like cloud functions and databases. One of the challenges I had with this project was how to structure the firebase firestore database optimally to avoid costly operations and also to structure the data in a way that allows room for future growth as I add more features.
 
 
