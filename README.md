@@ -3,8 +3,19 @@
 ## About
 Habiterr is a web app intended to help users build good habits through habit organization, reminders, and progress tracking. It is my first (major) project with reactjs and is a work in progress.
 > Live demo https://trackhabit.netlify.app/
+#### How to login
+Click "continue as test user". Alternatively, you may register for a new account
 
-For quick login, click "continue as test user". Alternatively, you may register for a new account
+## Table of contents
+- [About](#about)<br />
+- [Technologies Used](#technologies-used)
+- [Screenshots](#screenshots)
+- [Project Status](#project-status)
+   * [Current Features](#current-features)
+   * [Planned Features](#planned-features)
+- [Areas To Imporove](#areas-to-improve)
+- [Code Examples](#code-examples)
+- [Reflections](#reflections)
 
 ## Technologies Used
 - Reactjs - version 18.2
@@ -35,7 +46,7 @@ The following are areas in which I am actively learning and working to implement
 - Better mobile user experience
 - Accessibility 
 
-## Example Code
+## Code Examples
 - Using the context api to control modals: [view code](src/components/Modals/GlobalModal.jsx)
 - Creating and editing habit form: [view code](src/components/HabitForm/index.jsx)
 - useForm custom hook: [view code](src/hooks/useForm.js)
