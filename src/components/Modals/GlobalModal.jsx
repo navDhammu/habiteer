@@ -1,7 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import HabitForm from '../HabitForm';
-import Sidebar from '../Layout/Sidebar';
 import AlertDialogue from './AlertDialogue';
 import Modal from './Modal';
 
@@ -10,18 +9,12 @@ export const MODAL_TYPES = {
 	DELETE_HABIT: 'DELETE_HABIT',
 	HABIT_FORM: 'HABIT_FORM',
 	ARCHIVE_HABIT: 'ARCHIVE_HABIT',
-	SIDEBAR: 'SIDEBAR',
 };
 
 const MODAL_COMPONENTS = {
 	[MODAL_TYPES.HABIT_FORM]: (props) => (
 		<Modal title={props.mode === 'CREATE' ? 'create habit' : 'edit habit'}>
 			<HabitForm {...props} />
-		</Modal>
-	),
-	[MODAL_TYPES.SIDEBAR]: (props) => (
-		<Modal>
-			<Sidebar {...props} />
 		</Modal>
 	),
 	[MODAL_TYPES.DELETE_HABIT]: (props) => (
