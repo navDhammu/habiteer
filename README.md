@@ -34,6 +34,11 @@ Users can:
 - Better mobile user experience
 - Accessibility 
 
+## Example Code
+- Using the context api to control modals: [view code](src/components/Modals/GlobalModal.js)
+- Creating and editing habit form: [view code](src/components/HabitForm/index.jsx)
+- useForm custom hook: [view code](src/hooks/useForm.js)
+- useOnOutsideClick custom hook: [view code](src/hooks/useOnOutsideClick.js)
 
 ## Reflections
 
