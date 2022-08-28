@@ -1,13 +1,13 @@
 <img width="300" align="center" src="https://user-images.githubusercontent.com/73000930/183962956-bf63bc83-87f2-4759-a569-401e00d67de6.png" />
 
 ## About
-Habiterr is a web app intended to help users build good habits through habit organization, reminders, and progress tracking. It is my first (major) project with reactjs and is a work in progress.
+Habiterr is a web app intended to help users build good habits through habit organization, reminders, and progress tracking. It is my first (major) project with reactjs and is a work in progress. 
+
 > Live demo https://trackhabit.netlify.app/
 #### How to login
 Click "continue as test user". Alternatively, you may register for a new account
 
 ## Table of contents
-- [About](#about)<br />
 - [Technologies Used](#technologies-used)
 - [Screenshots](#screenshots)
 - [Project Status](#project-status)
@@ -16,6 +16,7 @@ Click "continue as test user". Alternatively, you may register for a new account
 - [Areas To Imporove](#areas-to-improve)
 - [Code Examples](#code-examples)
 - [Reflections](#reflections)
+- [Installation](#installation)
 
 ## Technologies Used
 - Reactjs - version 18.2
@@ -63,4 +64,10 @@ Already being familiar with css, I wanted to focus on react and spend less time 
 #### Firebase
 I decided to use firebase because it provides an easy way to create a full stack app without writing backend code. As my focus is currently in front end development, I did not want to invest time learning back end, although it is something I eventually plan on doing. Nonetheless, using firebase gave me exposure to backend infrastructure like cloud functions and databases. One of the challenges I had with this project was how to structure the firebase firestore database optimally to avoid costly operations and also to structure the data in a way that allows room for future growth as I add more features.
 
+## Installation
+In the project directory, run:
+
+`npm start`
+
+Open http://localhost:3000 to view in browser
 
