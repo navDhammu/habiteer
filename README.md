@@ -15,27 +15,28 @@ For quick login, click "continue as test user". Alternatively, you may register 
 <img width="450" src="https://user-images.githubusercontent.com/73000930/186699841-4ed08a8b-eb56-42e3-87d5-40400b95c808.png"> <img width="450" src="https://user-images.githubusercontent.com/73000930/186698724-aa97a985-81a6-4582-bd34-4b45e82c609a.png"> <img width="450" src="https://user-images.githubusercontent.com/73000930/186700504-86dcc11c-75f0-4e74-a846-ff9aa89deb90.png"><img width="450" src="https://user-images.githubusercontent.com/73000930/186700878-ea32a01a-b79c-45cd-aa63-c998ec215015.png">
 
 ## Project Status
-**In progress**
+This project is in progress
 
-### Current features
-Users can:
-- Register for a free account
-- Create habits and specify a repeat schedule
-- Mark habits as complete or incomplete
-- Edit, archive, or delete habits
+#### Current features
+Presently, the app is at a stage where users can:
+1. Register for a free account
+2. Create habits and specify a repeat schedule
+3. Mark habits as complete or incomplete
+4. Edit, archive, or delete habits
 
-### Planned Features
+#### Planned Features
 - Daily, weekly, and monthly progress data with charts
 - Reminders
 - Ability to send invites and create habit groups with others
 
 ## Areas to improve
+The following are areas in which I am actively learning and working to implement in this project
 - Testing (with jest and react testing library)
 - Better mobile user experience
 - Accessibility 
 
 ## Example Code
-- Using the context api to control modals: [view code](src/components/Modals/GlobalModal.js)
+- Using the context api to control modals: [view code](src/components/Modals/GlobalModal.jsx)
 - Creating and editing habit form: [view code](src/components/HabitForm/index.jsx)
 - useForm custom hook: [view code](src/hooks/useForm.js)
 - useOnOutsideClick custom hook: [view code](src/hooks/useOnOutsideClick.js)
