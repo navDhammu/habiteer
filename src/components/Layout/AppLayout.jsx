@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import useWindowWidth from '../../hooks/useWindowWidth';
 import GlobalModal from '../Modals/GlobalModal';
-import NoHabits from '../NoHabits';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
@@ -31,13 +30,7 @@ export default function AppLayout({ habits }) {
 						showMobileSidebar={showMobileSidebar}
 						onMenuClick={onMenuClick}
 					/>
-					{showMobileSidebar ? (
-						<Sidebar isMobile />
-					) : habits.length > 0 ? (
-						<Outlet />
-					) : (
-						<NoHabits />
-					)}
+					{showMobileSidebar ? <Sidebar isMobile /> : <Outlet />}
 				</div>
 			</div>
 		</GlobalModal>

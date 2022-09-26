@@ -2,6 +2,10 @@ import { format, isMatch, isValid, parse } from 'date-fns';
 
 export const DATE_FORMAT = 'yyyy-MM-dd';
 
+export function toISOFormat(date) {
+	return date.toISOString().split('T')[0];
+}
+
 export function dateToString(date, dateFormat = DATE_FORMAT) {
 	if (isValid(date)) return format(date, dateFormat);
 	return date;

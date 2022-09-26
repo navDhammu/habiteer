@@ -3,18 +3,15 @@ import {
 	IconChartBar,
 	IconChecklist,
 	IconLayoutDashboard,
-	IconPlus,
 } from '@tabler/icons';
 import clsx from 'clsx';
-import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import Checklist from '../../pages/checklist';
 import Dashboard from '../../pages/dashboard';
 import Allhabits from '../../pages/habits';
 import Stats from '../../pages/stats';
-import Button from '../Button/Button';
-import { ModalContext, MODAL_TYPES } from '../Modals/GlobalModal';
+import CreateHabitBtn from '../Button/CreateHabitBtn';
 
 export const links = [
 	{
@@ -44,8 +41,6 @@ export const links = [
 ];
 
 export default function Sidebar({ className, isMobile }) {
-	const { modal, handleShowModal } = useContext(ModalContext);
-
 	return (
 		<aside
 			className={clsx(
@@ -56,18 +51,7 @@ export default function Sidebar({ className, isMobile }) {
 			{!isMobile && (
 				<img src={logo} alt='logo' className='max-w-[250px]' />
 			)}
-			<Button
-				className={`mt-4 ${isMobile ? 'w-48' : ''}`}
-				variant='secondary'
-				size='md'
-				IconLeft={IconPlus}
-				onClick={() =>
-					handleShowModal(MODAL_TYPES.HABIT_FORM, {
-						mode: 'CREATE',
-					})
-				}>
-				Create Habit
-			</Button>
+			<CreateHabitBtn />
 			<nav className='my-8 flex-1 text-sm'>
 				<ul className='flex flex-col'>
 					{links.map(({ to, Icon, label }) => (

@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { useState } from 'react';
 import { createHabit, editHabit } from '../../firebase/dbOperations';
 import useForm from '../../hooks/useForm';
+import { toISOFormat } from '../../utils/dates';
 import Button from '../Button/Button';
 import Checkbox from '../Input/Checkbox';
 import InputField from '../Input/InputField';
@@ -15,15 +16,15 @@ const initialEmptyValues = {
 	habitName: '',
 	habitDescription: '',
 	habitCategory: '',
-	trackingStartDate: '',
+	trackingStartDate: toISOFormat(new Date()),
 	repeatDays: [
-		{ id: 0, name: 'Sunday', checked: false },
-		{ id: 1, name: 'Monday', checked: false },
-		{ id: 2, name: 'Tuesday', checked: false },
-		{ id: 3, name: 'Wednesday', checked: false },
-		{ id: 4, name: 'Thursday', checked: false },
-		{ id: 5, name: 'Friday', checked: false },
-		{ id: 6, name: 'Saturday', checked: false },
+		{ id: 0, name: 'Sunday', checked: true },
+		{ id: 1, name: 'Monday', checked: true },
+		{ id: 2, name: 'Tuesday', checked: true },
+		{ id: 3, name: 'Wednesday', checked: true },
+		{ id: 4, name: 'Thursday', checked: true },
+		{ id: 5, name: 'Friday', checked: true },
+		{ id: 6, name: 'Saturday', checked: true },
 	],
 };
 
@@ -111,6 +112,7 @@ export default function HabitForm({ mode = 'CREATE', initialValues, onClose }) {
 			<section className='space-y-2'>
 				<h2 className='text-base font-semibold'>Habit Schedule</h2>
 				<InputField
+					id='start date'
 					type='date'
 					disabled={mode === 'EDIT'}
 					label='Start tracking from'

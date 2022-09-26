@@ -20,7 +20,7 @@ export default function Checkbox({
 					checked={checked}
 					onChange={onChange}
 				/>
-				<span>{label}</span>
+				{label}
 			</label>
 		</>
 	);

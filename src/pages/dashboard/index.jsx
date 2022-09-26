@@ -1,12 +1,11 @@
-import { IconChartLine, IconChartPie } from '@tabler/icons';
 import { differenceInDays, format, parse } from 'date-fns';
 import Card from '../../components/Card';
 import { auth } from '../../firebase';
 
 export default function Dashboard({ habits }) {
 	const isNewUser =
-		auth.currentUser.metadata.creationTime ===
-		auth.currentUser.metadata.lastSignInTime;
+		auth.currentUser?.metadata.creationTime ===
+		auth.currentUser?.metadata.lastSignInTime;
 
 	const totalCompletions = habits.reduce(
 		(prev, curr) => prev + curr.completions,
@@ -24,6 +23,24 @@ export default function Dashboard({ habits }) {
 		return prev + diff;
 	}, 0);
 
+	// habits
+	// 	.map(habit => ({name: habit.habitCategory, value: 1}))
+	// 	.reduce((accumulator, curr) => accumulator.name === curr.name)
+
+	const data01 = [
+		{
+			name: 'Personal',
+			value: 2,
+		},
+		{
+			name: 'Health and Fitness',
+			value: 1,
+		},
+		{
+			name: 'Work',
+			value: 1,
+		},
+	];
 	return (
 		<main className='p-4 md:p-6 lg:p-8'>
 			<h1 className='main-heading'>Dashboard</h1>
@@ -31,7 +48,7 @@ export default function Dashboard({ habits }) {
 				<div>
 					<h1 className='text-2xl font-bold capitalize text-slate-800 md:text-3xl'>
 						Welcome {!isNewUser ? 'back, ' : ''}
-						{auth.currentUser.displayName}
+						{auth.currentUser?.displayName}
 					</h1>
 					<p className='mt-2 text-slate-600'>
 						Here is an overview of your habits and progress
@@ -72,12 +89,23 @@ export default function Dashboard({ habits }) {
 					</div>
 				</Card>
 			</section>
-			<section className='flex flex-col gap-4 sm:flex-row'>
+			{/* <section className='flex flex-col gap-4 sm:flex-row'>
 				<Card
 					className='flex-grow'
-					heading='Progress Over Time'
+					heading='Habits by Category'
 					variant='chart'>
-					<IconChartLine size='100' color='rgb(165 180 252)' />
+					<ResponsiveContainer width={400} height={400}>
+						<PieChart width={1000} height={600}>
+							<Pie
+								data={data01}
+								dataKey='value'
+								nameKey='name'
+								outerRadius={50}
+								fill='#8884d8'
+								label={({ name }) => name}
+							/>
+						</PieChart>
+					</ResponsiveContainer>
 					<p>This chart is coming soon</p>
 				</Card>
 				<Card
@@ -87,7 +115,7 @@ export default function Dashboard({ habits }) {
 					<IconChartPie size='100' color='rgb(165 180 252)' />
 					<p>This chart is coming soon</p>
 				</Card>
-			</section>
+			</section> */}
 		</main>
 	);
 }
