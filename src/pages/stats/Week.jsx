@@ -1,11 +1,11 @@
 import { DotsVerticalIcon } from '@heroicons/react/outline';
+import HabitForm from 'components/habits/HabitCreateEditForm';
+import AlertDialogue from 'components/ui/AlertDialogue';
+import IconButton from 'components/ui/IconButton';
+import Modal from 'components/ui/Modal';
+import PopupMenu from 'components/ui/PopupMenu';
 import { useState } from 'react';
-import IconButton from '../../components/Button/IconButton';
-import HabitForm from '../../components/HabitForm';
-import AlertDialogue from '../../components/Modals/AlertDialogue';
-import Modal from '../../components/Modals/Modal';
-import PopupMenu from '../../components/PopupMenu';
-import { weekDaysArray } from '../../utils/days';
+import { weekDaysArray } from 'utils/days';
 
 export function Week({ habits }) {
 	return (

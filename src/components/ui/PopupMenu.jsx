@@ -1,4 +1,4 @@
-import useOnOutsideClick from '../hooks/useOnOutsideClick';
+import useOnOutsideClick from '../../hooks/useOnOutsideClick';
 
 export default function PopupMenu({ isOpen, children, onClose }) {
 	const cbRef = useOnOutsideClick(onClose);

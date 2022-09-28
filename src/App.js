@@ -2,11 +2,11 @@ import { doc, onSnapshot, query, setDoc } from '@firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import AppLayout from './components/Layout/AppLayout';
-import { links } from './components/Layout/Sidebar';
-import { auth, db } from './firebase';
-import { habitsCollection } from './firebase/firestoreReferences';
+import AppLayout from './components/layout/AppLayout';
+import { links } from './components/layout/Sidebar';
 import Login from './pages/login';
+import { auth, db } from './services';
+import { habitsCollection } from './services/firestoreReferences';
 
 function App() {
 	const [isLoading, setIsLoading] = useState(true);

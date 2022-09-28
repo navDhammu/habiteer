@@ -1,10 +1,10 @@
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import InputField from 'components/form/InputField';
+import Button from 'components/ui/Button';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import Button from '../../components/Button/Button';
-import InputField from '../../components/Input/InputField';
-import { auth } from '../../firebase';
-import { errorCodes } from '../../firebase/errorCodes';
-import useForm from '../../hooks/useForm';
+import useForm from 'hooks/useForm';
+import { auth } from 'services';
+import { errorCodes } from 'services/errorCodes';
 
 const signup = (name, email, password) =>
 	createUserWithEmailAndPassword(auth, email, password).then(

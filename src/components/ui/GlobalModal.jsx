@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
-import HabitForm from '../HabitForm';
+import HabitForm from '../habits/HabitCreateEditForm';
 import AlertDialogue from './AlertDialogue';
 import Modal from './Modal';
 

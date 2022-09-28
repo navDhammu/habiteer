@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import { IconX } from '@tabler/icons';
+import IconButton from 'components/ui/IconButton';
 import { useContext } from 'react';
-import IconButton from '../Button/IconButton';
 import { ModalContext, MODAL_TYPES } from './GlobalModal';
 
 export default function Modal({ title, description, children }) {

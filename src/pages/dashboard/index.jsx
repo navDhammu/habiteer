@@ -1,6 +1,6 @@
 import { differenceInDays, format, parse } from 'date-fns';
-import Card from '../../components/Card';
-import { auth } from '../../firebase';
+import Card from '../../components/ui/Card';
+import { auth } from '../../services';
 
 export default function Dashboard({ habits }) {
 	const isNewUser =
@@ -89,6 +89,7 @@ export default function Dashboard({ habits }) {
 					</div>
 				</Card>
 			</section>
+
 			{/* <section className='flex flex-col gap-4 sm:flex-row'>
 				<Card
 					className='flex-grow'

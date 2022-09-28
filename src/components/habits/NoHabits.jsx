@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import svg from '../assets/nodata.svg';
-import Button from './Button/Button';
-import { ModalContext, MODAL_TYPES } from './Modals/GlobalModal';
+import { ModalContext, MODAL_TYPES } from '../Modals/GlobalModal';
+import Button from './ui/Buttons/buttons/Button';
 
 export default function NoHabits() {
 	const { handleShowModal } = useContext(ModalContext);

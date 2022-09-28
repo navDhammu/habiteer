@@ -9,10 +9,10 @@ import {
 	IconX,
 } from '@tabler/icons';
 import { useState } from 'react';
-import { auth } from '../../firebase';
-import Button from '../Button/Button';
-import IconButton from '../Button/IconButton';
-import PopupMenu from '../PopupMenu';
+import { auth } from 'services';
+import Button from '../ui/Button';
+import IconButton from '../ui/IconButton';
+import PopupMenu from '../ui/PopupMenu';
 
 export default function Header({ showMobileSidebar, onMenuClick, className }) {
 	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);

@@ -5,14 +5,14 @@ import {
 	IconChevronsRight,
 	IconZoomExclamation,
 } from '@tabler/icons';
+import Button from 'components/ui/Button';
+import IconButton from 'components/ui/IconButton';
+import ProgressIndicator from 'components/ui/ProgressIndicator';
 import { addDays, format, isToday, isYesterday, subDays } from 'date-fns';
 import { useEffect, useState } from 'react';
-import Button from '../../components/Button/Button';
-import IconButton from '../../components/Button/IconButton';
-import ProgressIndicator from '../../components/ProgressIndicator';
-import { db } from '../../firebase';
-import { getDateDoc, getHabitDoc } from '../../firebase/firestoreReferences';
-import { toStringPercent } from '../../utils/misc';
+import { db } from 'services';
+import { getDateDoc, getHabitDoc } from 'services/firestoreReferences';
+import { toStringPercent } from 'utils/misc';
 import HabitTodoList from './HabitTodoList';
 
 export default function Checklist() {

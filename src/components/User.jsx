@@ -1,5 +1,5 @@
 import { ChevronDownIcon, UserIcon } from '@heroicons/react/outline';
-import { auth } from '../firebase';
+import { auth } from '../services';
 import IconButton from './Button/IconButton';
 
 export default function User() {

@@ -1,14 +1,14 @@
 import { IconPlus } from '@tabler/icons';
+import Checkbox from 'components/form/Checkbox';
+import InputField from 'components/form/InputField';
+import InputFieldDropdown from 'components/form/InputFieldDropdown';
+import InputGroup from 'components/form/InputGroup';
+import Button from 'components/ui/Button.jsx';
 import { format } from 'date-fns';
+import useForm from 'hooks/useForm';
 import { useState } from 'react';
-import { createHabit, editHabit } from '../../firebase/dbOperations';
-import useForm from '../../hooks/useForm';
-import { toISOFormat } from '../../utils/dates';
-import Button from '../Button/Button';
-import Checkbox from '../Input/Checkbox';
-import InputField from '../Input/InputField';
-import InputFieldDropdown from '../Input/InputFieldDropdown';
-import InputGroup from '../Input/InputGroup';
+import { createHabit, editHabit } from 'services/dbOperations';
+import { toISOFormat } from 'utils/dates';
 
 const DATE_FORMAT = 'yyyy-MM-dd';
 
@@ -48,7 +48,11 @@ const onSubmit = (mode, onClose) => (data) => {
 	}
 };
 
-export default function HabitForm({ mode = 'CREATE', initialValues, onClose }) {
+export default function HabitCreateEditForm({
+	mode = 'CREATE',
+	initialValues,
+	onClose,
+}) {
 	const {
 		data: formData,
 		errors,

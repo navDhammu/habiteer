@@ -1,10 +1,10 @@
 import { signInWithEmailAndPassword } from '@firebase/auth';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import InputField from 'components/form/InputField';
+import Button from 'components/ui/Button';
+import useForm from 'hooks/useForm';
 import { BiLogIn } from 'react-icons/bi';
-import Button from '../../components/Button/Button';
-import InputField from '../../components/Input/InputField';
-import { auth } from '../../firebase';
-import useForm from '../../hooks/useForm';
+import { auth } from 'services';
 
 export default function LoginForm() {
 	const {

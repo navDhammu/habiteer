@@ -2,8 +2,8 @@ import { signInWithEmailAndPassword } from '@firebase/auth';
 import { useState } from 'react';
 import { Navigate } from 'react-router';
 import svg from '../../assets/illustration-running.svg';
-import Button from '../../components/Button/Button';
-import { auth } from '../../firebase';
+import Button from '../../components/ui/Button';
+import { auth } from '../../services';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 

@@ -4,14 +4,14 @@ import {
 	IconChecklist,
 	IconLayoutDashboard,
 } from '@tabler/icons';
+import logo from 'assets/logo.png';
 import clsx from 'clsx';
+import CreateHabitBtn from 'components/ui/CreateHabitBtn';
+import Checklist from 'pages/checklist';
+import Dashboard from 'pages/dashboard';
+import Allhabits from 'pages/habits';
+import Stats from 'pages/stats';
 import { NavLink } from 'react-router-dom';
-import logo from '../../assets/logo.png';
-import Checklist from '../../pages/checklist';
-import Dashboard from '../../pages/dashboard';
-import Allhabits from '../../pages/habits';
-import Stats from '../../pages/stats';
-import CreateHabitBtn from '../Button/CreateHabitBtn';
 
 export const links = [
 	{

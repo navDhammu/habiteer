@@ -1,8 +1,8 @@
 import { IconPlus } from '@tabler/icons';
+import HabitCard from 'components/habits/HabitCard';
+import Button from 'components/ui/Button';
+import { ModalContext, MODAL_TYPES } from 'components/ui/GlobalModal';
 import { useContext } from 'react';
-import Button from '../../components/Button/Button';
-import HabitCard from '../../components/HabitCard';
-import { ModalContext, MODAL_TYPES } from '../../components/Modals/GlobalModal';
 
 export default function Habits({ habits }) {
 	const { handleShowModal } = useContext(ModalContext);

@@ -1,7 +1,7 @@
+import useWindowWidth from 'hooks/useWindowWidth';
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
-import useWindowWidth from '../../hooks/useWindowWidth';
-import GlobalModal from '../Modals/GlobalModal';
+import GlobalModal from '../ui/GlobalModal';
 import Header from './Header';
 import Sidebar from './Sidebar';
 

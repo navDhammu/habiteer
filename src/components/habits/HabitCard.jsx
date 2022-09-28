@@ -1,11 +1,11 @@
 import { IconArchive, IconPencil, IconTrash } from '@tabler/icons';
+import Button from 'components/ui/Button';
 import { eachDayOfInterval, getDay, isFuture, parse } from 'date-fns';
 import { useContext } from 'react';
-import { deleteHabit } from '../firebase/dbOperations';
-import { toStringPercent } from '../utils/misc';
-import Button from './Button/Button';
-import { ModalContext, MODAL_TYPES } from './Modals/GlobalModal';
-import ProgressIndicator from './ProgressIndicator';
+import { deleteHabit } from 'services/dbOperations';
+import { toStringPercent } from 'utils/misc';
+import { ModalContext, MODAL_TYPES } from '../ui/GlobalModal';
+import ProgressIndicator from '../ui/ProgressIndicator';
 
 function getHabitCompletionRate({
 	trackingStartDate,
