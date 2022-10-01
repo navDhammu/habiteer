@@ -44,8 +44,10 @@ export default function Sidebar({ className, isMobile }) {
 	return (
 		<aside
 			className={clsx(
-				'top-0 left-0 z-50 h-screen flex-col bg-slate-800 p-4 transition-all',
-				isMobile ? 'flex w-screen' : 'sticky hidden md:flex',
+				'top-0 left-0 z-50 h-screen flex-col bg-indigo-900 p-4 transition-all',
+				isMobile
+					? 'flex w-screen'
+					: 'sticky hidden md:flex md:flex-col md:gap-4 lg:w-64',
 				className
 			)}>
 			{!isMobile && (
@@ -61,7 +63,7 @@ export default function Sidebar({ className, isMobile }) {
 								clsx(
 									'flex items-center gap-4 rounded-lg p-4 capitalize',
 									isActive
-										? ' bg-slate-900 text-white'
+										? ' bg-black/20 text-white'
 										: 'text-gray-400'
 								)
 							}

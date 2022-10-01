@@ -1,24 +1,19 @@
 import clsx from 'clsx';
 
-export default function Card({ variant, children, heading, className }) {
+export default function Card({
+	as: Component = 'div',
+	variant,
+	children,
+	className,
+}) {
 	return (
-		<div
-			className={clsx('rounded-md bg-white p-4', className, {
-				border: variant === 'stat',
-				'shadow-md': variant === 'chart',
-			})}>
-			{heading && (
-				<h2
-					className={clsx(
-						'mb-2 font-semibold',
-						variant === 'stat'
-							? 'text-xs uppercase tracking-wider text-gray-500'
-							: 'text-lg'
-					)}>
-					{heading}
-				</h2>
-			)}
+		<Component
+			className={clsx(
+				// 'rounded-md bg-white p-4 shadow-[0px_8px_24px_rgba(149,157,165,0.2)]',
+				'rounded-md bg-white p-4 drop-shadow',
+				className
+			)}>
 			{children}
-		</div>
+		</Component>
 	);
 }
