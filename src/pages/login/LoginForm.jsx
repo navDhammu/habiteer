@@ -19,7 +19,6 @@ export default function LoginForm() {
 			signInWithEmailAndPassword(auth, data.email, data.password),
 	});
 
-	console.log(data);
 	return (
 		<form
 			onSubmit={handleSubmit}

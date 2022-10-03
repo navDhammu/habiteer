@@ -1,6 +1,5 @@
 import {
 	IconCalendar,
-	IconChartBar,
 	IconChecklist,
 	IconLayoutDashboard,
 } from '@tabler/icons';
@@ -10,7 +9,6 @@ import CreateHabitBtn from 'components/ui/CreateHabitBtn';
 import Checklist from 'pages/checklist';
 import Dashboard from 'pages/dashboard';
 import Allhabits from 'pages/habits';
-import Stats from 'pages/stats';
 import { NavLink } from 'react-router-dom';
 
 export const links = [
@@ -21,26 +19,20 @@ export const links = [
 		Component: Dashboard,
 	},
 	{
-		label: 'checklist',
+		label: ['today', 1],
 		to: '/checklist',
 		Icon: IconChecklist,
 		Component: Checklist,
 	},
 	{
-		label: 'My Habits',
+		label: 'All Habits',
 		to: '/habits',
 		Icon: IconCalendar,
 		Component: Allhabits,
 	},
-	{
-		label: 'Statistics',
-		to: '/statistics',
-		Icon: IconChartBar,
-		Component: Stats,
-	},
 ];
 
-export default function Sidebar({ className, isMobile }) {
+export default function Sidebar({ className, isMobile, habits }) {
 	return (
 		<aside
 			className={clsx(
@@ -68,8 +60,9 @@ export default function Sidebar({ className, isMobile }) {
 								)
 							}
 							to={to}>
-							<Icon size='1.5em' className='' />
+							<Icon size='1.5em' />
 							{label}
+							{}
 						</NavLink>
 					))}
 				</ul>

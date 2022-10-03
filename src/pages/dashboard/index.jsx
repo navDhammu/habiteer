@@ -1,7 +1,9 @@
 import { IconChecks, IconFolders, IconSun } from '@tabler/icons';
+import { useOutletContext } from 'react-router';
 import StatCard from './StatCard';
 
-export default function Dashboard({ habits }) {
+export default function Dashboard() {
+	const habits = useOutletContext();
 	const totalCompletions = habits.reduce(
 		(prev, curr) => prev + curr.completions,
 		0
@@ -34,9 +36,6 @@ export default function Dashboard({ habits }) {
 					icon={IconFolders}
 					title='Categories'
 					stat={totalCategories}
-					// stat={`${Math.round(
-					// 	(totalCompletions / totalPossibleCompletions) * 100
-					// )} %`}
 				/>
 			</section>
 			{/* <Today habits={habits} /> */}

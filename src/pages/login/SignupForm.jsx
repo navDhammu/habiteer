@@ -1,18 +1,26 @@
+import { doc, setDoc } from '@firebase/firestore';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import InputField from 'components/form/InputField';
 import Button from 'components/ui/Button';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import useForm from 'hooks/useForm';
-import { auth } from 'services';
+import { auth, db } from 'services';
 import { errorCodes } from 'services/errorCodes';
 
-const signup = (name, email, password) =>
+function signup(name, email, password) {
 	createUserWithEmailAndPassword(auth, email, password).then(
-		(userCredential) =>
+		(userCredential) => {
+			setDoc(doc(db, 'users', userCredential.user.uid), {
+				name,
+				email,
+			}).catch((err) => console.log('error setting user doc', err));
+
 			updateProfile(userCredential.user, { displayName: name }).catch(
 				(err) => console.log(err)
-			)
+			);
+		}
 	);
+}
 
 const formData = {
 	initialValues: {

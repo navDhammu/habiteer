@@ -1,10 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import { toISOFormat } from '../../../utils/dates';
-import { weekDaysArray } from '../../../utils/days';
-import GlobalModal from '../../Modals/GlobalModal';
+import { toISOFormat } from 'utils/dates';
+import { weekDaysArray } from 'utils/days';
 import CreateHabitBtn from './CreateHabitBtn';
+import GlobalModal from './GlobalModal';
 
 test('clicking "Create habit" should open the correct modal', async () => {
 	render(

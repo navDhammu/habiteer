@@ -7,13 +7,13 @@ import { auth } from '../../services';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 
-export default function Login({ isLoggedIn }) {
+export default function Login({ user }) {
 	const [mode, setMode] = useState('login');
 
 	const handleSwitchMode = () =>
 		setMode(mode === 'login' ? 'signup' : 'login');
 
-	if (isLoggedIn) return <Navigate to='/dashboard' />;
+	if (user) return <Navigate to='/dashboard' />;
 
 	return (
 		<div className='flex h-screen w-full'>

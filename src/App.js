@@ -1,108 +1,37 @@
-import { doc, onSnapshot, query, setDoc } from '@firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/layout/AppLayout';
 import { links } from './components/layout/Sidebar';
 import Login from './pages/login';
-import { auth, db } from './services';
-import { habitsCollection } from './services/firestoreReferences';
+import { auth } from './services';
 
 function App() {
-	const [isLoading, setIsLoading] = useState(true);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [habits, setHabits] = useState([]);
+	const [user, setUser] = useState(null);
 
 	useEffect(() => {
-		const unSub = onAuthStateChanged(auth, (user) => {
-			setIsLoading(false);
-			if (!user) {
-				setIsLoggedIn(false);
-				setHabits([]);
-				return;
-			}
-			const isNewUser =
-				user.metadata.creationTime === user.metadata.lastSignInTime;
-			if (isNewUser) {
-				setDoc(doc(db, 'users', user.uid), {
-					name: user.displayName,
-					email: user.email,
-				})
-					.catch((err) => console.log('error setting user doc', err))
-					.finally(() => setIsLoggedIn(true));
-			} else {
-				setIsLoggedIn(true);
-			}
-		});
-		return unSub;
+		return onAuthStateChanged(auth, (user) => setUser(user ?? false));
 	}, []);
 
-	useEffect(() => {
-		if (isLoggedIn) {
-			const q = query(habitsCollection());
-			const handler = (snapshot) => {
-				snapshot.docChanges().forEach(({ type, doc }) => {
-					const change = {
-						id: doc.id,
-						...doc.data(),
-					};
-					switch (type) {
-						case 'added':
-							setHabits((prev) => [...prev, change]);
-							break;
-						case 'modified':
-							setHabits((prev) => {
-								let filtered = prev.filter(
-									(habit) => habit.id !== change.id
-								);
-								return [...filtered, change];
-							});
-							break;
-						case 'removed':
-							setHabits((prev) =>
-								prev.filter((habit) => habit.id !== change.id)
-							);
-							break;
-						default:
-							break;
-					}
-				});
-			};
-			return onSnapshot(q, { includeMetadataChanges: true }, handler);
-		}
-	}, [isLoggedIn]);
-
-	if (isLoading) return null;
+	if (user == null) return 'loading...';
 
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route
+					path='/'
 					element={
-						!isLoggedIn ? (
+						!user ? (
 							<Navigate to='/login' />
 						) : (
-							<AppLayout habits={habits} />
+							<AppLayout user={user} />
 						)
 					}>
-					<Route path='/' element={<Navigate to='/dashboard' />} />
 					{links.map(({ to, Component }) => (
-						<Route
-							key={to}
-							path={to}
-							element={<Component habits={habits} />}
-						/>
+						<Route key={to} path={to} element={<Component />} />
 					))}
 				</Route>
-				<Route
-					path='/login'
-					element={
-						<Login
-							isLoggedIn={isLoggedIn}
-							onLogin={() => setIsLoggedIn(true)}
-						/>
-					}
-				/>
+				<Route path='/login' element={<Login user={user} />} />
 			</Routes>
 		</BrowserRouter>
 	);
