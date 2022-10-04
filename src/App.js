@@ -2,7 +2,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from './components/layout/AppLayout';
-import { links } from './components/layout/Sidebar';
+import { links } from './components/layout/sidebar';
 import Login from './pages/login';
 import { auth } from './services';
 

@@ -5,7 +5,7 @@ import { Outlet, useLocation } from 'react-router';
 import { habitsCollection } from '../../services/firestoreReferences';
 import GlobalModal from '../ui/GlobalModal';
 import Header from './Header';
-import Sidebar from './Sidebar';
+import Sidebar from './sidebar';
 
 const SIDEBAR_BREAKPOINT = 768;
 

@@ -1,5 +1,6 @@
 import {
 	addDoc,
+	arrayUnion,
 	deleteField,
 	getDocs,
 	orderBy,
@@ -8,11 +9,13 @@ import {
 	updateDoc,
 	writeBatch,
 } from '@firebase/firestore';
+import { nanoid } from 'nanoid';
 import { db } from '.';
 import {
 	datesCollection,
 	getDateDoc,
 	getHabitDoc,
+	getUserDoc,
 	habitsCollection,
 } from './firestoreReferences';
 
@@ -62,3 +65,11 @@ export async function deleteHabit(habitId) {
 	return batch.commit();
 }
 //archive habit
+
+export function createCategory(name) {
+	return setDoc(
+		getUserDoc(),
+		{ categories: arrayUnion({ id: nanoid(), name }) },
+		{ merge: true }
+	);
+}
