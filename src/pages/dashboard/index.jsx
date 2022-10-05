@@ -1,5 +1,6 @@
 import { IconChecks, IconFolders, IconSun } from '@tabler/icons';
 import { useOutletContext } from 'react-router';
+import Heading from '../../components/ui/Heading';
 import StatCard from './StatCard';
 
 export default function Dashboard() {
@@ -24,7 +25,7 @@ export default function Dashboard() {
 
 	return (
 		<main className='p-4 md:p-6 lg:p-8'>
-			<h1 className='text-3xl text-gray-700'>Dashboard</h1>
+			<Heading size='lg'>Dashboard</Heading>
 			<section className='my-8 flex max-w-2xl flex-col gap-4 sm:flex-row'>
 				<StatCard icon={IconSun} title='Habits' stat={habits.length} />
 				<StatCard

@@ -4,13 +4,14 @@ import Button from 'components/ui/Button';
 import { ModalContext, MODAL_TYPES } from 'components/ui/GlobalModal';
 import { useContext } from 'react';
 import { useOutletContext } from 'react-router';
+import Heading from '../../components/ui/Heading';
 
 export default function AllHabits() {
 	const { handleShowModal } = useContext(ModalContext);
 	const habits = useOutletContext();
 	return (
 		<main className='p-6 md:mx-auto md:w-3/4'>
-			<h1 className='main-heading'>My Habits</h1>
+			<Heading size='lg'>All habits</Heading>
 			<section>
 				<header className='mb-4 flex justify-end'>
 					<Button

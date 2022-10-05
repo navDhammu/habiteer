@@ -1,18 +1,12 @@
 import { increment, onSnapshot, writeBatch } from '@firebase/firestore';
-import {
-	IconChevronLeft,
-	IconChevronRight,
-	IconChevronsRight,
-	IconZoomExclamation,
-} from '@tabler/icons';
-import Button from 'components/ui/Button';
-import IconButton from 'components/ui/IconButton';
+import { IconZoomExclamation } from '@tabler/icons';
 import ProgressIndicator from 'components/ui/ProgressIndicator';
-import { addDays, format, isToday, isYesterday, subDays } from 'date-fns';
+import { isToday } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { db } from 'services';
 import { getDateDoc, getHabitDoc } from 'services/firestoreReferences';
 import { toStringPercent } from 'utils/misc';
+import Heading from '../../components/ui/Heading';
 import HabitTodoList from './HabitTodoList';
 
 export default function Today() {
@@ -56,10 +50,8 @@ export default function Today() {
 
 	return (
 		<main className='p-8 md:mx-auto md:w-3/4'>
-			<h1 className='mb-6 text-2xl font-bold text-slate-800'>
-				Habit Checklist
-			</h1>
-			<section className={`flex flex-col gap-4`}>
+			<Heading size='lg'>Today</Heading>
+			<section className='flex flex-col gap-4'>
 				<header className='w-full'>
 					<div className='flex justify-between'>
 						<h2 className='text-xl text-slate-800'>
