@@ -1,7 +1,7 @@
 <img width="300" align="center" src="https://user-images.githubusercontent.com/73000930/183962956-bf63bc83-87f2-4759-a569-401e00d67de6.png" />
 
 ## About
-Habiterr is a web app intended to help users build good habits through habit organization, reminders, and progress tracking. 
+Habiterr is a web app intended to help users build good habits through habit organization and progress tracking.
 
 ## Project Status
 This project is in progress
@@ -33,22 +33,28 @@ Presently, the app is at a stage where users can:
 1. Register for a free account
 2. Create habits and specify a repeat schedule
 3. Mark habits as complete or incomplete
-4. Edit, archive, or delete habits
+4. Edit existing habits
+
+#### Working On
+I am working on the following:
+- Organize habits into different areas
+- Progress charts for individual habits as well as areas
+- Overall snapshot on dashboard
 
 #### Planned Features
-- Daily, weekly, and monthly progress data with charts
-- Reminders
-- Ability to send invites and create habit groups with others
+These are features I have planned to be added in the future
+- Ability to send friend invites
+- Create habits groups with others
+- Habit Reminders
 
 ## Areas to improve
 The following are areas in which I am actively learning and working to implement in this project
-- Testing (with jest and react testing library)
-- Better mobile user experience
+- Testing (unit, integration, and end to end)
 - Accessibility 
 
 ## Code Examples
-- Using the context api to control modals: [view code](src/components/Modals/GlobalModal.jsx)
-- Creating and editing habit form: [view code](src/components/HabitForm/index.jsx)
+- Using the context api to control modals: [view code](src/components/ui/GlobalModal.jsx)
+- Creating and editing habit form: [view code](src/components/HabitCreateEditForm.jsx)
 - useForm custom hook: [view code](src/hooks/useForm.js)
 - useOnOutsideClick custom hook: [view code](src/hooks/useOnOutsideClick.js)
 
