@@ -5,7 +5,7 @@ import { ModalContext, MODAL_TYPES } from 'components/ui/GlobalModal';
 import { useContext } from 'react';
 import { useOutletContext } from 'react-router';
 
-export default function Habits() {
+export default function AllHabits() {
 	const { handleShowModal } = useContext(ModalContext);
 	const habits = useOutletContext();
 	return (

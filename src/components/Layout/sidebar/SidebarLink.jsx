@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
 
-export default function SidebarLink({ to, Icon, label }) {
+export default function SidebarLink({ to, Icon, text }) {
 	return (
 		<NavLink
 			className={({ isActive }) =>
@@ -12,7 +12,7 @@ export default function SidebarLink({ to, Icon, label }) {
 			}
 			to={to}>
 			<Icon size='1.5em' />
-			{label}
+			{text}
 		</NavLink>
 	);
 }

@@ -1,40 +1,16 @@
 import { onSnapshot } from '@firebase/firestore';
 import {
-	IconCalendar,
-	IconChecklist,
+	IconCalendarEvent,
 	IconFolder,
 	IconLayoutDashboard,
+	IconList,
 	IconPlus,
 } from '@tabler/icons';
 import clsx from 'clsx';
-import Checklist from 'pages/checklist';
-import Dashboard from 'pages/dashboard';
-import Allhabits from 'pages/habits';
 import { useEffect, useState } from 'react';
 import { createCategory } from 'services/dbOperations';
 import { getUserDoc } from 'services/firestoreReferences';
 import SidebarLink from './SidebarLink';
-
-export const links = [
-	{
-		label: 'dashboard',
-		to: '/dashboard',
-		Icon: IconLayoutDashboard,
-		Component: Dashboard,
-	},
-	{
-		label: ['today', 1],
-		to: '/checklist',
-		Icon: IconChecklist,
-		Component: Checklist,
-	},
-	{
-		label: 'All Habits',
-		to: '/habits',
-		Icon: IconCalendar,
-		Component: Allhabits,
-	},
-];
 
 export default function Sidebar({ className, isMobile, habits }) {
 	const [categoryValue, setCategoryValue] = useState('');
@@ -65,11 +41,27 @@ export default function Sidebar({ className, isMobile, habits }) {
 			<h1 className='text-2xl text-white'>Habiterr</h1>
 			<nav className='my-8 flex-1 text-indigo-300'>
 				<ul className='flex flex-col'>
-					{links.map(({ to, Icon, label }) => (
-						<li key={to}>
-							<SidebarLink to={to} Icon={Icon} label={label} />
-						</li>
-					))}
+					<li>
+						<SidebarLink
+							to='/dashboard'
+							Icon={IconLayoutDashboard}
+							text='dashboard'
+						/>
+					</li>
+					<li>
+						<SidebarLink
+							to='/today'
+							Icon={IconCalendarEvent}
+							text='today'
+						/>
+					</li>
+					<li>
+						<SidebarLink
+							to='/all-habits'
+							Icon={IconList}
+							text='All Habits'
+						/>
+					</li>
 				</ul>
 				<h3 className='mt-4 text-xs uppercase'>Categories</h3>
 				<ul className='flex flex-col'>
@@ -77,7 +69,7 @@ export default function Sidebar({ className, isMobile, habits }) {
 						<li key={category.id}>
 							<SidebarLink
 								to={`/${category.name}`}
-								label={category.name}
+								text={category.name}
 								Icon={IconFolder}
 							/>
 						</li>

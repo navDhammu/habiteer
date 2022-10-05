@@ -15,7 +15,7 @@ import { getDateDoc, getHabitDoc } from 'services/firestoreReferences';
 import { toStringPercent } from 'utils/misc';
 import HabitTodoList from './HabitTodoList';
 
-export default function Checklist() {
+export default function Today() {
 	const [date, setDate] = useState(new Date());
 	const [habitTodos, setHabitTodos] = useState([]);
 
