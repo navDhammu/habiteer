@@ -23,7 +23,7 @@ export default function Header({ showMobileSidebar, onMenuClick, className }) {
 	};
 	return (
 		<header
-			className={`sticky top-0 flex h-16 items-center justify-between bg-white px-8 shadow-md ${className}`}>
+			className={`sticky top-0 z-50 flex h-16 items-center justify-between bg-white px-8 shadow-md ${className}`}>
 			<IconButton
 				Icon={showMobileSidebar ? IconX : IconMenu2}
 				size='lg'

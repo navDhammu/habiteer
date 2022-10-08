@@ -3,6 +3,7 @@ import {
 	arrayUnion,
 	deleteField,
 	getDocs,
+	increment,
 	orderBy,
 	query,
 	setDoc,
@@ -64,7 +65,6 @@ export async function deleteHabit(habitId) {
 	batch.delete(habitDoc);
 	return batch.commit();
 }
-//archive habit
 
 export function createCategory(name) {
 	return setDoc(
@@ -72,4 +72,13 @@ export function createCategory(name) {
 		{ categories: arrayUnion({ id: nanoid(), name }) },
 		{ merge: true }
 	);
+}
+
+export function markHabitComplete(isComplete, habitId, date) {
+	const batch = writeBatch(db);
+	batch.update(getDateDoc(date), { [`${habitId}.isComplete`]: isComplete });
+	batch.update(getHabitDoc(habitId), {
+		completions: increment(isComplete ? 1 : -1),
+	});
+	return batch.commit();
 }

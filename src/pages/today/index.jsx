@@ -1,26 +1,25 @@
-import { increment, onSnapshot, writeBatch } from '@firebase/firestore';
+import { onSnapshot } from '@firebase/firestore';
 import { IconZoomExclamation } from '@tabler/icons';
 import ProgressIndicator from 'components/ui/ProgressIndicator';
-import { isToday } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { db } from 'services';
-import { getDateDoc, getHabitDoc } from 'services/firestoreReferences';
+import { useOutletContext } from 'react-router';
+import { getDateDoc } from 'services/firestoreReferences';
 import { toStringPercent } from 'utils/misc';
 import Heading from '../../components/ui/Heading';
+import HabitDetails from './HabitDetails';
 import HabitTodoList from './HabitTodoList';
 
 export default function Today() {
-	const [date, setDate] = useState(new Date());
 	const [habitTodos, setHabitTodos] = useState([]);
+	const [selectedHabitId, setSelectedHabitId] = useState(null);
+	const habits = useOutletContext();
 
-	const isDateToday = isToday(date);
-	const habitsComplete = habitTodos.filter((habit) => habit.isComplete);
-
-	const dateDoc = getDateDoc(date);
+	const completedHabits = habitTodos.filter((habit) => habit.isComplete);
+	const selectedHabit = habits.find((habit) => habit.id === selectedHabitId);
 
 	useEffect(() => {
 		const unsub = onSnapshot(
-			getDateDoc(date),
+			getDateDoc(new Date()),
 			(doc) => {
 				if (doc.exists()) {
 					setHabitTodos(
@@ -36,84 +35,44 @@ export default function Today() {
 			(error) => console.log(error)
 		);
 		return unsub;
-	}, [date]);
-
-	const handleCheckboxToggle = (id) => (e) => {
-		let isComplete = e.target.checked;
-		const habitDoc = getHabitDoc(id);
-		const batch = writeBatch(db);
-
-		batch.update(dateDoc, { [`${id}.isComplete`]: isComplete });
-		batch.update(habitDoc, { completions: increment(isComplete ? 1 : -1) });
-		batch.commit();
-	};
+	}, []);
 
 	return (
-		<main className='p-8 md:mx-auto md:w-3/4'>
+		<main className='relative p-8 md:p-6'>
 			<Heading size='lg'>Today</Heading>
-			<section className='flex flex-col gap-4'>
-				<header className='w-full'>
-					<div className='flex justify-between'>
-						<h2 className='text-xl text-slate-800'>
-							{isDateToday
-								? 'Today'
-								: isYesterday(date)
-								? 'Yesterday'
-								: format(date, 'MMM dd, yyyy')}
-						</h2>
-						<div className='space-x-2'>
-							<IconButton
-								variant='outline'
-								size='md'
-								Icon={IconChevronLeft}
-								onClick={() => setDate(subDays(date, 1))}
-							/>
-							<IconButton
-								variant='outline'
-								size='md'
-								disabled={isDateToday}
-								Icon={IconChevronRight}
-								onClick={() => setDate(addDays(date, 1))}
-							/>
-							<Button
-								variant='text'
-								size='sm'
-								IconRight={IconChevronsRight}
-								invisible={isDateToday}
-								onClick={() => setDate(new Date())}>
-								Today
-							</Button>
-						</div>
-					</div>
-					<div>
+			<div className='flex gap-4 divide-x'>
+				<section className='flex basis-full flex-col gap-4 sm:basis-1/2'>
+					<header className='my-4 w-full'>
 						<ProgressIndicator
 							percent={toStringPercent(
-								habitsComplete.length / habitTodos.length
+								completedHabits.length / habitTodos.length
 							)}
 						/>
-
 						<span className='text-sm italic'>
-							{habitsComplete.length} / {habitTodos.length} habits
-							complete
+							{completedHabits.length} / {habitTodos.length}{' '}
+							habits complete
 						</span>
-					</div>
-				</header>
-				{habitTodos.length > 0 ? (
-					<HabitTodoList
-						habits={habitTodos}
-						heading='habit to dos'
-						onCheckboxToggle={handleCheckboxToggle}
-					/>
-				) : (
-					<div className='mt-8 flex flex-col items-center gap-4'>
-						<IconZoomExclamation
-							className='rounded-full bg-slate-200 p-2 text-slate-500'
-							size='48px'
+					</header>
+					{habitTodos.length > 0 ? (
+						<HabitTodoList
+							habitTodos={habitTodos}
+							onTodoClick={(id) => setSelectedHabitId(id)}
 						/>
-						<p>No habits found for this day</p>
-					</div>
-				)}
-			</section>
+					) : (
+						<div className='mt-8 flex flex-col items-center gap-4'>
+							<IconZoomExclamation
+								className='rounded-full bg-slate-200 p-2 text-slate-500'
+								size='48px'
+							/>
+							<p>No habits found for this day</p>
+						</div>
+					)}
+				</section>
+				<HabitDetails
+					habit={selectedHabit}
+					onBackClick={() => setSelectedHabitId(null)}
+				/>
+			</div>
 		</main>
 	);
 }
