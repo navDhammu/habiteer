@@ -10,7 +10,7 @@ const SIZES = {
 	},
 	sm: {
 		tag: 'h3',
-		styles: 'text-3xl',
+		styles: 'text-base',
 	},
 };
 export default function Heading({ size = 'md', children }) {
