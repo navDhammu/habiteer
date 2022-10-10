@@ -1,6 +1,7 @@
-import { IconArrowLeft, IconPointer } from '@tabler/icons';
+import { IconArrowLeft, IconListDetails, IconPointer } from '@tabler/icons';
 import Heading from 'components/ui/Heading';
 import useWindowWidth from '../../hooks/useWindowWidth';
+import EmptyState from '../EmptyState';
 import IconButton from '../ui/IconButton';
 
 export default function HabitDetails({ habit, onBackClick }) {
@@ -27,7 +28,12 @@ export default function HabitDetails({ habit, onBackClick }) {
 					)}
 					<Heading>{habit.habitName}</Heading>
 					<p className='text-gray-500'>{habit.habitDescription}</p>
-					<div>Additional habit details go here</div>
+					<div className='flex h-full items-center justify-center'>
+						<EmptyState
+							icon={<IconListDetails />}
+							text='Additional habit details go here'
+						/>
+					</div>
 				</>
 			)}
 		</section>
