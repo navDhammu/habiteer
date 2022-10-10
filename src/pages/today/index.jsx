@@ -1,13 +1,12 @@
 import { onSnapshot } from '@firebase/firestore';
-import { IconZoomExclamation } from '@tabler/icons';
+import HabitDetails from 'components/habits/HabitDetails';
+import HabitTodoList from 'components/habits/HabitTodoList';
+import Heading from 'components/ui/Heading';
 import ProgressIndicator from 'components/ui/ProgressIndicator';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
 import { getDateDoc } from 'services/firestoreReferences';
 import { toStringPercent } from 'utils/misc';
-import Heading from '../../components/ui/Heading';
-import HabitDetails from './HabitDetails';
-import HabitTodoList from './HabitTodoList';
 
 export default function Today() {
 	const [habitTodos, setHabitTodos] = useState([]);
@@ -15,7 +14,10 @@ export default function Today() {
 	const habits = useOutletContext();
 
 	const completedHabits = habitTodos.filter((habit) => habit.isComplete);
+	const incompleteHabits = habitTodos.filter((habit) => !habit.isComplete);
 	const selectedHabit = habits.find((habit) => habit.id === selectedHabitId);
+
+	const handleHabitDetailsClick = (id) => setSelectedHabitId(id);
 
 	useEffect(() => {
 		const unsub = onSnapshot(
@@ -40,6 +42,9 @@ export default function Today() {
 	return (
 		<main className='relative p-8 md:p-6'>
 			<Heading size='lg'>Today</Heading>
+			<span className='text-sm text-gray-500'>
+				{new Date().toDateString()}
+			</span>
 			<div className='flex gap-4 divide-x'>
 				<section className='flex basis-full flex-col gap-4 sm:basis-1/2'>
 					<header className='my-4 w-full'>
@@ -53,20 +58,16 @@ export default function Today() {
 							habits complete
 						</span>
 					</header>
-					{habitTodos.length > 0 ? (
-						<HabitTodoList
-							habitTodos={habitTodos}
-							onTodoClick={(id) => setSelectedHabitId(id)}
-						/>
-					) : (
-						<div className='mt-8 flex flex-col items-center gap-4'>
-							<IconZoomExclamation
-								className='rounded-full bg-slate-200 p-2 text-slate-500'
-								size='48px'
-							/>
-							<p>No habits found for this day</p>
-						</div>
-					)}
+					<Heading size='sm'>To do</Heading>
+					<HabitTodoList
+						habitTodos={incompleteHabits}
+						onDetailsClick={handleHabitDetailsClick}
+					/>
+					<Heading size='sm'>Completed</Heading>
+					<HabitTodoList
+						habitTodos={completedHabits}
+						onDetailsClick={handleHabitDetailsClick}
+					/>
 				</section>
 				<HabitDetails
 					habit={selectedHabit}

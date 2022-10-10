@@ -10,13 +10,13 @@ const SIZES = {
 	},
 	sm: {
 		tag: 'h3',
-		styles: 'text-base',
+		styles: 'text-base font-semibold',
 	},
 };
-export default function Heading({ size = 'md', children }) {
+export default function Heading({ size = 'md', children, className }) {
 	const Tag = SIZES[size].tag;
 	return (
-		<Tag className={clsx('text-gray-700', SIZES[size].styles)}>
+		<Tag className={clsx('text-gray-700', SIZES[size].styles, className)}>
 			{children}
 		</Tag>
 	);

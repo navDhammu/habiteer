@@ -1,7 +1,7 @@
 import { IconArrowLeft, IconPointer } from '@tabler/icons';
 import Heading from 'components/ui/Heading';
-import IconButton from '../../components/ui/IconButton';
 import useWindowWidth from '../../hooks/useWindowWidth';
+import IconButton from '../ui/IconButton';
 
 export default function HabitDetails({ habit, onBackClick }) {
 	const windowWidth = useWindowWidth();

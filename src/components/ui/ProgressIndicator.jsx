@@ -5,7 +5,7 @@ export default function ProgressIndicator({ percent }) {
 				style={{
 					width: percent,
 				}}
-				className={`absolute h-full rounded-full bg-indigo-300 transition-all`}></div>
+				className={`absolute h-full rounded-full bg-emerald-300 transition-all`}></div>
 		</div>
 	);
 }
