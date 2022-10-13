@@ -1,26 +1,18 @@
-import { signOut } from '@firebase/auth';
 import {
 	IconBellMinus,
-	IconChevronDown,
 	IconHelp,
+	IconLogout,
 	IconMenu2,
 	IconSearch,
+	IconSettings,
 	IconUser,
 	IconX,
 } from '@tabler/icons';
-import { useState } from 'react';
-import { auth } from 'services';
-import Button from '../ui/Button';
+import { NavLink } from 'react-router-dom';
 import IconButton from '../ui/IconButton';
-import PopupMenu from '../ui/PopupMenu';
+import Popover from '../ui/Test';
 
 export default function Header({ showMobileSidebar, onMenuClick, className }) {
-	const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-
-	const handleOpenUserMenu = (e) => {
-		e.stopPropagation();
-		setIsUserMenuOpen(true);
-	};
 	return (
 		<header
 			className={`sticky top-0 z-50 flex h-16 items-center justify-between bg-white px-8 shadow-md ${className}`}>
@@ -35,23 +27,23 @@ export default function Header({ showMobileSidebar, onMenuClick, className }) {
 				<IconButton size='md' Icon={IconBellMinus} variant='filled' />
 				<IconButton size='md' Icon={IconHelp} variant='filled' />
 			</div>
-			{/* user */}
-			<Button
-				IconLeft={IconUser}
-				IconRight={IconChevronDown}
-				onClick={handleOpenUserMenu}>
-				<span className='hidden text-xs font-semibold uppercase text-slate-600 md:inline'>
-					{auth.currentUser.displayName || auth.currentUser.email}
-				</span>
-				<PopupMenu
-					isOpen={isUserMenuOpen}
-					onClose={() => setIsUserMenuOpen(false)}>
-					<Button size='sm'>profile</Button>
-					<Button size='sm' onClick={() => signOut(auth)}>
-						logout
-					</Button>
-				</PopupMenu>
-			</Button>
+			<Popover>
+				<Popover.Button>
+					<IconButton Icon={IconUser} />
+				</Popover.Button>
+				<Popover.Content>
+					<ul className='[&>*:hover]:bg-stone-100 [&>*]:p-2 [&>*]:cursor-pointer flex flex-col text-sm'>
+						<li className='flex gap-2 text-gray-600'>
+							<IconSettings />
+							<NavLink to='#'>Settings</NavLink>
+						</li>
+						<li className='flex gap-2 text-gray-600'>
+							<IconLogout />
+							<button>Logout</button>
+						</li>
+					</ul>
+				</Popover.Content>
+			</Popover>
 		</header>
 	);
 }
