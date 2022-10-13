@@ -10,7 +10,7 @@ import {
 } from '@tabler/icons';
 import { NavLink } from 'react-router-dom';
 import IconButton from '../ui/IconButton';
-import Popover from '../ui/Test';
+import Popover from '../ui/Popover';
 
 export default function Header({ showMobileSidebar, onMenuClick, className }) {
 	return (

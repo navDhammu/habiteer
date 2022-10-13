@@ -1,6 +1,12 @@
 import { useId } from 'react';
 
-export default function Checkbox({ label, checked, onChange, className = '' }) {
+export default function Checkbox({
+	label,
+	checked,
+	onChange,
+	className = '',
+	...rest
+}) {
 	const id = useId();
 	return (
 		<div className={`relative flex items-center gap-3 ${className}`}>
@@ -10,6 +16,7 @@ export default function Checkbox({ label, checked, onChange, className = '' }) {
 				id={id}
 				checked={checked}
 				onChange={onChange}
+				{...rest}
 			/>
 			<label htmlFor={id} className='cursor-pointer'>
 				{label}

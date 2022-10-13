@@ -1,5 +1,5 @@
+import useOnOutsideClick from 'hooks/useOnOutsideClick';
 import { cloneElement, createContext, useContext, useState } from 'react';
-import useOnOutsideClick from '../../hooks/useOnOutsideClick';
 
 const PopoverContext = createContext();
 

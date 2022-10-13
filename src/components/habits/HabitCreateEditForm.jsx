@@ -135,8 +135,8 @@ export default function HabitCreateEditForm({
 						{formData.repeatDays.map(({ id, name, checked }) => (
 							<Checkbox
 								key={id}
-								label={name}
 								name={name}
+								label={name}
 								checked={checked}
 								onChange={handleChange('repeatDays')}
 							/>
