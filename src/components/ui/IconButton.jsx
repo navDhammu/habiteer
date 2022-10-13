@@ -34,10 +34,7 @@ export default function IconButton({
 		<button
 			type='button'
 			disabled={disabled}
-			onClick={(e) => {
-				e.stopPropagation();
-				onClick();
-			}}
+			onClick={onClick}
 			className={clsx(
 				'transition-all disabled:pointer-events-none',
 				styles.variants[variant],

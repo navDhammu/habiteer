@@ -1,11 +1,11 @@
-import { IconArchive, IconPencil, IconTrash } from '@tabler/icons';
-import Button from 'components/ui/Button';
+import { IconDotsVertical } from '@tabler/icons';
 import { eachDayOfInterval, getDay, isFuture, parse } from 'date-fns';
 import { useContext } from 'react';
 import { deleteHabit } from 'services/dbOperations';
-import { toStringPercent } from 'utils/misc';
+import Card from '../ui/Card';
 import { ModalContext, MODAL_TYPES } from '../ui/GlobalModal';
-import ProgressIndicator from '../ui/ProgressIndicator';
+import IconButton from '../ui/IconButton';
+import Popover from '../ui/Popover';
 
 function getHabitCompletionRate({
 	trackingStartDate,
@@ -51,7 +51,7 @@ export default function HabitCard(props) {
 		});
 
 	return (
-		<article className='py-4 px-6'>
+		<Card as='article' className='py-4 px-6'>
 			<header className='flex items-center'>
 				<div className='flex-1'>
 					<h2>
@@ -64,41 +64,35 @@ export default function HabitCard(props) {
 						{props.habitDescription}
 					</h3>
 				</div>
-				<Button
-					className='mr-2'
-					variant='tertiary'
-					size='sm'
-					onClick={handleEditClick}
-					IconLeft={IconPencil}>
-					Edit
-				</Button>
-
-				<Button
-					className='mr-2'
-					variant='tertiary'
-					size='sm'
-					onClick={handleArchiveClick}
-					IconLeft={IconArchive}>
-					Archive
-				</Button>
-				<Button
-					className='mr-2'
-					variant='tertiary'
-					size='sm'
-					onClick={handleDeleteClick}
-					IconLeft={IconTrash}>
-					Delete
-				</Button>
+				<Popover>
+					<Popover.Button>
+						<IconButton
+							className='mr-2'
+							size='sm'
+							// onClick={handleDeleteClick}
+							Icon={IconDotsVertical}
+						/>
+					</Popover.Button>
+					<Popover.Content>
+						<ul className='[&>*:hover]:bg-stone-100 [&>*]:cursor-pointer flex flex-col text-sm'>
+							<li className=''>
+								<button
+									className='w-full p-2 text-left'
+									onClick={handleEditClick}>
+									Edit
+								</button>
+							</li>
+							<li className=''>
+								<button
+									className='w-full p-2 text-left'
+									onClick={props.onDetailsClick}>
+									Details
+								</button>
+							</li>
+						</ul>
+					</Popover.Content>
+				</Popover>
 			</header>
-			<section className='my-4'>
-				<div className='flex justify-between'>
-					<h3 className='text-sm capitalize text-gray-500'>
-						completion rate
-					</h3>
-					<span>{Math.round(completionRate * 100)} %</span>
-				</div>
-				<ProgressIndicator percent={toStringPercent(completionRate)} />
-			</section>
-		</article>
+		</Card>
 	);
 }

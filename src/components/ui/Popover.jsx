@@ -1,34 +1,59 @@
-import useOnOutsideClick from 'hooks/useOnOutsideClick';
 import { cloneElement, createContext, useContext, useState } from 'react';
+import { createPortal } from 'react-dom';
+import useOnOutsideClick from '../../hooks/useOnOutsideClick';
 
 const PopoverContext = createContext();
 
 export default function Popover({ children }) {
-	const [isOpen, setIsOpen] = useState(false);
+	const [coordinates, setCoordinates] = useState(null);
+
+	const closePopver = () => setCoordinates(null);
+
+	const handleClick = (e) => {
+		e.stopPropagation();
+		if (coordinates instanceof DOMRectReadOnly) {
+			closePopver();
+		} else {
+			setCoordinates(e.target.getBoundingClientRect());
+		}
+	};
 
 	return (
 		<PopoverContext.Provider
-			value={{ isOpen, toggle: () => setIsOpen(!isOpen) }}>
+			value={{
+				coordinates,
+				onClick: handleClick,
+				closePopver,
+			}}>
 			<div className='relative'>{children}</div>
 		</PopoverContext.Provider>
 	);
 }
 
-function Button({ children }) {
-	const { toggle } = useContext(PopoverContext);
-	return cloneElement(children, { onClick: toggle });
+function Button({ children: child }) {
+	const { onClick } = useContext(PopoverContext);
+	return cloneElement(child, { onClick });
 }
 
 function Content({ children, as: Container = 'div', className = '' }) {
-	const { isOpen, toggle } = useContext(PopoverContext);
-	const cbRef = useOnOutsideClick(toggle);
+	const { coordinates, closePopver } = useContext(PopoverContext);
+	const cbRef = useOnOutsideClick(closePopver);
+	console.log(coordinates);
+	const showPopover = coordinates instanceof DOMRectReadOnly;
 	return (
-		isOpen && (
+		showPopover &&
+		createPortal(
 			<Container
 				ref={cbRef}
-				className={`absolute right-0 top-[150%] w-40 rounded bg-white shadow-lg ${className}`}>
+				style={{
+					position: 'absolute',
+					left: coordinates.right,
+					top: coordinates.bottom + 16,
+				}}
+				className={`w-40 -translate-x-full transform rounded border bg-white shadow ${className}`}>
 				{children}
-			</Container>
+			</Container>,
+			document.getElementById('root')
 		)
 	);
 }
