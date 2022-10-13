@@ -1,6 +1,11 @@
-import { cloneElement, createContext, useContext, useState } from 'react';
+import {
+	cloneElement,
+	createContext,
+	useContext,
+	useEffect,
+	useState,
+} from 'react';
 import { createPortal } from 'react-dom';
-import useOnOutsideClick from '../../hooks/useOnOutsideClick';
 
 const PopoverContext = createContext();
 
@@ -37,14 +42,17 @@ function Button({ children: child }) {
 
 function Content({ children, as: Container = 'div', className = '' }) {
 	const { coordinates, closePopver } = useContext(PopoverContext);
-	const cbRef = useOnOutsideClick(closePopver);
-	console.log(coordinates);
 	const showPopover = coordinates instanceof DOMRectReadOnly;
+
+	useEffect(() => {
+		document.addEventListener('click', closePopver);
+		return () => document.removeEventListener('click', closePopver);
+	}, []);
+
 	return (
 		showPopover &&
 		createPortal(
 			<Container
-				ref={cbRef}
 				style={{
 					position: 'absolute',
 					left: coordinates.right,
