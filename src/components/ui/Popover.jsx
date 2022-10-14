@@ -42,15 +42,18 @@ function Button({ children: child }) {
 
 function Content({ children, as: Container = 'div', className = '' }) {
 	const { coordinates, closePopver } = useContext(PopoverContext);
-	const showPopover = coordinates instanceof DOMRectReadOnly;
+	const isPopoverOpen = coordinates instanceof DOMRectReadOnly;
 
 	useEffect(() => {
-		document.addEventListener('click', closePopver);
-		return () => document.removeEventListener('click', closePopver);
-	}, []);
+		if (isPopoverOpen) {
+			const root = document.getElementById('root');
+			root.addEventListener('click', closePopver);
+			return () => root.removeEventListener('click', closePopver);
+		}
+	}, [isPopoverOpen]);
 
 	return (
-		showPopover &&
+		isPopoverOpen &&
 		createPortal(
 			<Container
 				style={{
