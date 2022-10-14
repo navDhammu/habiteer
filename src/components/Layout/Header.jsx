@@ -6,7 +6,7 @@ import {
 	IconSearch,
 	IconSettings,
 	IconUser,
-	IconX,
+	IconX
 } from '@tabler/icons';
 import { NavLink } from 'react-router-dom';
 import IconButton from '../ui/IconButton';
@@ -15,7 +15,7 @@ import Popover from '../ui/Popover';
 export default function Header({ showMobileSidebar, onMenuClick, className }) {
 	return (
 		<header
-			className={`sticky top-0 z-50 flex h-16 items-center justify-between bg-white px-8 shadow-md ${className}`}>
+			className={`sticky top-0 z-10 flex h-16 items-center justify-between bg-white px-8 shadow-md ${className}`}>
 			<IconButton
 				Icon={showMobileSidebar ? IconX : IconMenu2}
 				size='lg'

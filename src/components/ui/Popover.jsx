@@ -3,7 +3,7 @@ import {
 	createContext,
 	useContext,
 	useEffect,
-	useState,
+	useState
 } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -61,7 +61,7 @@ function Content({ children, as: Container = 'div', className = '' }) {
 					left: coordinates.right,
 					top: coordinates.bottom + 16,
 				}}
-				className={`w-40 -translate-x-full transform rounded border bg-white shadow ${className}`}>
+				className={`w-40 -translate-x-full z-40 transform rounded border bg-white shadow ${className}`}>
 				{children}
 			</Container>,
 			document.getElementById('root')
