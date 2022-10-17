@@ -11,7 +11,7 @@ const styles = {
 		lg: 'p-3',
 	},
 	iconSizes: {
-		sm: '14px',
+		sm: '16px',
 		md: '20px',
 		lg: '26px',
 	},

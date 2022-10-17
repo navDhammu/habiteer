@@ -1,10 +1,9 @@
-import { IconDotsVertical } from '@tabler/icons';
+import { IconArrowRight, IconEdit, IconTag, IconTrash } from '@tabler/icons';
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import Card from '../ui/Card';
 import { ModalContext, MODAL_TYPES } from '../ui/GlobalModal';
 import IconButton from '../ui/IconButton';
-import Popover from '../ui/Popover';
 
 // function getHabitCompletionRate({
 // 	trackingStartDate,
@@ -32,42 +31,29 @@ export default function HabitCard(props) {
 		});
 
 	return (
-		<Card as='article' className='py-4 px-6'>
-			<header className='flex items-center'>
-				<div className='flex-1'>
-					<h2>
-						<strong className='text-lg capitalize text-slate-700'>
-							{props.habitName}
-						</strong>
-					</h2>
-					<h3 className='text-sm text-gray-400'>
-						{props.habitDescription}
-					</h3>
-				</div>
-				<Popover>
-					<Popover.Button>
-						<IconButton
-							className='mr-2'
-							size='sm'
-							Icon={IconDotsVertical}
-						/>
-					</Popover.Button>
-					<Popover.Content>
-						<ul className='[&>*:hover]:bg-stone-100 [&>*]:cursor-pointer flex flex-col text-sm'>
-							<li className=''>
-								<button
-									className='w-full p-2 text-left'
-									onClick={handleEditClick}>
-									Edit
-								</button>
-							</li>
-							<li className='w-full p-2 text-left'>
-								<NavLink className='block' to={`/all-habits/${props.id}`}>details</NavLink>
-							</li>
-						</ul>
-					</Popover.Content>
-				</Popover>
+		<Card as='article' className='py-3 px-5'>
+			<header>
+				<h1 className='first-letter:capitalize font-semibold text-slate-700'>
+					{props.habitName}
+				</h1>
+
 			</header>
+			<span className='text-sm text-gray-400 flex items-center gap-1'>
+				<IconTag className='w-4'/>
+				{props.habitCategory}
+			</span>
+			<i className='text-sm first-letter:capitalize'>{props.habitDescription}</i>
+			<hr className='my-2'/>
+			<footer className='flex items-center justify-between'>
+				<div>
+					<IconButton size='sm' Icon={IconEdit} onClick={handleEditClick}/>
+					<IconButton size='sm' Icon={IconTrash}/>
+				</div>
+				<NavLink to={`/all-habits/${props.id}`} className='text-indigo-500 text-sm flex items-center font'>
+					Details
+					<IconArrowRight className='w-4 ml-2'/>
+				</NavLink>
+			</footer>
 		</Card>
 	);
 }
