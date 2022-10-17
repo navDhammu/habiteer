@@ -1,3 +1,4 @@
+import HabitDetails from 'components/habits/HabitDetails';
 import AppLayout from 'components/layout/AppLayout';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
@@ -28,9 +29,12 @@ function App() {
 							<Navigate to='/login' />
 						)
 					}>
+					<Route index element={<Dashboard />} />
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='today' element={<Today />} />
-					<Route path='all-habits' element={<AllHabits />} />
+					<Route path='all-habits' element={<AllHabits />}>
+						<Route path=':habitId' element={<HabitDetails />} />
+					</Route>
 				</Route>
 				<Route path='/login' element={<Login user={user} />} />
 				<Route path='*' element={<PageNotFound />} />

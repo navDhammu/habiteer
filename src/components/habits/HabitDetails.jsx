@@ -1,36 +1,33 @@
 import { IconArrowLeft, IconListDetails, IconPointer } from '@tabler/icons';
+import clsx from 'clsx';
 import Heading from 'components/ui/Heading';
-import useWindowWidth from '../../hooks/useWindowWidth';
+import IconButton from 'components/ui/IconButton';
+import { useLocation, useNavigate } from 'react-router-dom';
 import EmptyState from '../EmptyState';
-import IconButton from '../ui/IconButton';
 
-export default function HabitDetails({ habit, onBackClick }) {
-	const windowWidth = useWindowWidth();
-
-	const isMobile = windowWidth < 640;
-
-	if (isMobile && !habit) return null;
+export default function HabitDetails({ habit }) {
+	const navigate = useNavigate()
+	const {pathname} = useLocation()
 
 	return (
-		<section className='absolute inset-0 bg-slate-100 p-4 sm:relative sm:h-auto sm:w-auto sm:grow'>
+		<section className={clsx(!habit && 'hidden', 'md:block bg-slate-100 p-4 md:relative md:h-auto md:w-auto md:grow')}>
 			{!habit ? (
 				<div className='abs-center text-center'>
 					<IconPointer className='mx-auto' />
-					Click on a habit to see its details
+					Click habit details to see more information
 				</div>
 			) : (
-				<>
-					{isMobile && (
-						<IconButton
-							onClick={onBackClick}
-							Icon={IconArrowLeft}
-						/>
-					)}
+				<>	
+					<IconButton
+						className='md:hidden'
+						onClick={() => navigate((pathname.slice(0, pathname.lastIndexOf('/'))))}
+						Icon={IconArrowLeft}
+					/>
 					<Heading>{habit.habitName}</Heading>
 					<p className='text-gray-500'>{habit.habitDescription}</p>
 					<div className='flex h-full items-center justify-center'>
 						<EmptyState
-							icon={<IconListDetails />}
+							icon={<IconListDetails />}	
 							text='Additional habit details go here'
 						/>
 					</div>
