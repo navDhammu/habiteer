@@ -17,7 +17,7 @@ const SIZES = {
 
 const VARIANTS = {
 	primary:
-		'bg-blue-500 text-white disabled:bg-indigo-200 hover:bg-indigo-600 active:bg-indigo-800',
+		'bg-indigo-500 text-white disabled:bg-indigo-200 hover:bg-indigo-600 active:bg-indigo-800',
 	secondary:
 		'border text-indigo-500 border-indigo-500 active:bg-indigo-200 hover:bg-white hover:text-black active:bg-indigo-500 disabled:text-gray-300 disabled:border-gray-300 disabled:bg-gray-50',
 	'secondary-danger':

@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-	background-color: rgb(241, 245, 249);
-}
 
 @layer components {
+	body {
+		@apply h-full overflow-hidden bg-slate-50 
+	}
 	.main-heading {
 		@apply mb-6 text-2xl font-bold text-slate-800;
 	}

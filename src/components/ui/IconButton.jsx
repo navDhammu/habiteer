@@ -29,6 +29,7 @@ export default function IconButton({
 	size = 'md',
 	onClick,
 	disabled,
+	...props
 }) {
 	return (
 		<button
@@ -41,9 +42,11 @@ export default function IconButton({
 				styles.shape[shape],
 				styles.sizes[size],
 				className
-			)}>
+			)}
+			{...props}
+			>
 			<Icon
-				className={clsx('text-slate-500', disabled && 'text-gray-200')}
+				className={clsx(disabled && 'text-gray-200')}
 				size={styles.iconSizes[size]}
 			/>
 		</button>

@@ -4,7 +4,7 @@ import {
 	IconFolder,
 	IconLayoutDashboard,
 	IconList,
-	IconPlus,
+	IconPlus
 } from '@tabler/icons';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ import { createCategory } from 'services/dbOperations';
 import { getUserDoc } from 'services/firestoreReferences';
 import SidebarLink from './SidebarLink';
 
-export default function Sidebar({ className, isMobile, habits }) {
+export default function Sidebar({ className = '', isMobile }) {
 	const [categoryValue, setCategoryValue] = useState('');
 	const [categories, setCategories] = useState([]);
 
@@ -29,17 +29,12 @@ export default function Sidebar({ className, isMobile, habits }) {
 		}
 	};
 
-	return (
-		<aside
-			className={clsx(
-				'top-0 left-0 z-50 h-screen flex-col bg-indigo-800 p-4 shadow-md transition-all',
-				isMobile
-					? 'flex w-screen'
-					: 'sticky hidden md:flex md:flex-col md:gap-4 lg:w-64',
-				className
+	return <aside
+			className={clsx('w-0 p-0 md:w-64 md:px-4 overflow-x-hidden bg-slate-100 text-black border-r transition-all overflow-y-scroll',
+							className 					
+		
 			)}>
-			<h1 className='text-2xl text-white'>Habiterr</h1>
-			<nav className='my-8 flex-1 text-indigo-300'>
+			<nav className='my-8 flex-1'>
 				<ul className='flex flex-col'>
 					<li>
 						<SidebarLink
@@ -63,7 +58,7 @@ export default function Sidebar({ className, isMobile, habits }) {
 						/>
 					</li>
 				</ul>
-				<h3 className='mt-4 text-xs uppercase'>Categories</h3>
+				<h3 className='mt-4 text-slate-600 text-xs font-semibold uppercase'>Categories</h3>
 				<ul className='flex flex-col'>
 					{categories.map((category) => (
 						<li key={category.id}>
@@ -75,18 +70,18 @@ export default function Sidebar({ className, isMobile, habits }) {
 						</li>
 					))}
 				</ul>
-				<div className='flex items-center text-sm text-gray-300 hover:bg-indigo-900'>
+				<div className='flex items-center text-sm text-gray-400'>
 					<IconPlus className='' />
 					<input
 						type='text'
-						className='bg-blue-900/10 p-2 text-white outline-none'
 						placeholder='New Category'
 						value={categoryValue}
 						onChange={(e) => setCategoryValue(e.target.value)}
 						onKeyDown={hanldeCreateCategory}
+						className='bg-slate-200 p-2 rounded-md text-slate-800 hover:bg-slate-300'
 					/>
 				</div>
 			</nav>
 		</aside>
-	);
+	
 }

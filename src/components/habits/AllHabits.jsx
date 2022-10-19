@@ -9,7 +9,7 @@ export default function AllHabits() {
     const habits = useOutletContext()
 	const { handleShowModal } = useContext(ModalContext);
 
-	return <section className=''>
+	return <section className='overflow-scroll h-full'>
 					<header className='mb-4 flex justify-end'>
 						<Button
 							variant='primary'

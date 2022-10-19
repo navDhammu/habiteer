@@ -10,7 +10,7 @@ export default function HabitDetails({ habit }) {
 	const {pathname} = useLocation()
 
 	return (
-		<section className={clsx(!habit && 'hidden', 'md:block bg-slate-100 p-4 md:relative md:h-auto md:w-auto md:grow')}>
+		<section className={clsx(!habit && 'hidden', 'md:block p-4 md:relative md:h-auto md:w-auto md:grow overflow-y-scroll')}>
 			{!habit ? (
 				<div className='abs-center text-center'>
 					<IconPointer className='mx-auto' />

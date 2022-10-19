@@ -6,7 +6,7 @@ import Heading from 'components/ui/Heading';
 export default function Today() {
 	
 	return (
-		<main className='relative p-8 md:p-6'>
+		<main className='relative p-8 md:p-6 overflow-y-scroll'>
 			<Heading size='lg'>Today</Heading>
 			<span className='text-sm text-gray-500'>
 				{new Date().toDateString()}

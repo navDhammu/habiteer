@@ -13,7 +13,7 @@ export default function HabitsWithDetailsPanel({ habitListElement }) {
 	const selectedHabit = habits.find((habit) => habit.id === habitId);
 
     if (width > BREAKPOINT) {
-        return <div className='flex gap-4 divide-x [&>*]:flex-1'>
+        return <div className='flex gap-4 h-full divide-x [&>*]:flex-1'>
                 {habitListElement}
                 <HabitDetails
                     habit={selectedHabit}
