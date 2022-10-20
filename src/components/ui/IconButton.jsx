@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 const styles = {
 	variants: {
-		filled: 'bg-slate-100 hover:bg-slate-200',
+		filled: 'bg-slate-100 hover:bg-slate-200 text-indigo-500',
 		outline: 'shadow bg-white hover:border border-slate-400',
 	},
 	sizes: {
@@ -46,7 +46,7 @@ export default function IconButton({
 			{...props}
 			>
 			<Icon
-				className={clsx(disabled && 'text-gray-200')}
+				className={clsx(disabled && 'text-gray-200'), 'text-inherit'}
 				size={styles.iconSizes[size]}
 			/>
 		</button>
