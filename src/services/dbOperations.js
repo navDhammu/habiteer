@@ -82,3 +82,4 @@ export function markHabitComplete(isComplete, habitId, date) {
 	});
 	return batch.commit();
 }
+

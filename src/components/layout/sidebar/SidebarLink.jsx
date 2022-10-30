@@ -6,7 +6,7 @@ export default function SidebarLink({ to, Icon, text }) {
 		<NavLink
 			className={({ isActive }) =>
 				clsx(
-					'flex items-center rounded-md gap-2 px-4 py-3 text-sm capitalize hover:bg-indigo-100',
+					'rounded-md` flex items-center gap-2 px-4 py-3 text-sm capitalize hover:bg-indigo-100',
 					isActive && 'bg-indigo-100 font-semibold text-indigo-600'
 				)
 			}

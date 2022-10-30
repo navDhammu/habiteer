@@ -1,10 +1,51 @@
 import { IconChecks, IconFolders, IconSun } from '@tabler/icons';
+import Card from 'components/ui/Card';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
+import {
+	CartesianGrid,
+	LineChart,
+	ResponsiveContainer,
+	Line,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from 'recharts';
 import Heading from '../../components/ui/Heading';
 import StatCard from './StatCard';
 
+import { format } from 'date-fns';
+import { getDocs, orderBy, query } from '@firebase/firestore';
+import { datesCollection } from 'services/firestoreReferences';
+
 export default function Dashboard() {
 	const habits = useOutletContext();
+	const [chartData, setChartData] = useState([]);
+	const [loadingChartData, setLoadingChartData] = useState(true);
+
+	useEffect(() => {
+		(async function getChartData() {
+			const { docs } = await getDocs(
+				query(datesCollection(), orderBy('date'))
+			);
+			const chartData = docs.map((doc) => {
+				const { date, ...rest } = doc.data();
+				const habits = Object.values(rest);
+				const completedHabits = habits.filter(
+					(habit) => habit.isComplete
+				);
+				return {
+					x: date.toDate(),
+					'Completion Rate':
+						(completedHabits.length / habits.length) * 100,
+				};
+			});
+
+			setChartData(chartData);
+			setLoadingChartData(false);
+		})();
+	}, []);
+
 	const totalCompletions = habits.reduce(
 		(prev, curr) => prev + curr.completions,
 		0
@@ -12,19 +53,8 @@ export default function Dashboard() {
 	const totalCategories = new Set(habits.map((habit) => habit.habitCategory))
 		.size;
 
-	// const totalPossibleCompletions = habits.reduce((prev, curr) => {
-	// 	const startDate = parse(
-	// 		curr.trackingStartDate,
-	// 		'yyyy-MM-dd',
-	// 		new Date()
-	// 	);
-	// 	let diff = differenceInDays(new Date(), startDate);
-	// 	if (diff === 0) diff += 1;
-	// 	return prev + diff;
-	// }, 0);
-
 	return (
-		<main className='p-4 md:p-6 lg:p-8'>
+		<main className='overflow-scroll p-4 md:p-6 lg:p-8'>
 			<Heading size='lg'>Dashboard</Heading>
 			<section className='my-8 flex max-w-2xl flex-col gap-4 sm:flex-row'>
 				<StatCard icon={IconSun} title='Habits' stat={habits.length} />
@@ -39,34 +69,36 @@ export default function Dashboard() {
 					stat={totalCategories}
 				/>
 			</section>
-			{/* <Today habits={habits} /> */}
-			{/* <section className='flex flex-col gap-4 sm:flex-row'>
-				<Card
-					className='flex-grow'
-					heading='Habits by Category'
-					variant='chart'>
-					<ResponsiveContainer width={400} height={400}>
-						<PieChart width={1000} height={600}>
-							<Pie
-								data={data01}
-								dataKey='value'
-								nameKey='name'
-								outerRadius={50}
-								fill='#8884d8'
-								label={({ name }) => name}
+			<Card className=''>
+				<h2 className='mb-2 text-lg font-semibold text-slate-700'>
+					Habit completion rate over time
+				</h2>
+				{loadingChartData ? (
+					'loading...'
+				) : (
+					<ResponsiveContainer height={300}>
+						<LineChart
+							data={chartData}
+							margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+							<CartesianGrid strokeDasharray='3 3' />
+							<XAxis
+								tickMargin={7}
+								angle={-15}
+								dataKey='x'
+								tickFormatter={(date) => format(date, 'MMM dd')}
 							/>
-						</PieChart>
+							<YAxis tickFormatter={(y) => `${y}%`} />
+							<Tooltip />
+							<Line
+								type='monotone'
+								dataKey='Completion Rate'
+								stroke='#8884d8'
+								dot={false}
+							/>
+						</LineChart>
 					</ResponsiveContainer>
-					<p>This chart is coming soon</p>
-				</Card>
-				<Card
-					className='flex-grow'
-					heading='Categories'
-					variant='chart'>
-					<IconChartPie size='100' color='rgb(165 180 252)' />
-					<p>This chart is coming soon</p>
-				</Card>
-			</section> */}
+				)}
+			</Card>
 		</main>
 	);
 }

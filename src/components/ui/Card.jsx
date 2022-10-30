@@ -8,7 +8,7 @@ export default function Card({
 }) {
 	return (
 		<Component
-			className={clsx('rounded-md p-4 drop-shadow bg-white', className)}>
+			className={clsx('rounded-md bg-white p-4 drop-shadow', className)}>
 			{children}
 		</Component>
 	);

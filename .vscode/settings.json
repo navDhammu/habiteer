@@ -11,7 +11,7 @@
 	"prettier.useEditorConfig": false,
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
-		"source.organizeImports": true
+		"source.organizeImports": false
 	},
 	"editor.tabSize": 4
 }

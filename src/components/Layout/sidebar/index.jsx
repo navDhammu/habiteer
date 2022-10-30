@@ -4,7 +4,7 @@ import {
 	IconFolder,
 	IconLayoutDashboard,
 	IconList,
-	IconPlus
+	IconPlus,
 } from '@tabler/icons';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
@@ -29,10 +29,11 @@ export default function Sidebar({ className = '', isMobile }) {
 		}
 	};
 
-	return <aside
-			className={clsx('w-0 p-0 md:w-64 md:px-4 overflow-x-hidden bg-slate-100 text-black border-r transition-all overflow-y-scroll',
-							className 					
-		
+	return (
+		<aside
+			className={clsx(
+				'w-0 overflow-x-hidden overflow-y-scroll border-r bg-slate-100 p-0 text-black transition-all md:w-64 md:px-4',
+				className
 			)}>
 			<nav className='my-8 flex-1'>
 				<ul className='flex flex-col'>
@@ -58,7 +59,9 @@ export default function Sidebar({ className = '', isMobile }) {
 						/>
 					</li>
 				</ul>
-				<h3 className='mt-4 text-slate-600 text-xs font-semibold uppercase'>Categories</h3>
+				<h3 className='mt-4 text-xs font-semibold uppercase text-slate-600'>
+					Categories
+				</h3>
 				<ul className='flex flex-col'>
 					{categories.map((category) => (
 						<li key={category.id}>
@@ -78,10 +81,10 @@ export default function Sidebar({ className = '', isMobile }) {
 						value={categoryValue}
 						onChange={(e) => setCategoryValue(e.target.value)}
 						onKeyDown={hanldeCreateCategory}
-						className='bg-slate-200 p-2 rounded-md text-slate-800 hover:bg-slate-300'
+						className='rounded-md bg-slate-200 p-2 text-slate-800 hover:bg-slate-300'
 					/>
 				</div>
 			</nav>
 		</aside>
-	
+	);
 }
