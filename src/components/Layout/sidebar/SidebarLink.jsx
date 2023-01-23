@@ -6,8 +6,10 @@ export default function SidebarLink({ to, Icon, text }) {
 		<NavLink
 			className={({ isActive }) =>
 				clsx(
-					'rounded-md` flex items-center gap-2 px-4 py-3 text-sm capitalize hover:bg-indigo-100',
-					isActive && 'bg-indigo-100 font-semibold text-indigo-600'
+					'rounded-md` flex items-center gap-2 rounded py-3 pl-4 text-sm capitalize',
+					isActive
+						? 'bg-white font-bold text-indigo-600 shadow'
+						: 'text-gray-700'
 				)
 			}
 			to={to}>

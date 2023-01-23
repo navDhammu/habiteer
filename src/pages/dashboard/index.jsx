@@ -54,7 +54,7 @@ export default function Dashboard() {
 		.size;
 
 	return (
-		<main className='overflow-scroll p-4 md:p-6 lg:p-8'>
+		<main className='overflow-scroll pl-0 pt-4 md:p-6 lg:p-8'>
 			<Heading size='lg'>Dashboard</Heading>
 			<section className='my-8 flex max-w-2xl flex-col gap-4 sm:flex-row'>
 				<StatCard icon={IconSun} title='Habits' stat={habits.length} />

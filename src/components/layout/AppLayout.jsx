@@ -59,14 +59,12 @@ export default function AppLayout({ user }) {
 	return (
 		<GlobalModal>
 			<Header
-				style={
-					{height: '50px'}
-				}
+				style={{ height: '50px' }}
 				// onMenuClick={() =>
 				// 	setIsMobileSidebarOpen(!isMobileSidebarOpen)
 				// }
 			/>
-			<div className="relative flex [&>:last-child]:flex-grow h-[calc(100vh-50px)]">
+			<div className='relative flex h-[calc(100vh-50px)] [&>:last-child]:flex-grow'>
 				<Sidebar />
 				<Outlet context={habits} />
 			</div>

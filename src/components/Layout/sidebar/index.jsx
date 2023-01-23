@@ -7,6 +7,8 @@ import {
 	IconPlus,
 } from '@tabler/icons';
 import clsx from 'clsx';
+import Button from 'components/ui/Button';
+import CreateHabitBtn from 'components/ui/CreateHabitBtn';
 import { useEffect, useState } from 'react';
 import { createCategory } from 'services/dbOperations';
 import { getUserDoc } from 'services/firestoreReferences';
@@ -32,10 +34,11 @@ export default function Sidebar({ className = '', isMobile }) {
 	return (
 		<aside
 			className={clsx(
-				'w-0 overflow-x-hidden overflow-y-scroll border-r bg-slate-100 p-0 text-black transition-all md:w-64 md:px-4',
+				'w-0 overflow-x-hidden overflow-y-scroll p-0 pt-6 transition-all md:w-64 md:pl-6',
 				className
 			)}>
-			<nav className='my-8 flex-1'>
+			<CreateHabitBtn />
+			<nav className='my-8 w-3/4 flex-1'>
 				<ul className='flex flex-col'>
 					<li>
 						<SidebarLink
@@ -59,10 +62,10 @@ export default function Sidebar({ className = '', isMobile }) {
 						/>
 					</li>
 				</ul>
-				<h3 className='mt-4 text-xs font-semibold uppercase text-slate-600'>
+				{/* <h3 className='mt-4 text-xs font-semibold uppercase text-slate-600'>
 					Categories
-				</h3>
-				<ul className='flex flex-col'>
+				</h3> */}
+				{/* <ul className='flex flex-col'>
 					{categories.map((category) => (
 						<li key={category.id}>
 							<SidebarLink
@@ -83,7 +86,7 @@ export default function Sidebar({ className = '', isMobile }) {
 						onKeyDown={hanldeCreateCategory}
 						className='rounded-md bg-slate-200 p-2 text-slate-800 hover:bg-slate-300'
 					/>
-				</div>
+				</div> */}
 			</nav>
 		</aside>
 	);
