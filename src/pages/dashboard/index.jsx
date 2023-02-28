@@ -1,5 +1,11 @@
 import { IconChecks, IconFolders, IconSun } from '@tabler/icons';
-import Card from 'components/ui/Card';
+import {
+	Card,
+	Stat,
+	StatLabel,
+	StatNumber,
+	StatHelpText,
+} from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
 import {
@@ -57,6 +63,13 @@ export default function Dashboard() {
 		<main className='overflow-scroll pl-0 pt-4 md:p-6 lg:p-8'>
 			<Heading size='lg'>Dashboard</Heading>
 			<section className='my-8 flex max-w-2xl flex-col gap-4 sm:flex-row'>
+				<Card bgColor='white' p='2'>
+					<Stat>
+						<StatLabel>Habits</StatLabel>
+						<StatNumber>{habits.length}</StatNumber>
+						<StatHelpText>Feb 12 - Feb 28</StatHelpText>
+					</Stat>
+				</Card>
 				<StatCard icon={IconSun} title='Habits' stat={habits.length} />
 				<StatCard
 					icon={IconChecks}

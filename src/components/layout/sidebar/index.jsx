@@ -1,93 +1,129 @@
-import { onSnapshot } from '@firebase/firestore';
 import {
 	IconCalendarEvent,
 	IconFolder,
 	IconLayoutDashboard,
-	IconList,
+	IconLogout,
 	IconPlus,
+	IconSeeding,
 } from '@tabler/icons';
-import clsx from 'clsx';
-import Button from 'components/ui/Button';
-import CreateHabitBtn from 'components/ui/CreateHabitBtn';
-import { useEffect, useState } from 'react';
-import { createCategory } from 'services/dbOperations';
-import { getUserDoc } from 'services/firestoreReferences';
-import SidebarLink from './SidebarLink';
+import { ChevronDownIcon, AddIcon } from '@chakra-ui/icons';
+import {
+	Button,
+	Box,
+	Avatar,
+	Flex,
+	Text,
+	Link,
+	Divider,
+	Icon,
+	HStack,
+	IconButton,
+	List,
+	ListIcon,
+	ListItem,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+} from '@chakra-ui/react';
+import { NavLink } from 'react-router-dom';
+import { auth } from 'services';
+import { logout } from 'services/auth';
 
-export default function Sidebar({ className = '', isMobile }) {
-	const [categoryValue, setCategoryValue] = useState('');
-	const [categories, setCategories] = useState([]);
+const links = [
+	{
+		to: '/dashboard',
+		icon: IconLayoutDashboard,
+		displayName: 'dashboard',
+	},
+	{
+		to: '/today',
+		icon: IconCalendarEvent,
+		displayName: 'today',
+	},
+	{
+		to: '/all-habits',
+		icon: IconFolder,
+		displayName: 'habits',
+	},
+];
 
-	useEffect(() => {
-		return onSnapshot(getUserDoc(), (doc) => {
-			setCategories(doc.data().categories || []);
-			setCategoryValue('');
-		});
-	}, []);
-
-	const hanldeCreateCategory = (e) => {
-		if (e.type === 'keydown' && e.key === 'Enter') {
-			createCategory(categoryValue);
-		}
-	};
-
+export default function Sidebar() {
 	return (
-		<aside
-			className={clsx(
-				'w-0 overflow-x-hidden overflow-y-scroll p-0 pt-6 transition-all md:w-64 md:pl-6',
-				className
-			)}>
-			<CreateHabitBtn />
-			<nav className='my-8 w-3/4 flex-1'>
-				<ul className='flex flex-col'>
-					<li>
-						<SidebarLink
-							to='/dashboard'
-							Icon={IconLayoutDashboard}
-							text='dashboard'
-						/>
-					</li>
-					<li>
-						<SidebarLink
-							to='/today'
-							Icon={IconCalendarEvent}
-							text='today'
-						/>
-					</li>
-					<li>
-						<SidebarLink
-							to='/all-habits'
-							Icon={IconList}
-							text='All Habits'
-						/>
-					</li>
-				</ul>
-				{/* <h3 className='mt-4 text-xs font-semibold uppercase text-slate-600'>
-					Categories
-				</h3> */}
-				{/* <ul className='flex flex-col'>
-					{categories.map((category) => (
-						<li key={category.id}>
-							<SidebarLink
-								to={`/${category.name}`}
-								text={category.name}
-								Icon={IconFolder}
-							/>
-						</li>
+		<Flex
+			as='aside'
+			w={[0, 1 / 5]}
+			direction='column'
+			borderColor='gray.300'
+			bgColor='gray.100'
+			overflow='hidden'>
+			<HStack
+				spacing='3'
+				borderBottom='1px'
+				borderColor='gray.300'
+				py='3'>
+				<Icon as={IconSeeding} color='green.400' w='12' h='12' />
+				<Text fontSize='xl' fontWeight='bold'>
+					Habiteer
+				</Text>
+			</HStack>
+			<Box as='nav' flex='1'>
+				<List>
+					{links.map((link) => (
+						<ListItem display='flex' alignItems='center'>
+							<Link
+								flex='1'
+								gap='2'
+								as={NavLink}
+								_activeLink={{
+									bg: 'gray.200',
+									color: 'green.500',
+									fontWeight: 'bold',
+									borderLeft: '4px',
+									borderLeftColor: 'green.500',
+								}}
+								p='2'
+								to={link.to}>
+								<ListIcon as={link.icon} fontSize='lg' />
+								{link.displayName}
+							</Link>
+						</ListItem>
 					))}
-				</ul>
-				<div className='flex items-center text-sm text-gray-400'>
-					<IconPlus className='' />
-					<input
-						type='text'
-						placeholder='New Category'
-						value={categoryValue}
-						onChange={(e) => setCategoryValue(e.target.value)}
-						onKeyDown={hanldeCreateCategory}
-						className='rounded-md bg-slate-200 p-2 text-slate-800 hover:bg-slate-300'
-					/>
-				</div> */}
-			</nav>
-		</aside>
+				</List>
+			</Box>
+			<Button
+				w='80%'
+				alignSelf='center'
+				colorScheme='green'
+				leftIcon={<AddIcon />}>
+				Create Habit
+			</Button>
+			<Divider orientation='horizontal' mt='3' />
+			<HStack mx='auto' my='3'>
+				<Avatar
+					p='3'
+					name={auth.currentUser.displayName || 'Navdeep Dhamu'}
+				/>
+				<Text>{auth.currentUser.displayName || 'Navdeep Dhamu'}</Text>
+				<Menu>
+					<MenuButton as={IconButton} icon={<ChevronDownIcon />}>
+						menu button
+					</MenuButton>
+					<MenuList>
+						<MenuItem
+							onClick={logout}
+							icon={
+								<Icon
+									as={IconLogout}
+									color='red.500'
+									boxSize='6'
+								/>
+							}>
+							Logout
+						</MenuItem>
+					</MenuList>
+				</Menu>
+			</HStack>
+		</Flex>
 	);
 }

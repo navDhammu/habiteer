@@ -5,6 +5,7 @@ import { habitsCollection } from '../../services/firestoreReferences';
 import GlobalModal from '../ui/GlobalModal';
 import Header from './Header';
 import Sidebar from './sidebar';
+import { Flex } from '@chakra-ui/react';
 
 const SIDEBAR_BREAKPOINT = 768;
 
@@ -58,16 +59,10 @@ export default function AppLayout({ user }) {
 
 	return (
 		<GlobalModal>
-			<Header
-				style={{ height: '50px' }}
-				// onMenuClick={() =>
-				// 	setIsMobileSidebarOpen(!isMobileSidebarOpen)
-				// }
-			/>
-			<div className='relative flex h-[calc(100vh-50px)] [&>:last-child]:flex-grow'>
+			<Flex h='100vh'>
 				<Sidebar />
 				<Outlet context={habits} />
-			</div>
+			</Flex>
 		</GlobalModal>
 	);
 }

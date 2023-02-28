@@ -15,7 +15,7 @@ export default function Header({ onMenuClick, className = '', ...props }) {
 	return (
 		<header
 			{...props}
-			className={`flex items-center justify-between bg-indigo-600 px-2 md:px-8 ${className}`}>
+			className={`flex items-center justify-between bg-green-600 px-2 md:px-8 ${className}`}>
 			<IconButton
 				className='text-slate-100 md:hidden'
 				id='hamburger-menu'
