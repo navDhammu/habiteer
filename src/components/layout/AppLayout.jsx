@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 import { habitsCollection } from '../../services/firestoreReferences';
 import Sidebar from './sidebar';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 
 const SIDEBAR_BREAKPOINT = 768;
 
@@ -57,7 +57,9 @@ export default function AppLayout({ user }) {
 	return (
 		<Flex h='100vh'>
 			<Sidebar />
-			<Outlet context={habits} />
+			<Box as='main' flex='1'>
+				<Outlet context={habits} />
+			</Box>
 		</Flex>
 	);
 }
