@@ -2,8 +2,6 @@ import { onSnapshot, query } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 import { habitsCollection } from '../../services/firestoreReferences';
-import GlobalModal from '../ui/GlobalModal';
-import Header from './Header';
 import Sidebar from './sidebar';
 import { Flex } from '@chakra-ui/react';
 
@@ -12,7 +10,6 @@ const SIDEBAR_BREAKPOINT = 768;
 export default function AppLayout({ user }) {
 	const [habits, setHabits] = useState([]);
 	const [isLoadingHabits, setIsLoadingHabits] = useState(true);
-	// const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
 	useEffect(() => {
 		if (user) {
@@ -58,11 +55,9 @@ export default function AppLayout({ user }) {
 	}, [user]);
 
 	return (
-		<GlobalModal>
-			<Flex h='100vh'>
-				<Sidebar />
-				<Outlet context={habits} />
-			</Flex>
-		</GlobalModal>
+		<Flex h='100vh'>
+			<Sidebar />
+			<Outlet context={habits} />
+		</Flex>
 	);
 }

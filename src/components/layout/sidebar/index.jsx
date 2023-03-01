@@ -26,9 +26,12 @@ import {
 	MenuList,
 	MenuItem,
 } from '@chakra-ui/react';
+
 import { NavLink } from 'react-router-dom';
 import { auth } from 'services';
 import { logout } from 'services/auth';
+import { useState } from 'react';
+import CreateOrEditHabit from 'components/CreateOrEditHabit';
 
 const links = [
 	{
@@ -49,6 +52,8 @@ const links = [
 ];
 
 export default function Sidebar() {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
 	return (
 		<Flex
 			as='aside'
@@ -92,12 +97,17 @@ export default function Sidebar() {
 				</List>
 			</Box>
 			<Button
+				onClick={() => setIsDrawerOpen(true)}
 				w='80%'
 				alignSelf='center'
 				colorScheme='green'
 				leftIcon={<AddIcon />}>
 				Create Habit
 			</Button>
+			<CreateOrEditHabit
+				isDrawerOpen={isDrawerOpen}
+				onCloseDrawer={() => setIsDrawerOpen(false)}
+			/>
 			<Divider orientation='horizontal' mt='3' />
 			<HStack mx='auto' my='3'>
 				<Avatar
