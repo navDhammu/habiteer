@@ -57,7 +57,7 @@ export default function AppLayout({ user }) {
 	return (
 		<Flex h='100vh'>
 			<Sidebar />
-			<Box as='main' flex='1'>
+			<Box as='main' flex='1' overflowY='scroll' p='8' bg='gray.50'>
 				<Outlet context={habits} />
 			</Box>
 		</Flex>

@@ -25,6 +25,7 @@ import {
 	MenuButton,
 	MenuList,
 	MenuItem,
+	Card,
 } from '@chakra-ui/react';
 
 import { NavLink } from 'react-router-dom';
@@ -55,19 +56,21 @@ export default function Sidebar() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
 	return (
-		<Flex
+		<Card
 			as='aside'
 			w={[0, 1 / 5]}
+			boxShadow='lg'
 			direction='column'
+			// borderRight='1px'
 			borderColor='gray.300'
-			bgColor='gray.100'
+			bgColor='white'
 			overflow='hidden'>
 			<HStack
 				spacing='3'
 				borderBottom='1px'
 				borderColor='gray.300'
 				py='3'>
-				<Icon as={IconSeeding} color='green.400' w='12' h='12' />
+				<Icon as={IconSeeding} color='green.300' w='12' h='12' />
 				<Text fontSize='xl' fontWeight='bold'>
 					Habiteer
 				</Text>
@@ -81,11 +84,11 @@ export default function Sidebar() {
 								gap='2'
 								as={NavLink}
 								_activeLink={{
-									bg: 'gray.200',
-									color: 'green.500',
+									bg: 'gray.100',
 									fontWeight: 'bold',
-									borderLeft: '4px',
 									borderLeftColor: 'green.500',
+									color: 'green.500',
+									py: '3',
 								}}
 								p='2'
 								to={link.to}>
@@ -134,6 +137,6 @@ export default function Sidebar() {
 					</MenuList>
 				</Menu>
 			</HStack>
-		</Flex>
+		</Card>
 	);
 }
