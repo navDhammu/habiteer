@@ -1,10 +1,17 @@
-import { IconChecks, IconFolders, IconSun } from '@tabler/icons';
 import {
 	Card,
+	CardBody,
+	CardHeader,
+	HStack,
+	VStack,
+	StackDivider,
 	Stat,
 	StatLabel,
 	StatNumber,
 	StatHelpText,
+	Flex,
+	Heading,
+	Container,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router';
@@ -17,8 +24,6 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import Heading from '../../components/ui/Heading';
-import StatCard from './StatCard';
 
 import { format } from 'date-fns';
 import { getDocs, orderBy, query } from '@firebase/firestore';
@@ -60,58 +65,61 @@ export default function Dashboard() {
 		.size;
 
 	return (
-		<main className='overflow-scroll pl-0 pt-4 md:p-6 lg:p-8'>
-			<Heading size='lg'>Dashboard</Heading>
-			<section className='my-8 flex max-w-2xl flex-col gap-4 sm:flex-row'>
-				<Card bgColor='white' p='2'>
-					<Stat>
+		<Container maxW='container.lg'>
+			<Heading size='md'>Dashboard</Heading>
+			<Card w='max-content' my='6'>
+				<CardBody as={VStack} divider={<StackDivider />}>
+					<Stat textAlign='center'>
 						<StatLabel>Habits</StatLabel>
 						<StatNumber>{habits.length}</StatNumber>
-						<StatHelpText>Feb 12 - Feb 28</StatHelpText>
 					</Stat>
-				</Card>
-				<StatCard icon={IconSun} title='Habits' stat={habits.length} />
-				<StatCard
-					icon={IconChecks}
-					title='Completions'
-					stat={totalCompletions}
-				/>
-				<StatCard
-					icon={IconFolders}
-					title='Categories'
-					stat={totalCategories}
-				/>
-			</section>
-			<Card className=''>
-				<h2 className='mb-2 text-lg font-semibold text-slate-700'>
-					Habit completion rate over time
-				</h2>
+					<Stat textAlign='center'>
+						<StatLabel>Habit Completions</StatLabel>
+						<StatNumber>{totalCompletions}</StatNumber>
+					</Stat>
+					<Stat textAlign='center'>
+						<StatLabel>Habit Categories</StatLabel>
+						<StatNumber>{totalCategories}</StatNumber>
+					</Stat>
+				</CardBody>
+			</Card>
+			<Card>
+				<CardHeader>Habit completion rate over time</CardHeader>
 				{loadingChartData ? (
 					'loading...'
 				) : (
-					<ResponsiveContainer height={300}>
-						<LineChart
-							data={chartData}
-							margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-							<CartesianGrid strokeDasharray='3 3' />
-							<XAxis
-								tickMargin={7}
-								angle={-15}
-								dataKey='x'
-								tickFormatter={(date) => format(date, 'MMM dd')}
-							/>
-							<YAxis tickFormatter={(y) => `${y}%`} />
-							<Tooltip />
-							<Line
-								type='monotone'
-								dataKey='Completion Rate'
-								stroke='#8884d8'
-								dot={false}
-							/>
-						</LineChart>
-					</ResponsiveContainer>
+					<CardBody>
+						<ResponsiveContainer height={300}>
+							<LineChart
+								data={chartData}
+								margin={{
+									top: 5,
+									right: 30,
+									left: 20,
+									bottom: 5,
+								}}>
+								<CartesianGrid strokeDasharray='3 3' />
+								<XAxis
+									tickMargin={7}
+									angle={-15}
+									dataKey='x'
+									tickFormatter={(date) =>
+										format(date, 'MMM dd')
+									}
+								/>
+								<YAxis tickFormatter={(y) => `${y}%`} />
+								<Tooltip />
+								<Line
+									type='monotone'
+									dataKey='Completion Rate'
+									stroke='#8884d8'
+									dot={false}
+								/>
+							</LineChart>
+						</ResponsiveContainer>
+					</CardBody>
 				)}
 			</Card>
-		</main>
+		</Container>
 	);
 }
