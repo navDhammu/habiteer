@@ -1,4 +1,3 @@
-import HabitDetails from 'components/habits/HabitDetails';
 import AppLayout from 'components/layout/AppLayout';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
@@ -9,6 +8,7 @@ import Dashboard from './pages/dashboard';
 import Login from './pages/login';
 import Today from './pages/today';
 import { auth } from './services';
+
 function App() {
 	const [user, setUser] = useState(null);
 
@@ -33,7 +33,7 @@ function App() {
 					<Route path='dashboard' element={<Dashboard />} />
 					<Route path='today' element={<Today />} />
 					<Route path='all-habits' element={<AllHabits />}>
-						<Route path=':habitId' element={<HabitDetails />} />
+						{/* <Route path=':habitId' element={<HabitDetails />} /> */}
 					</Route>
 				</Route>
 				<Route path='/login' element={<Login user={user} />} />
