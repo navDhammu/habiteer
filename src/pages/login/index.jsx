@@ -1,22 +1,17 @@
-import { signInWithEmailAndPassword } from '@firebase/auth';
 import { Navigate } from 'react-router';
-import { auth } from '../../services';
 import LoginForm from './LoginForm';
-import { ArrowRightIcon } from '@chakra-ui/icons';
 import {
 	Box,
 	Heading,
 	Container,
-	Button,
 	Center,
-	Divider,
-	Flex,
 	Text,
 	Icon,
 	VStack,
 	HStack,
 } from '@chakra-ui/react';
 import { IconSeeding } from '@tabler/icons';
+import TestUser from './TestUser';
 
 export default function Login({ user }) {
 	if (user) return <Navigate to='/dashboard' />;
@@ -46,27 +41,7 @@ export default function Login({ user }) {
 					</Box>
 				</VStack>
 				<LoginForm />
-				<Flex align='center'>
-					<Divider />
-					<Text padding='2'>OR</Text>
-					<Divider />
-				</Flex>
-				<Center>
-					<Button
-						marginX='auto'
-						colorScheme='green'
-						variant='outline'
-						rightIcon={<ArrowRightIcon />}
-						onClick={() =>
-							signInWithEmailAndPassword(
-								auth,
-								'test@test.com',
-								'test1234'
-							)
-						}>
-						Continue as test user
-					</Button>
-				</Center>
+				<TestUser />
 			</Container>
 		</Center>
 	);
