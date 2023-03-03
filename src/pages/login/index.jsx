@@ -1,45 +1,62 @@
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import { useState } from 'react';
 import { Navigate } from 'react-router';
-import svg from '../../assets/illustration-running.svg';
-import Button from '../../components/ui/Button';
 import { auth } from '../../services';
 import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
+import { ArrowRightIcon } from '@chakra-ui/icons';
+import {
+	Box,
+	Heading,
+	Container,
+	Button,
+	Center,
+	Divider,
+	Flex,
+	Text,
+	Icon,
+	VStack,
+	HStack,
+} from '@chakra-ui/react';
+import { IconSeeding } from '@tabler/icons';
 
 export default function Login({ user }) {
-	const [mode, setMode] = useState('login');
-
-	const handleSwitchMode = () =>
-		setMode(mode === 'login' ? 'signup' : 'login');
-
 	if (user) return <Navigate to='/dashboard' />;
 
 	return (
-		<div className='flex h-screen w-full'>
-			<section className='hidden w-3/5 flex-col items-center justify-center gap-4 bg-gray-200 font-mono text-xl font-bold text-white lg:flex'>
-				<img className='mt-4 w-3/5' src={svg} alt=''></img>
-			</section>
-			<section className='relative flex flex-1 flex-col items-center justify-center bg-white'>
-				<h1 className='absolute top-0 left-0 ml-10 mt-10 text-3xl font-bold text-indigo-500'>
-					Habiterr
-				</h1>
-				{mode === 'login' ? <LoginForm /> : <SignupForm />}
-				<div className='flex flex-col items-center gap-2'>
-					<div className='flex items-center'>
-						<p>
-							{mode === 'login'
-								? 'Dont have an account?'
-								: 'Already have an account?'}
-						</p>
-						<Button onClick={handleSwitchMode} variant='text'>
-							{mode === 'login' ? 'Sign up' : 'Sign in'}
-						</Button>
-					</div>
-
-					<span>OR</span>
+		<Center h='100vh'>
+			<Container>
+				<VStack mb='4'>
+					<HStack>
+						<Icon
+							as={IconSeeding}
+							color='green.300'
+							w='12'
+							h='12'
+						/>
+						<Text fontSize='3xl' fontWeight='bold'>
+							Habiteer
+						</Text>
+					</HStack>
+					<Heading size='md'>Login to your account</Heading>
+					<Box as='figure' textAlign='right' borderRadius='lg'>
+						<Text as='q' fontStyle='italic'>
+							Motivation is what gets you started. Habit is what
+							keeps you going.
+						</Text>
+						<Text as='figcaption'>&mdash; Jim Ryun</Text>
+					</Box>
+				</VStack>
+				<LoginForm />
+				<Flex align='center'>
+					<Divider />
+					<Text padding='2'>OR</Text>
+					<Divider />
+				</Flex>
+				<Center>
 					<Button
-						variant='secondary'
+						marginX='auto'
+						colorScheme='green'
+						variant='outline'
+						rightIcon={<ArrowRightIcon />}
 						onClick={() =>
 							signInWithEmailAndPassword(
 								auth,
@@ -49,8 +66,8 @@ export default function Login({ user }) {
 						}>
 						Continue as test user
 					</Button>
-				</div>
-			</section>
-		</div>
+				</Center>
+			</Container>
+		</Center>
 	);
 }
