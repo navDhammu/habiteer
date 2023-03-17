@@ -104,6 +104,7 @@ export default function Sidebar() {
 				Create Habit
 			</Button>
 			<CreateOrEditHabit
+				mode='CREATE'
 				isDrawerOpen={isDrawerOpen}
 				onCloseDrawer={() => setIsDrawerOpen(false)}
 			/>

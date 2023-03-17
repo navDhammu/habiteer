@@ -13,5 +13,6 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": false
   },
-  "editor.tabSize": 4
+  "editor.tabSize": 4,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
