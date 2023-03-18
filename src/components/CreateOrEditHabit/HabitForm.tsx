@@ -89,16 +89,16 @@ export default function HabitForm({
 					1. {mode === 'CREATE' ? 'Choose' : 'Edit'} habit name and
 					category
 				</Heading>
-				<FormControl isInvalid={!!errors.habitName}>
+				<FormControl isInvalid={!!errors.name}>
 					<FormLabel>Habit Name</FormLabel>
 					<Input
-						name='habitName'
+						name='name'
 						placeholder='eg. Read for 30 minutes'
 						onBlur={handleInvalid}
-						defaultValue={initialValues?.habitName}
+						defaultValue={initialValues?.name}
 						required
 					/>
-					<FormErrorMessage>{errors.habitName}</FormErrorMessage>
+					<FormErrorMessage>{errors.name}</FormErrorMessage>
 				</FormControl>
 				<FormControl>
 					<FormLabel>
@@ -112,9 +112,9 @@ export default function HabitForm({
 							<Icon as={IconFolder} color='gray.400' />
 						</InputLeftElement>
 						<Input
-							name='habit-category'
+							name='category'
 							placeholder='Choose Category'
-							defaultValue={initialValues?.habitCategory}
+							defaultValue={initialValues?.category}
 						/>
 					</InputGroup>
 					{/* <FormErrorMessage>{errors.habitCategory}</FormErrorMessage> */}
@@ -132,10 +132,10 @@ export default function HabitForm({
 						name='trackingStartDate'
 						disabled={mode === 'EDIT'}
 						onBlur={handleInvalid}
-						defaultValue={format(
-							initialValues?.trackingStartDate ?? new Date(),
-							'yyyy-MM-dd'
-						)}
+						defaultValue={
+							initialValues?.trackingStartDate ??
+							format(new Date(), 'yyyy-MM-dd')
+						}
 						min={today}
 						required
 					/>

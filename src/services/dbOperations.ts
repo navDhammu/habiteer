@@ -10,6 +10,7 @@ import {
 	updateDoc,
 	writeBatch,
 } from '@firebase/firestore';
+import { Habit } from 'components/layout/AppLayout';
 import { nanoid } from 'nanoid';
 import { db } from '.';
 import {
@@ -20,13 +21,13 @@ import {
 	habitsCollection,
 } from './firestoreReferences';
 
-export interface HabitDetails {
-	habitName: string;
-	trackingStartDate: Date;
-	habitDescription: string;
-	repeatDays: string[];
-	habitCategory: string;
-}
+export type HabitDetails = Omit<Habit, 'id'>;
+// export interface HabitDetails {
+// 	name: string;
+// 	description: string;
+// 	category: string;
+// 	trackingStartDate: Date;
+// 	repeatDays: string[];
 
 //Create new habit
 export function createHabit(
@@ -34,12 +35,12 @@ export function createHabit(
 ) {
 	if (
 		!(
-			'habitName' in documentFields &&
+			'name' in documentFields &&
 			'trackingStartDate' in documentFields &&
 			'repeatDays' in documentFields
 		)
 	) {
-		throw new Error('incorrect parameter for createHabit');
+		throw new Error('incorrect HabitDetails for createHabit');
 	}
 	return addDoc(habitsCollection(), {
 		createdOn: new Date(),
@@ -53,7 +54,7 @@ export function createHabit(
 				getDateDoc(new Date()),
 				{
 					[doc.id]: {
-						name: documentFields.habitName,
+						name: documentFields.name,
 						isComplete: false,
 					},
 				},
