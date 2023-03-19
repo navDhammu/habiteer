@@ -90,13 +90,14 @@ export default function HabitCard(props: Habit) {
 				</AlertDialogOverlay>
 			</AlertDialog>
 			<Card>
-				<CardHeader as={Flex} alignItems='flex-start'>
+				<CardHeader as={Flex} alignItems='center' gap='2'>
 					<Heading size='sm'>{props.name}</Heading>
 					<Tag>{props.category || 'Not Categorized'}</Tag>
 					<Badge colorScheme='green'>active</Badge>
 					<Menu>
 						<MenuButton
 							as={IconButton}
+							variant='ghost'
 							ml='auto'
 							aria-label='habit actions'
 							icon={<IconDots />}
