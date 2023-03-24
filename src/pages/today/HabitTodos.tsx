@@ -13,9 +13,12 @@ import { HabitTodo } from '.';
 type HabitTodosProps = {
 	heading: string;
 	todos: HabitTodo[];
+	onCheckHabit: (
+		habitId: string
+	) => (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 };
 
-export function HabitTodos({ heading, todos }: HabitTodosProps) {
+export function HabitTodos({ heading, todos, onCheckHabit }: HabitTodosProps) {
 	if (!todos.length) return null;
 	return (
 		<Card>
@@ -30,13 +33,7 @@ export function HabitTodos({ heading, todos }: HabitTodosProps) {
 							<ListItem key={id}>
 								<Checkbox
 									isChecked={isComplete}
-									onChange={(e) =>
-										markHabitComplete(
-											e.target.checked,
-											id,
-											new Date()
-										)
-									}>
+									onChange={onCheckHabit(id)}>
 									{name}
 								</Checkbox>
 							</ListItem>

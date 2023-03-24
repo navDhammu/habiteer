@@ -1,6 +1,19 @@
-import { onSnapshot } from '@firebase/firestore';
+import {
+	onSnapshot,
+	query,
+	getDocs,
+	addDoc,
+	where,
+	doc,
+	Timestamp,
+	limit,
+} from '@firebase/firestore';
 import { useEffect, useState } from 'react';
-import { getDateDoc } from 'services/firestoreReferences';
+import {
+	getDateDoc,
+	datesCollection,
+	habitsCollection,
+} from 'services/firestoreReferences';
 import { toStringPercent } from 'utils/misc';
 import {
 	Heading,
@@ -14,7 +27,27 @@ import {
 } from '@chakra-ui/react';
 import { HabitTodos } from './HabitTodos';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { addDays, isToday, isYesterday, subDays } from 'date-fns';
+import {
+	addDays,
+	endOfDay,
+	isToday,
+	isYesterday,
+	startOfDay,
+	subDays,
+} from 'date-fns';
+import { useRef } from 'react';
+import { markHabitComplete } from 'services/dbOperations';
+import * as React from 'react';
+
+type DateDocument = {
+	date: Date;
+	habits: {
+		[id: string]: {
+			isComplete: boolean;
+			name: string;
+		};
+	};
+};
 
 export type HabitTodo = {
 	id: string;
@@ -25,6 +58,7 @@ export type HabitTodo = {
 export default function Today() {
 	const [date, setDate] = useState(new Date());
 	const [habitTodos, setHabitTodos] = useState<HabitTodo[]>([]);
+	const documentId = useRef<string>(null);
 
 	const completedHabits = habitTodos.filter((habit) => habit.isComplete);
 	const incompleteHabits = habitTodos.filter((habit) => !habit.isComplete);
@@ -32,25 +66,55 @@ export default function Today() {
 	const isDateToday = isToday(date);
 	const isDateYesterday = isYesterday(date);
 
+	const handleCheckHabit =
+		(habitId: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+			markHabitComplete(e.target.checked, habitId, documentId.current);
+
 	useEffect(() => {
-		const unsub = onSnapshot(
-			getDateDoc(date),
-			(doc) => {
-				if (doc.exists()) {
-					const { date, ...habits } = doc.data();
-					setHabitTodos(
-						Object.entries(habits).map(([id, habit]) => ({
-							id,
-							...(habit as Omit<HabitTodo, 'id'>),
-						}))
+		return onSnapshot(
+			query(
+				datesCollection(),
+				where('date', '>=', startOfDay(date)),
+				where('date', '<=', endOfDay(date)),
+				limit(1)
+			),
+			async ({ empty, docs }) => {
+				if (empty) {
+					const day = new Intl.DateTimeFormat('en-US', {
+						weekday: 'long',
+					}).format(date);
+					const querySnapshot = await getDocs(
+						query(
+							habitsCollection(),
+							where('repeatDays', 'array-contains', day)
+						)
 					);
+					const habits: DateDocument['habits'] = {};
+
+					querySnapshot.forEach((doc) => {
+						habits[doc.id] = {
+							name: doc.get('name'),
+							isComplete: false,
+						};
+					});
+
+					addDoc<DateDocument>(datesCollection(), { date, habits });
 				} else {
-					setHabitTodos([]);
+					const [doc] = docs;
+					documentId.current = doc.id;
+					const habits: DateDocument['habits'] = doc.get('habits');
+					setHabitTodos(
+						Object.entries(habits).map<HabitTodo>(
+							([id, habit]) => ({
+								id,
+								isComplete: habit.isComplete,
+								name: habit.name,
+							})
+						)
+					);
 				}
-			},
-			(error) => console.log(error)
+			}
 		);
-		return unsub;
 	}, [date]);
 
 	return (
@@ -87,8 +151,16 @@ export default function Today() {
 			<Text as='span' className='text-sm italic'>
 				{completedHabits.length} / {habitTodos.length} habits complete
 			</Text>
-			<HabitTodos todos={incompleteHabits} heading='To do' />
-			<HabitTodos todos={completedHabits} heading='Completed' />
+			<HabitTodos
+				todos={incompleteHabits}
+				heading='To do'
+				onCheckHabit={handleCheckHabit}
+			/>
+			<HabitTodos
+				todos={completedHabits}
+				heading='Completed'
+				onCheckHabit={handleCheckHabit}
+			/>
 		</Container>
 	);
 }

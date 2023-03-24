@@ -7,10 +7,14 @@ import {
 	orderBy,
 	query,
 	setDoc,
+	where,
+	doc,
+	limit,
 	updateDoc,
 	writeBatch,
 } from '@firebase/firestore';
 import { Habit } from 'components/layout/AppLayout';
+import { endOfDay, startOfDay } from 'date-fns';
 import { nanoid } from 'nanoid';
 import { db } from '.';
 import {
@@ -97,9 +101,15 @@ export function createCategory(name) {
 	);
 }
 
-export function markHabitComplete(isComplete, habitId, date) {
+export async function markHabitComplete(
+	isComplete: boolean,
+	habitId: string,
+	docId: string
+) {
 	const batch = writeBatch(db);
-	batch.update(getDateDoc(date), { [`${habitId}.isComplete`]: isComplete });
+	batch.update(getDateDoc(docId), {
+		[`habits.${habitId}.isComplete`]: isComplete,
+	});
 	batch.update(getHabitDoc(habitId), {
 		completions: increment(isComplete ? 1 : -1),
 	});
