@@ -26,12 +26,16 @@ import {
 } from './firestoreReferences';
 
 export type HabitDetails = Omit<Habit, 'id'>;
-// export interface HabitDetails {
-// 	name: string;
-// 	description: string;
-// 	category: string;
-// 	trackingStartDate: Date;
-// 	repeatDays: string[];
+
+export type DateDoc = {
+	date: Date;
+	habits: {
+		[id: string]: {
+			isComplete: boolean;
+			name: string;
+		};
+	};
+};
 
 //Create new habit
 export function createHabit(
@@ -114,4 +118,25 @@ export async function markHabitComplete(
 		completions: increment(isComplete ? 1 : -1),
 	});
 	return batch.commit();
+}
+
+export async function createDateDoc(date: Date) {
+	const day = new Intl.DateTimeFormat('en-US', {
+		weekday: 'long',
+	}).format(date);
+
+	const querySnapshot = await getDocs(
+		query(habitsCollection(), where('repeatDays', 'array-contains', day))
+	);
+
+	const habits: DateDoc['habits'] = {};
+
+	querySnapshot.forEach((doc) => {
+		habits[doc.id] = {
+			name: doc.get('name'),
+			isComplete: false,
+		};
+	});
+
+	return addDoc<DateDoc>(datesCollection(), { date, habits });
 }

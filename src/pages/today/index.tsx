@@ -24,6 +24,7 @@ import {
 	Box,
 	IconButton,
 	HStack,
+	Skeleton,
 } from '@chakra-ui/react';
 import { HabitTodos } from './HabitTodos';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
@@ -36,18 +37,12 @@ import {
 	subDays,
 } from 'date-fns';
 import { useRef } from 'react';
-import { markHabitComplete } from 'services/dbOperations';
+import {
+	createDateDoc,
+	DateDoc,
+	markHabitComplete,
+} from 'services/dbOperations';
 import * as React from 'react';
-
-type DateDocument = {
-	date: Date;
-	habits: {
-		[id: string]: {
-			isComplete: boolean;
-			name: string;
-		};
-	};
-};
 
 export type HabitTodo = {
 	id: string;
@@ -80,29 +75,10 @@ export default function Today() {
 			),
 			async ({ empty, docs }) => {
 				if (empty) {
-					const day = new Intl.DateTimeFormat('en-US', {
-						weekday: 'long',
-					}).format(date);
-					const querySnapshot = await getDocs(
-						query(
-							habitsCollection(),
-							where('repeatDays', 'array-contains', day)
-						)
-					);
-					const habits: DateDocument['habits'] = {};
-
-					querySnapshot.forEach((doc) => {
-						habits[doc.id] = {
-							name: doc.get('name'),
-							isComplete: false,
-						};
-					});
-
-					addDoc<DateDocument>(datesCollection(), { date, habits });
+					createDateDoc(date);
 				} else {
-					const [doc] = docs;
-					documentId.current = doc.id;
-					const habits: DateDocument['habits'] = doc.get('habits');
+					documentId.current = docs[0].id;
+					const habits: DateDoc['habits'] = docs[0].get('habits');
 					setHabitTodos(
 						Object.entries(habits).map<HabitTodo>(
 							([id, habit]) => ({
