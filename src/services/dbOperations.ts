@@ -16,6 +16,7 @@ import {
 import { Habit } from 'components/layout/AppLayout';
 import { endOfDay, startOfDay } from 'date-fns';
 import { nanoid } from 'nanoid';
+import { getDayOfWeek } from 'utils/dates';
 import { db } from '.';
 import {
 	datesCollection,
@@ -121,12 +122,11 @@ export async function markHabitComplete(
 }
 
 export async function createDateDoc(date: Date) {
-	const day = new Intl.DateTimeFormat('en-US', {
-		weekday: 'long',
-	}).format(date);
-
 	const querySnapshot = await getDocs(
-		query(habitsCollection(), where('repeatDays', 'array-contains', day))
+		query(
+			habitsCollection(),
+			where('repeatDays', 'array-contains', getDayOfWeek(date))
+		)
 	);
 
 	const habits: DateDoc['habits'] = {};
