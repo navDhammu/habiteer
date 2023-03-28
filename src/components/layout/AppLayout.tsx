@@ -5,7 +5,7 @@ import { habitsCollection } from '../../services/firestoreReferences';
 import Sidebar from './sidebar';
 import { Flex, Box } from '@chakra-ui/react';
 import { HabitTodo } from 'pages/today';
-import useHabitTodos from 'hooks/useHabtiTodos';
+import useHabitTodos from 'hooks/useHabitTodos';
 
 const SIDEBAR_BREAKPOINT = 768;
 

@@ -10,7 +10,7 @@ import {
 import { HabitTodos } from './HabitTodos';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { addDays, isToday, isYesterday, subDays } from 'date-fns';
-import useHabitTodos from 'hooks/useHabtiTodos';
+import useHabitTodos from 'hooks/useHabitTodos';
 
 export type HabitTodo = {
 	id: string;
