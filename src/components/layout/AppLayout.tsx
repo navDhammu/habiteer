@@ -1,9 +1,11 @@
 import { onSnapshot, query } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useOutletContext } from 'react-router';
 import { habitsCollection } from '../../services/firestoreReferences';
 import Sidebar from './sidebar';
 import { Flex, Box } from '@chakra-ui/react';
+import { HabitTodo } from 'pages/today';
+import useHabitTodos from 'hooks/useHabtiTodos';
 
 const SIDEBAR_BREAKPOINT = 768;
 
@@ -16,9 +18,31 @@ export type Habit = {
 	repeatDays: string[];
 };
 
+export type AppContext = {
+	habits: Habit[];
+	today: {
+		todos: HabitTodo[];
+		handleCheck: (
+			id: string
+		) => (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
+	};
+};
+
+export function useAppContext() {
+	return useOutletContext<AppContext>();
+}
+
+const today = new Date();
+
 export default function AppLayout({ user }) {
 	const [habits, setHabits] = useState<Habit[]>([]);
+	const [todayHabitTodos, handleCheckHabit] = useHabitTodos(today);
 	const [isLoadingHabits, setIsLoadingHabits] = useState(true);
+
+	const appContext: AppContext = {
+		habits,
+		today: { todos: todayHabitTodos, handleCheck: handleCheckHabit },
+	};
 
 	useEffect(() => {
 		if (user) {
@@ -67,7 +91,7 @@ export default function AppLayout({ user }) {
 		<Flex h='100vh'>
 			<Sidebar />
 			<Box as='main' flex='1' overflowY='scroll' p='8' bg='gray.50'>
-				<Outlet context={habits} />
+				<Outlet context={appContext} />
 			</Box>
 		</Flex>
 	);

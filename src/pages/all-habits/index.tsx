@@ -1,25 +1,10 @@
-import {
-	List,
-	ListItem,
-	Heading,
-	Container,
-	Card,
-	CardHeader,
-	CardBody,
-	Tag,
-	Badge,
-	Flex,
-} from '@chakra-ui/react';
-import { DotsHorizontalIcon } from '@heroicons/react/outline';
-import CreateOrEditHabit from 'components/CreateOrEditHabit';
+import { List, ListItem, Heading, Container } from '@chakra-ui/react';
 import { Habit } from 'components/layout/AppLayout';
-import { useState } from 'react';
-import { useOutletContext } from 'react-router';
+import { useAppContext } from 'hooks/useAppContext';
 import HabitCard from './HabitCard';
 
 export default function () {
-	const habits: Habit[] = useOutletContext();
-	const [isEditingHabit, setIsEditingHabit] = useState(false);
+	const { habits } = useAppContext();
 
 	return (
 		<Container>
