@@ -33,6 +33,8 @@ import { auth } from 'services';
 import { logout } from 'services/auth';
 import { useState } from 'react';
 import CreateOrEditHabit from 'components/CreateOrEditHabit';
+import { Habit } from '../AppLayout';
+import { HabitTodo } from 'pages/today';
 
 const links = [
 	{
@@ -44,17 +46,27 @@ const links = [
 		to: '/today',
 		icon: IconCalendarEvent,
 		displayName: 'today',
+		getStat: (data: SidebarProps) =>
+			`${data.todayHabitTodos.reduce(
+				(num, todo) => (todo.isComplete ? num + 1 : num),
+				0
+			)}/${data.todayHabitTodos.length}`,
 	},
 	{
 		to: '/all-habits',
 		icon: IconFolder,
 		displayName: 'habits',
+		getStat: (data: SidebarProps) => data.habits.length,
 	},
 ];
 
-export default function Sidebar() {
-	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+type SidebarProps = {
+	habits: Habit[];
+	todayHabitTodos: HabitTodo[];
+};
 
+export default function Sidebar(props: SidebarProps) {
+	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	return (
 		<Card
 			as='aside'
@@ -73,23 +85,42 @@ export default function Sidebar() {
 			<Box as='nav' flex='1'>
 				<List>
 					{links.map((link) => (
-						<ListItem display='flex' alignItems='center'>
+						<ListItem>
 							<Link
-								flex='1'
+								display='flex'
+								alignItems='center'
 								gap='2'
 								textTransform='capitalize'
 								as={NavLink}
 								_activeLink={{
 									bg: 'gray.100',
 									fontWeight: 'bold',
+									borderLeft: '4px',
 									borderLeftColor: 'green.500',
 									color: 'green.500',
 									py: '3',
+									'& > span': {
+										background: 'green.300',
+										color: 'white',
+										fontWeight: 'normal',
+									},
+									'& > svg': {
+										boxSize: '6',
+									},
 								}}
 								p='2'
 								to={link.to}>
 								<ListIcon as={link.icon} fontSize='lg' />
 								{link.displayName}
+								<Box
+									ml='auto'
+									as='span'
+									bg='gray.100'
+									rounded='full'
+									color='gray.500'
+									paddingX='2'>
+									{link.getStat?.(props)}
+								</Box>
 							</Link>
 						</ListItem>
 					))}
