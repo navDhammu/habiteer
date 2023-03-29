@@ -10,10 +10,12 @@ import {
 } from 'services/dbOperations';
 import { HabitTodo } from 'pages/today';
 import { AppContext, useAppContext } from './useAppContext';
+import { useOutletContext } from 'react-router-dom';
 
 type HandleCheck = AppContext['today']['handleCheck'];
 
 export default function useHabitTodos(date: Date): [HabitTodo[], HandleCheck] {
+	useOutletContext<HandleCheck>();
 	const appContext = useAppContext();
 	const [habitTodos, setHabitTodos] = useState<HabitTodo[]>([]);
 	const documentId = useRef<string>(null);
