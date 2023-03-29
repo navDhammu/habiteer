@@ -2,7 +2,6 @@ import { limit, onSnapshot, query, where } from '@firebase/firestore';
 import { endOfDay, isToday, startOfDay } from 'date-fns';
 import { HabitTodo } from 'pages/today';
 import { useEffect, useRef, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import {
    createDateDoc,
    DateDoc,
@@ -14,7 +13,6 @@ import { AppContext, useAppContext } from './useAppContext';
 type HandleCheck = AppContext['today']['handleCheck'];
 
 export default function useHabitTodos(date: Date): [HabitTodo[], HandleCheck] {
-   useOutletContext<HandleCheck>();
    const appContext = useAppContext();
    const [habitTodos, setHabitTodos] = useState<HabitTodo[]>([]);
    const documentId = useRef<string>(null);
