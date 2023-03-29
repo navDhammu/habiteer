@@ -9,8 +9,7 @@ import {
 	markHabitComplete,
 } from 'services/dbOperations';
 import { HabitTodo } from 'pages/today';
-import { useAppContext } from './useAppContext';
-import { AppContext } from 'components/layout/AppLayout';
+import { AppContext, useAppContext } from './useAppContext';
 
 type HandleCheck = AppContext['today']['handleCheck'];
 

@@ -4,8 +4,8 @@ import { Outlet, useOutletContext } from 'react-router';
 import { habitsCollection } from '../../services/firestoreReferences';
 import Sidebar from './sidebar';
 import { Flex, Box } from '@chakra-ui/react';
-import { HabitTodo } from 'pages/today';
 import useHabitTodos from 'hooks/useHabitTodos';
+import { AppContext } from 'hooks/useAppContext';
 
 const SIDEBAR_BREAKPOINT = 768;
 
@@ -17,20 +17,6 @@ export type Habit = {
 	trackingStartDate: string;
 	repeatDays: string[];
 };
-
-export type AppContext = {
-	habits: Habit[];
-	today: {
-		todos: HabitTodo[];
-		handleCheck: (
-			id: string
-		) => (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
-	};
-};
-
-export function useAppContext() {
-	return useOutletContext<AppContext>();
-}
 
 const today = new Date();
 
