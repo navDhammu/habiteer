@@ -1,3 +1,3 @@
 export function toStringPercent(rate) {
-    return `${rate * 100}%`;
+   return `${rate * 100}%`;
 }

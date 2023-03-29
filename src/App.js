@@ -10,38 +10,34 @@ import Today from './pages/today';
 import { auth } from './services';
 
 function App() {
-    const [user, setUser] = useState(null);
+   const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        return onAuthStateChanged(auth, (user) => setUser(user ?? false));
-    }, []);
+   useEffect(() => {
+      return onAuthStateChanged(auth, (user) => setUser(user ?? false));
+   }, []);
 
-    if (user == null) return 'loading...';
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        user ? (
-                            <AppLayout user={user} />
-                        ) : (
-                            <Navigate to="/login" />
-                        )
-                    }
-                >
-                    <Route index element={<Dashboard />} />
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="today" element={<Today />} />
-                    <Route path="all-habits" element={<AllHabits />}>
-                        {/* <Route path=':habitId' element={<HabitDetails />} /> */}
-                    </Route>
-                </Route>
-                <Route path="/login" element={<Login user={user} />} />
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
-        </BrowserRouter>
-    );
+   if (user == null) return 'loading...';
+   return (
+      <BrowserRouter>
+         <Routes>
+            <Route
+               path="/"
+               element={
+                  user ? <AppLayout user={user} /> : <Navigate to="/login" />
+               }
+            >
+               <Route index element={<Dashboard />} />
+               <Route path="dashboard" element={<Dashboard />} />
+               <Route path="today" element={<Today />} />
+               <Route path="all-habits" element={<AllHabits />}>
+                  {/* <Route path=':habitId' element={<HabitDetails />} /> */}
+               </Route>
+            </Route>
+            <Route path="/login" element={<Login user={user} />} />
+            <Route path="*" element={<PageNotFound />} />
+         </Routes>
+      </BrowserRouter>
+   );
 }
 
 export default App;

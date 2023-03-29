@@ -12,9 +12,9 @@ This project is in progress
 
 ## Technologies Used
 
--   Reactjs
--   Firebase
--   Chakra UI
+-  Reactjs
+-  Firebase
+-  Chakra UI
 
 #### Current features
 
@@ -24,9 +24,9 @@ This project is in progress
 
 #### Presently working on:
 
--   Implementing typescript and automated testing
--   Organizing habits into different areas
--   Progress charts
+-  Implementing typescript and automated testing
+-  Organizing habits into different areas
+-  Progress charts
 
 ## Installation
 

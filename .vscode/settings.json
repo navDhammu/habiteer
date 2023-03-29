@@ -1,20 +1,13 @@
 {
-    "editor.quickSuggestions": { "strings": true },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "[javascriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-
-    //   "prettier.jsxSingleQuote": true,
-    //   "prettier.singleQuote": true,
-    //   "prettier.useTabs": true,
-    //   "prettier.tabWidth": 4,
-    //   "prettier.useEditorConfig": false,
-    "editor.formatOnSave": true,
-    "editor.detectIndentation": false,
-    "editor.codeActionsOnSave": {
-        "source.organizeImports": false
-    },
-    // "editor.tabSize": 3,
-    "typescript.tsdk": "node_modules/typescript/lib"
+   "editor.quickSuggestions": { "strings": true },
+   "editor.defaultFormatter": "esbenp.prettier-vscode",
+   "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+   },
+   "editor.formatOnSave": true,
+   "editor.detectIndentation": false,
+   "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+   },
+   "typescript.tsdk": "node_modules/typescript/lib"
 }
