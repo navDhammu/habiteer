@@ -1,72 +1,52 @@
-import {
-   Card,
-   CardBody,
-   CardHeader,
-   HStack,
-   VStack,
-   StackDivider,
-   Stat,
-   StatLabel,
-   StatNumber,
-   StatHelpText,
-   Flex,
-   Heading,
-   Container,
-} from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router';
-import {
-   CartesianGrid,
-   LineChart,
-   ResponsiveContainer,
-   Line,
-   Tooltip,
-   XAxis,
-   YAxis,
-} from 'recharts';
-
-import { format } from 'date-fns';
-import { getDocs, orderBy, query } from '@firebase/firestore';
-import { datesCollection } from 'services/firestoreReferences';
-import { useAppContext } from 'hooks/useAppContext';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
+import { AbsoluteCenter, Container, Heading, Text } from '@chakra-ui/react';
 
 export default function Dashboard() {
-   const { habits } = useAppContext();
-   const [chartData, setChartData] = useState([]);
-   const [loadingChartData, setLoadingChartData] = useState(true);
+   //    const { habits } = useAppContext();
+   //    const [chartData, setChartData] = useState([]);
+   //    const [loadingChartData, setLoadingChartData] = useState(true);
 
-   useEffect(() => {
-      (async function getChartData() {
-         const { docs } = await getDocs(
-            query(datesCollection(), orderBy('date'))
-         );
-         const chartData = docs.map((doc) => {
-            const { date, ...rest } = doc.data();
-            const habits = Object.values(rest);
-            const completedHabits = habits.filter((habit) => habit.isComplete);
-            return {
-               x: date.toDate(),
-               'Completion Rate':
-                  (completedHabits.length / habits.length) * 100,
-            };
-         });
+   //    useEffect(() => {
+   //       (async function getChartData() {
+   //          const { docs } = await getDocs(
+   //             query(datesCollection(), orderBy('date'))
+   //          );
+   //          const chartData = docs.map((doc) => {
+   //             const { date, ...rest } = doc.data();
+   //             const habits = Object.values(rest);
+   //             const completedHabits = habits.filter((habit) => habit.isComplete);
+   //             return {
+   //                x: date.toDate(),
+   //                'Completion Rate':
+   //                   (completedHabits.length / habits.length) * 100,
+   //             };
+   //          });
 
-         setChartData(chartData);
-         setLoadingChartData(false);
-      })();
-   }, []);
+   //          setChartData(chartData);
+   //          setLoadingChartData(false);
+   //       })();
+   //    }, []);
 
-   const totalCompletions = habits.reduce(
-      (prev, curr) => prev + curr.completions,
-      0
-   );
-   const totalCategories = new Set(habits.map((habit) => habit.habitCategory))
-      .size;
+   //    const totalCompletions = habits.reduce(
+   //       (prev, curr) => prev + curr.completions,
+   //       0
+   //    );
+   //    const totalCategories = new Set(habits.map((habit) => habit.habitCategory))
+   //       .size;
 
    return (
-      <Container maxW="container.lg">
+      <Container maxW="container.lg" position="relative" h="full">
          <Heading size="md">Dashboard</Heading>
-         <Card w="max-content" my="6">
+         <AbsoluteCenter axis="both" textAlign="center">
+            <InfoOutlineIcon w="6" h="6" />
+            <Text as="h2" fontSize="lg" fontWeight="bold">
+               Work In Progress
+            </Text>
+            <Text>
+               Content of this page is currently in development. Stay Tuned!
+            </Text>
+         </AbsoluteCenter>
+         {/* <Card w="max-content" my="6">
             <CardBody as={VStack} divider={<StackDivider />}>
                <Stat textAlign="center">
                   <StatLabel>Habits</StatLabel>
@@ -117,7 +97,7 @@ export default function Dashboard() {
                   </ResponsiveContainer>
                </CardBody>
             )}
-         </Card>
+         </Card> */}
       </Container>
    );
 }
