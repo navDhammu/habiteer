@@ -1,40 +1,38 @@
+import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import {
-   IconCalendarEvent,
-   IconFolder,
-   IconLayoutDashboard,
-   IconLogout,
-   IconPlus,
-   IconSeeding,
-} from '@tabler/icons';
-import { ChevronDownIcon, AddIcon } from '@chakra-ui/icons';
-import {
-   Button,
-   Box,
    Avatar,
-   Flex,
-   Text,
-   Link,
+   Box,
+   Button,
+   Card,
    Divider,
-   Icon,
    HStack,
+   Icon,
    IconButton,
+   Link,
    List,
    ListIcon,
    ListItem,
    Menu,
    MenuButton,
-   MenuList,
    MenuItem,
-   Card,
+   MenuList,
+   Text,
 } from '@chakra-ui/react';
+import {
+   IconCalendarEvent,
+   IconFolder,
+   IconLayoutDashboard,
+   IconLogout,
+   IconSeeding,
+} from '@tabler/icons';
 
+import CreateOrEditHabit from 'components/CreateOrEditHabit';
+import { HabitTodo } from 'pages/today';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { auth } from 'services';
 import { logout } from 'services/auth';
-import { useState } from 'react';
-import CreateOrEditHabit from 'components/CreateOrEditHabit';
 import { Habit } from '../AppLayout';
-import { HabitTodo } from 'pages/today';
 
 const links = [
    {
@@ -70,8 +68,8 @@ export default function Sidebar(props: SidebarProps) {
    return (
       <Card
          as="aside"
-         w={[0, 1 / 5]}
-         direction="column"
+         display={['none', null, 'flex']}
+         w="250px"
          bgColor="white"
          borderColor="gray.200"
          overflow="hidden"

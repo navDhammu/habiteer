@@ -1,11 +1,12 @@
+import { Box, Flex } from '@chakra-ui/react';
 import { onSnapshot, query } from '@firebase/firestore';
-import { useEffect, useState } from 'react';
-import { Outlet, useOutletContext } from 'react-router';
-import { habitsCollection } from '../../services/firestoreReferences';
-import Sidebar from './sidebar';
-import { Flex, Box } from '@chakra-ui/react';
-import useHabitTodos from 'hooks/useHabitTodos';
 import { AppContext } from 'hooks/useAppContext';
+import useHabitTodos from 'hooks/useHabitTodos';
+import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router';
+import { habitsCollection } from '../../services/firestoreReferences';
+import Header from './Header';
+import Sidebar from './sidebar';
 
 const SIDEBAR_BREAKPOINT = 768;
 
@@ -72,8 +73,9 @@ export default function AppLayout({ user }) {
    }, [user]);
 
    return (
-      <Flex h="100vh">
+      <Flex h="100vh" direction={['column', 'row']}>
          <Sidebar habits={habits} todayHabitTodos={todayHabitTodos} />
+         <Header />
          <Box as="main" flex="1" overflowY="scroll" p="8" bg="gray.50">
             <Outlet context={appContext} />
          </Box>
