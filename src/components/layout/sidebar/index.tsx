@@ -61,6 +61,7 @@ const links = [
 type SidebarProps = {
    habits: Habit[];
    todayHabitTodos: HabitTodo[];
+   isMobile?: boolean;
 };
 
 export default function Sidebar(props: SidebarProps) {
@@ -68,8 +69,10 @@ export default function Sidebar(props: SidebarProps) {
    return (
       <Card
          as="aside"
-         display={['none', null, 'flex']}
-         w="250px"
+         display={[props.isMobile ? 'flex' : 'none', null, 'flex']}
+         w={props.isMobile ? 'full' : '250px'}
+         h="full"
+         variant={props.isMobile && 'unstyled'}
          bgColor="white"
          borderColor="gray.200"
          overflow="hidden"
