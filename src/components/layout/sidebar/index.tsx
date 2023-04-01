@@ -61,8 +61,17 @@ const links = [
 type SidebarProps = {
    habits: Habit[];
    todayHabitTodos: HabitTodo[];
-   isMobile?: boolean;
-};
+} & ConditionalSidebarProps;
+
+type ConditionalSidebarProps =
+   | {
+        isMobile?: false;
+        onClose?: never;
+     }
+   | {
+        isMobile: true;
+        onClose: () => void;
+     };
 
 export default function Sidebar(props: SidebarProps) {
    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -89,6 +98,7 @@ export default function Sidebar(props: SidebarProps) {
                {links.map((link) => (
                   <ListItem>
                      <Link
+                        onClick={props.onClose}
                         display="flex"
                         alignItems="center"
                         gap="2"

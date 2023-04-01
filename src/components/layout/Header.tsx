@@ -38,6 +38,7 @@ export default function Header({ habits, todayHabitTodos }: HeaderProps) {
                   habits={habits}
                   todayHabitTodos={todayHabitTodos}
                   isMobile
+                  onClose={onClose}
                />
             </DrawerContent>
          </Drawer>
