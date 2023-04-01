@@ -73,10 +73,10 @@ export default function AppLayout({ user }) {
    }, [user]);
 
    return (
-      <Flex h="100vh" direction={['column', 'row']}>
+      <Flex h="100vh" direction={['column', null, 'row']}>
          <Sidebar habits={habits} todayHabitTodos={todayHabitTodos} />
          <Header habits={habits} todayHabitTodos={todayHabitTodos} />
-         <Box as="main" flex="1" overflowY="scroll" p="8" bg="gray.50">
+         <Box as="main" flex="1" overflowY="scroll" p={[2, 6, 8]} bg="gray.50">
             <Outlet context={appContext} />
          </Box>
       </Flex>
