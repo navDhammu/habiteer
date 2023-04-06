@@ -16,8 +16,8 @@ import {
 } from '@chakra-ui/react';
 import { IconFolder } from '@tabler/icons';
 import { format } from 'date-fns';
-import { HabitDetails } from 'lib/dbOperations';
 import { useState } from 'react';
+import { HabitsDoc } from 'services/docTypes';
 import { ModeProps } from './index';
 
 const today = format(new Date(), 'yyyy-MM-dd');
@@ -34,7 +34,7 @@ const weekdays = [
 
 type FormProps = ModeProps & {
    id: string;
-   onSubmit: (data: Partial<HabitDetails>) => void;
+   onSubmit: (data: Partial<HabitsDoc>) => void;
 };
 
 export default function HabitForm({
@@ -44,7 +44,7 @@ export default function HabitForm({
    onSubmit,
 }: FormProps) {
    const [errors, setErrors] = useState<{
-      [Property in keyof HabitDetails]?: string;
+      [Property in keyof HabitsDoc]?: string;
    }>({});
 
    const checkCustomValidity = (form: HTMLFormElement) => {

@@ -9,8 +9,10 @@ import {
    useToast,
 } from '@chakra-ui/react';
 import { DocumentReference } from 'firebase/firestore';
-import { createHabit, editHabit, HabitDetails } from 'lib/dbOperations';
 import { useId, useState } from 'react';
+import createHabit from 'services/createHabit';
+import { HabitsDoc } from 'services/docTypes';
+import editHabit from 'services/editHabit';
 import HabitForm from './HabitForm';
 
 export type ModeProps =
@@ -21,7 +23,7 @@ export type ModeProps =
      }
    | {
         mode: 'EDIT';
-        initialValues: HabitDetails;
+        initialValues: HabitsDoc;
         habitId: string;
      };
 
@@ -42,7 +44,7 @@ export default function CreateOrEditHabit({
    const isEditMode = mode === 'EDIT';
    const toast = useToast();
 
-   const handleSubmit = (data: Partial<HabitDetails>) => {
+   const handleSubmit = (data: Partial<HabitsDoc>) => {
       setIsSubmitting(true);
       let promise: Promise<void | DocumentReference>;
       promise = isEditMode ? editHabit(habitId, data) : createHabit(data);

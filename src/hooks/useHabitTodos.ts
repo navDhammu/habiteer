@@ -1,9 +1,11 @@
 import { limit, onSnapshot, query, where } from '@firebase/firestore';
 import { endOfDay, isToday, startOfDay } from 'date-fns';
 import { db } from 'lib/db';
-import { createDateDoc, DateDoc, markHabitComplete } from 'lib/dbOperations';
 import { HabitTodo } from 'pages/today';
 import { useEffect, useRef, useState } from 'react';
+import createDateDoc from 'services/createDateDoc';
+import { DateDoc } from 'services/docTypes';
+import markHabitComplete from 'services/markHabitComplete';
 import { AppContext, useAppContext } from './useAppContext';
 
 type HandleCheck = AppContext['today']['handleCheck'];
