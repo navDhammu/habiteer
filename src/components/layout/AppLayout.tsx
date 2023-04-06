@@ -2,9 +2,9 @@ import { Box, Flex } from '@chakra-ui/react';
 import { onSnapshot, query } from '@firebase/firestore';
 import { AppContext } from 'hooks/useAppContext';
 import useHabitTodos from 'hooks/useHabitTodos';
+import { db } from 'lib/db';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
-import { habitsCollection } from '../../services/firestoreReferences';
 import Header from './Header';
 import Sidebar from './sidebar';
 
@@ -34,7 +34,7 @@ export default function AppLayout({ user }) {
    useEffect(() => {
       if (user) {
          return onSnapshot(
-            query(habitsCollection()),
+            query(db.getColRef('habits')),
             { includeMetadataChanges: true },
             (snapshot) => {
                if (snapshot.empty) {
@@ -67,7 +67,8 @@ export default function AppLayout({ user }) {
                         throw new Error(`type ${type} not found`);
                   }
                });
-            }
+            },
+            (error) => console.log(error)
          );
       }
    }, [user]);

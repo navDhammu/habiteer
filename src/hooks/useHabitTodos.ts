@@ -1,13 +1,9 @@
 import { limit, onSnapshot, query, where } from '@firebase/firestore';
 import { endOfDay, isToday, startOfDay } from 'date-fns';
+import { db } from 'lib/db';
+import { createDateDoc, DateDoc, markHabitComplete } from 'lib/dbOperations';
 import { HabitTodo } from 'pages/today';
 import { useEffect, useRef, useState } from 'react';
-import {
-   createDateDoc,
-   DateDoc,
-   markHabitComplete,
-} from 'services/dbOperations';
-import { datesCollection } from 'services/firestoreReferences';
 import { AppContext, useAppContext } from './useAppContext';
 
 type HandleCheck = AppContext['today']['handleCheck'];
@@ -28,7 +24,7 @@ export default function useHabitTodos(date: Date): [HabitTodo[], HandleCheck] {
       if (!shouldAttachListener) return;
       return onSnapshot(
          query(
-            datesCollection(),
+            db.getColRef('dates'),
             where('date', '>=', startOfDay(date)),
             where('date', '<=', endOfDay(date)),
             limit(1)
@@ -48,7 +44,8 @@ export default function useHabitTodos(date: Date): [HabitTodo[], HandleCheck] {
                   }))
                );
             }
-         }
+         },
+         (error) => console.log(error.code)
       );
    }, [date]);
 

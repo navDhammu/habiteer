@@ -27,11 +27,11 @@ import {
 } from '@tabler/icons';
 
 import CreateOrEditHabit from 'components/CreateOrEditHabit';
+import { auth } from 'lib';
+import { logout } from 'lib/auth';
 import { HabitTodo } from 'pages/today';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { auth } from 'services';
-import { logout } from 'services/auth';
 import { Habit } from '../AppLayout';
 
 const links = [

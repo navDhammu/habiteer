@@ -1,30 +1,18 @@
 import {
    addDoc,
-   arrayUnion,
    deleteField,
    getDocs,
    increment,
    orderBy,
    query,
-   setDoc,
-   where,
-   doc,
-   limit,
    updateDoc,
+   where,
    writeBatch,
 } from '@firebase/firestore';
 import { Habit } from 'components/layout/AppLayout';
-import { endOfDay, startOfDay } from 'date-fns';
-import { nanoid } from 'nanoid';
+import { firestore } from 'lib';
 import { getDayOfWeek } from 'utils/dates';
-import { db } from '.';
-import {
-   datesCollection,
-   getDateDoc,
-   getHabitDoc,
-   getUserDoc,
-   habitsCollection,
-} from './firestoreReferences';
+import { db } from './db';
 
 export type HabitDetails = Omit<Habit, 'id'>;
 
@@ -51,26 +39,13 @@ export function createHabit(
    ) {
       throw new Error('incorrect HabitDetails for createHabit');
    }
-   return addDoc(habitsCollection(), {
+   return addDoc(db.getColRef('habits'), {
       createdOn: new Date(),
       completions: 0,
       currentStreak: 0,
       bestStreak: 0,
       ...documentFields,
-   })
-      .then((doc) => {
-         setDoc(
-            getDateDoc(new Date()),
-            {
-               [doc.id]: {
-                  name: documentFields.name,
-                  isComplete: false,
-               },
-            },
-            { merge: true }
-         );
-      })
-      .catch((err) => console.log('error', err));
+   }).catch((err) => console.log('error', err));
 }
 
 //edit existing habit
@@ -78,7 +53,7 @@ export function editHabit(
    habitId: string,
    documentFields: Partial<HabitDetails>
 ) {
-   return updateDoc(getHabitDoc(habitId), {
+   return updateDoc(db.getDocRef('habits', habitId), {
       lastUpdated: new Date(),
       ...documentFields,
    });
@@ -86,24 +61,15 @@ export function editHabit(
 
 //delete habit
 export async function deleteHabit(habitId) {
-   const habitDoc = getHabitDoc(habitId);
-   const q = query(datesCollection(), orderBy(`${habitId}`));
-   const batch = writeBatch(db);
+   const q = query(db.getColRef('dates'), orderBy(`${habitId}`));
+   const batch = writeBatch(firestore);
    const snapshot = await getDocs(q);
 
    snapshot.forEach((doc) => {
-      batch.update(getDateDoc(doc.id), { [habitId]: deleteField() });
+      batch.update(db.getDocRef('dates', doc.id), { [habitId]: deleteField() });
    });
-   batch.delete(habitDoc);
+   batch.delete(db.getDocRef('habits', habitId));
    return batch.commit();
-}
-
-export function createCategory(name) {
-   return setDoc(
-      getUserDoc(),
-      { categories: arrayUnion({ id: nanoid(), name }) },
-      { merge: true }
-   );
 }
 
 export async function markHabitComplete(
@@ -111,11 +77,11 @@ export async function markHabitComplete(
    habitId: string,
    docId: string
 ) {
-   const batch = writeBatch(db);
-   batch.update(getDateDoc(docId), {
+   const batch = writeBatch(firestore);
+   batch.update(db.getDocRef('dates', docId), {
       [`habits.${habitId}.isComplete`]: isComplete,
    });
-   batch.update(getHabitDoc(habitId), {
+   batch.update(db.getDocRef('habits', habitId), {
       completions: increment(isComplete ? 1 : -1),
    });
    return batch.commit();
@@ -124,7 +90,7 @@ export async function markHabitComplete(
 export async function createDateDoc(date: Date) {
    const querySnapshot = await getDocs(
       query(
-         habitsCollection(),
+         db.getColRef('habits'),
          where('repeatDays', 'array-contains', getDayOfWeek(date))
       )
    );
@@ -138,5 +104,5 @@ export async function createDateDoc(date: Date) {
       };
    });
 
-   return addDoc<DateDoc>(datesCollection(), { date, habits });
+   return addDoc(db.getColRef('dates'), { date, habits });
 }

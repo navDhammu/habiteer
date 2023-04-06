@@ -1,33 +1,33 @@
 import {
+   AlertDialog,
+   AlertDialogBody,
+   AlertDialogContent,
+   AlertDialogFooter,
+   AlertDialogHeader,
+   AlertDialogOverlay,
+   Badge,
+   Box,
+   Button,
+   Card,
+   CardBody,
+   CardHeader,
+   Flex,
+   Heading,
    IconButton,
    Menu,
    MenuButton,
-   MenuList,
    MenuItem,
-   Heading,
-   Card,
-   Flex,
-   CardHeader,
+   MenuList,
    Tag,
-   Badge,
-   CardBody,
-   AlertDialog,
-   AlertDialogOverlay,
-   AlertDialogContent,
-   AlertDialogBody,
-   AlertDialogHeader,
-   AlertDialogFooter,
-   Button,
-   Box,
    useToast,
 } from '@chakra-ui/react';
 
 import { Icon } from '@chakra-ui/icons';
 import { IconDots, IconEdit, IconTrash } from '@tabler/icons';
-import { Habit } from 'components/layout/AppLayout';
-import { useRef, useState } from 'react';
 import CreateOrEditHabit from 'components/CreateOrEditHabit';
-import { deleteHabit } from 'services/dbOperations';
+import { Habit } from 'components/layout/AppLayout';
+import { deleteHabit } from 'lib/dbOperations';
+import { useRef, useState } from 'react';
 
 export default function HabitCard(props: Habit) {
    const [isEditingHabit, setIsEditingHabit] = useState(false);

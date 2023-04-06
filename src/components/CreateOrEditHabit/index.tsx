@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { createHabit, editHabit, HabitDetails } from 'services/dbOperations';
 import {
+   Button,
    Drawer,
    DrawerBody,
    DrawerContent,
    DrawerFooter,
    DrawerHeader,
-   Button,
    DrawerOverlay,
    useToast,
 } from '@chakra-ui/react';
+import { DocumentReference } from 'firebase/firestore';
+import { createHabit, editHabit, HabitDetails } from 'lib/dbOperations';
+import { useId, useState } from 'react';
 import HabitForm from './HabitForm';
-import { useId } from 'react';
 
 export type ModeProps =
    | {
@@ -44,7 +44,7 @@ export default function CreateOrEditHabit({
 
    const handleSubmit = (data: Partial<HabitDetails>) => {
       setIsSubmitting(true);
-      let promise: Promise<void>;
+      let promise: Promise<void | DocumentReference>;
       promise = isEditMode ? editHabit(habitId, data) : createHabit(data);
       promise
          .then(() =>

@@ -15,6 +15,6 @@ const app = initializeApp(
    'habiterr'
 );
 
-export const db = getFirestore(app);
+export const firestore = getFirestore(app);
 
 export const auth = getAuth(app);

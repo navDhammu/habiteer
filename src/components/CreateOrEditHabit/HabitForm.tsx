@@ -9,15 +9,15 @@ import {
    Input,
    InputGroup,
    InputLeftElement,
+   Text,
    VStack,
    Wrap,
    WrapItem,
-   Text,
 } from '@chakra-ui/react';
 import { IconFolder } from '@tabler/icons';
 import { format } from 'date-fns';
+import { HabitDetails } from 'lib/dbOperations';
 import { useState } from 'react';
-import { HabitDetails } from 'services/dbOperations';
 import { ModeProps } from './index';
 
 const today = format(new Date(), 'yyyy-MM-dd');

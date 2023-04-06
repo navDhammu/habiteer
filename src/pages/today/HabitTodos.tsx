@@ -1,13 +1,12 @@
 import {
-   Heading,
    Card,
-   CardHeader,
    CardBody,
+   CardHeader,
+   Checkbox,
+   Heading,
    List,
    ListItem,
-   Checkbox,
 } from '@chakra-ui/react';
-import { markHabitComplete } from 'services/dbOperations';
 import { HabitTodo } from '.';
 
 type HabitTodosProps = {

@@ -1,8 +1,8 @@
-import { signInWithEmailAndPassword } from '@firebase/auth';
-import { useState } from 'react';
-import { Divider, Text, Center, Button, Flex } from '@chakra-ui/react';
 import { ArrowRightIcon } from '@chakra-ui/icons';
-import { auth } from 'services';
+import { Button, Center, Divider, Flex, Text } from '@chakra-ui/react';
+import { signInWithEmailAndPassword } from '@firebase/auth';
+import { auth } from 'lib';
+import { useState } from 'react';
 
 export default function TestUser() {
    const [isLoggingIn, setIsLoggingIn] = useState(false);

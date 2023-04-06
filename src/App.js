@@ -2,12 +2,12 @@ import AppLayout from 'components/layout/AppLayout';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { auth } from './lib';
 import PageNotFound from './pages/404';
 import AllHabits from './pages/all-habits';
 import Dashboard from './pages/dashboard';
 import Login from './pages/login';
 import Today from './pages/today';
-import { auth } from './services';
 
 function App() {
    const [user, setUser] = useState(null);
@@ -17,6 +17,7 @@ function App() {
    }, []);
 
    if (user == null) return 'loading...';
+
    return (
       <BrowserRouter>
          <Routes>

@@ -1,28 +1,17 @@
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import useForm from 'hooks/useForm';
+import { auth } from 'lib';
 import { BiLogIn } from 'react-icons/bi';
-import { auth } from 'services';
-import { ArrowRightIcon } from '@chakra-ui/icons';
 
 import {
-   Button,
-   Divider,
-   Input,
    Alert,
    AlertIcon,
-   Icon,
-   InputGroup,
-   Heading,
-   FormControl,
-   InputLeftAddon,
-   FormLabel,
-   Box,
-   Flex,
-   Text,
-   Center,
+   Button,
    Card,
    CardBody,
+   FormControl,
+   FormLabel,
+   Input,
 } from '@chakra-ui/react';
 
 export default function LoginForm() {
