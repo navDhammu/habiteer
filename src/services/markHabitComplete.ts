@@ -1,6 +1,6 @@
 import { increment, writeBatch } from 'firebase/firestore';
 import { firestore } from 'lib';
-import { db } from 'lib/db';
+import { datesDocRef, habitsDocRef } from 'lib/db';
 
 export default async function markHabitComplete(
    isComplete: boolean,
@@ -8,10 +8,17 @@ export default async function markHabitComplete(
    docId: string
 ) {
    const batch = writeBatch(firestore);
-   batch.update(db.getDocRef('dates', docId), {
-      [`habits.${habitId}.isComplete`]: isComplete,
-   });
-   batch.update(db.getDocRef('habits', habitId), {
+   batch.update(
+      datesDocRef(docId),
+      // 'habits': {
+      //            [habitId]: {
+      //                    isComplete
+      //            }
+      //    }
+      `habits.${habitId}.isComplete`,
+      isComplete
+   );
+   batch.update(habitsDocRef(habitId), {
       completions: increment(isComplete ? 1 : -1),
    });
    return batch.commit();

@@ -1,12 +1,12 @@
 import { addDoc, getDocs, query, where } from 'firebase/firestore';
-import { db } from 'lib/db';
+import { datesColRef, habitsColRef } from 'lib/db';
 import { getDayOfWeek } from 'utils/dates';
 import { DateDoc } from './docTypes';
 
 export default async function createDateDoc(date: Date) {
    const querySnapshot = await getDocs(
       query(
-         db.getColRef('habits'),
+         habitsColRef(),
          where('repeatDays', 'array-contains', getDayOfWeek(date))
       )
    );
@@ -20,5 +20,5 @@ export default async function createDateDoc(date: Date) {
       };
    });
 
-   return addDoc(db.getColRef('dates'), { date, habits });
+   return addDoc(datesColRef(), { date, habits });
 }

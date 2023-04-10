@@ -1,5 +1,5 @@
 import { addDoc } from 'firebase/firestore';
-import { db } from 'lib/db';
+import { habitsColRef } from 'lib/db';
 import { HabitsDoc } from './docTypes';
 
 export default function createHabit(
@@ -14,7 +14,7 @@ export default function createHabit(
    ) {
       throw new Error('incorrect HabitDetails for createHabit');
    }
-   return addDoc(db.getColRef('habits'), {
+   return addDoc(habitsColRef(), {
       createdOn: new Date(),
       completions: 0,
       currentStreak: 0,

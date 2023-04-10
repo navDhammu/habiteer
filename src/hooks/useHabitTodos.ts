@@ -1,6 +1,6 @@
 import { limit, onSnapshot, query, where } from '@firebase/firestore';
 import { endOfDay, isToday, startOfDay } from 'date-fns';
-import { db } from 'lib/db';
+import { datesColRef } from 'lib/db';
 import { HabitTodo } from 'pages/today';
 import { useEffect, useRef, useState } from 'react';
 import createDateDoc from 'services/createDateDoc';
@@ -26,7 +26,7 @@ export default function useHabitTodos(date: Date): [HabitTodo[], HandleCheck] {
       if (!shouldAttachListener) return;
       return onSnapshot(
          query(
-            db.getColRef('dates'),
+            datesColRef(),
             where('date', '>=', startOfDay(date)),
             where('date', '<=', endOfDay(date)),
             limit(1)

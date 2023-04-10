@@ -6,16 +6,16 @@ import {
    writeBatch,
 } from 'firebase/firestore';
 import { firestore } from 'lib';
-import { db } from 'lib/db';
+import { datesColRef, datesDocRef, habitsDocRef } from 'lib/db';
 
-export default async function deleteHabit(habitId) {
-   const q = query(db.getColRef('dates'), orderBy(`${habitId}`));
+export default async function deleteHabit(habitId: string) {
+   const q = query(datesColRef(), orderBy(`${habitId}`));
    const batch = writeBatch(firestore);
    const snapshot = await getDocs(q);
 
    snapshot.forEach((doc) => {
-      batch.update(db.getDocRef('dates', doc.id), { [habitId]: deleteField() });
+      batch.update(datesDocRef(doc.id), { [habitId]: deleteField() });
    });
-   batch.delete(db.getDocRef('habits', habitId));
+   batch.delete(habitsDocRef(habitId));
    return batch.commit();
 }

@@ -2,7 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 import { onSnapshot, query } from '@firebase/firestore';
 import { AppContext } from 'hooks/useAppContext';
 import useHabitTodos from 'hooks/useHabitTodos';
-import { db } from 'lib/db';
+import { habitsColRef } from 'lib/db';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 import Header from './Header';
@@ -34,7 +34,7 @@ export default function AppLayout({ user }) {
    useEffect(() => {
       if (user) {
          return onSnapshot(
-            query(db.getColRef('habits')),
+            query(habitsColRef()),
             { includeMetadataChanges: true },
             (snapshot) => {
                if (snapshot.empty) {
