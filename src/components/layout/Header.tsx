@@ -8,7 +8,7 @@ import {
    useDisclosure,
 } from '@chakra-ui/react';
 import { HabitTodo } from 'pages/today';
-import { Habit } from './AppLayout';
+import { Habit } from 'types/Habit';
 import Sidebar from './sidebar';
 
 type HeaderProps = {

@@ -8,10 +8,10 @@ import {
    DrawerOverlay,
    useToast,
 } from '@chakra-ui/react';
-import { Habit } from 'components/layout/AppLayout';
 import { DocumentReference } from 'firebase/firestore';
 import { useId, useState } from 'react';
 import createHabit from 'services/createHabit';
+import { Habit } from 'types/Habit';
 
 import editHabit from 'services/editHabit';
 import HabitForm from './HabitForm';

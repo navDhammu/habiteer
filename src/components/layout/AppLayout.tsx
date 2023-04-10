@@ -5,19 +5,11 @@ import useHabitTodos from 'hooks/useHabitTodos';
 import { habitsColRef } from 'lib/db';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
+import { Habit } from 'types/Habit';
 import Header from './Header';
 import Sidebar from './sidebar';
 
 const SIDEBAR_BREAKPOINT = 768;
-
-export type Habit = {
-   id: string;
-   name: string;
-   category: string;
-   description: string;
-   trackingStartDate: string;
-   repeatDays: string[];
-};
 
 const today = new Date();
 

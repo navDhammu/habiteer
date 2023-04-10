@@ -25,9 +25,9 @@ import {
 import { Icon } from '@chakra-ui/icons';
 import { IconDots, IconEdit, IconTrash } from '@tabler/icons';
 import CreateOrEditHabit from 'components/CreateOrEditHabit';
-import { Habit } from 'components/layout/AppLayout';
 import { useRef, useState } from 'react';
 import deleteHabit from 'services/deleteHabit';
+import { Habit } from 'types/Habit';
 
 export default function HabitCard(props: Habit) {
    const [isEditingHabit, setIsEditingHabit] = useState(false);

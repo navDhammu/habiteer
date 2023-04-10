@@ -1,5 +1,4 @@
-import { List, ListItem, Heading, Container } from '@chakra-ui/react';
-import { Habit } from 'components/layout/AppLayout';
+import { Container, Heading, List, ListItem } from '@chakra-ui/react';
 import { useAppContext } from 'hooks/useAppContext';
 import HabitCard from './HabitCard';
 

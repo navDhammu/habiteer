@@ -1,4 +1,4 @@
-import { Habit } from 'components/layout/AppLayout';
+import { Habit } from './Habit';
 
 export type HabitsDoc = Omit<Habit, 'id'> & {
    createdOn: Date;

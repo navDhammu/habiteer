@@ -32,7 +32,7 @@ import { logout } from 'lib/auth';
 import { HabitTodo } from 'pages/today';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Habit } from '../AppLayout';
+import { Habit } from 'types/Habit';
 
 const links = [
    {
