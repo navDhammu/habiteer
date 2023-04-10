@@ -17,7 +17,7 @@ import {
 import { IconFolder } from '@tabler/icons';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import { HabitsDoc } from 'services/docTypes';
+import { HabitsDoc } from 'types/firestoreDocTypes';
 import { ModeProps } from './index';
 
 const today = format(new Date(), 'yyyy-MM-dd');

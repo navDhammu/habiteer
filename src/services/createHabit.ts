@@ -1,6 +1,6 @@
 import { addDoc } from 'firebase/firestore';
 import { habitsColRef } from 'lib/db';
-import { HabitsDoc } from './docTypes';
+import { HabitsDoc } from 'types/firestoreDocTypes';
 
 export default function createHabit(
    documentFields: HabitsDoc | Partial<HabitsDoc>

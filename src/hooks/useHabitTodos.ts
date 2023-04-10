@@ -4,8 +4,8 @@ import { datesColRef } from 'lib/db';
 import { HabitTodo } from 'pages/today';
 import { useEffect, useRef, useState } from 'react';
 import createDateDoc from 'services/createDateDoc';
-import { DateDoc } from 'services/docTypes';
 import markHabitComplete from 'services/markHabitComplete';
+import { DateDoc } from 'types/firestoreDocTypes';
 import { AppContext, useAppContext } from './useAppContext';
 
 type HandleCheck = AppContext['today']['handleCheck'];

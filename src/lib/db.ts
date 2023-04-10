@@ -5,7 +5,7 @@ import {
    DocumentReference,
 } from '@firebase/firestore';
 import { auth, firestore } from 'lib';
-import { DateDoc, HabitsDoc } from 'services/docTypes';
+import { DateDoc, HabitsDoc } from 'types/firestoreDocTypes';
 
 // needs to be a function because currentUser is null at page load
 const getUserDocPath = () => `users/${auth.currentUser?.uid}`;

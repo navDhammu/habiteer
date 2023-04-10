@@ -1,7 +1,7 @@
 import { addDoc, getDocs, query, where } from 'firebase/firestore';
 import { datesColRef, habitsColRef } from 'lib/db';
+import { DateDoc } from 'types/firestoreDocTypes';
 import { getDayOfWeek } from 'utils/dates';
-import { DateDoc } from './docTypes';
 
 export default async function createDateDoc(date: Date) {
    const querySnapshot = await getDocs(
