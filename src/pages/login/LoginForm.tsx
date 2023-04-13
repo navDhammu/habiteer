@@ -1,5 +1,4 @@
 import { signInWithEmailAndPassword } from '@firebase/auth';
-import useForm from 'hooks/useForm';
 import { auth } from 'lib';
 import { BiLogIn } from 'react-icons/bi';
 
@@ -13,19 +12,26 @@ import {
    FormLabel,
    Input,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 
 export default function LoginForm() {
-   const {
-      data,
-      errorCode,
-      isSubmitting,
-      handleChange,
-      handleInvalid,
-      handleSubmit,
-   } = useForm({
-      onSubmit: (data) =>
-         signInWithEmailAndPassword(auth, data.email, data.password),
-   });
+   const [email, setEmail] = useState('');
+   const [password, setPassword] = useState('');
+   const [isLoginError, setIsLoginError] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
+
+   const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) =>
+      setEmail(e.target.value);
+   const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) =>
+      setPassword(e.target.value);
+
+   const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsLoading(true);
+      signInWithEmailAndPassword(auth, email, password)
+         .catch(() => setIsLoginError(true))
+         .finally(() => setIsLoading(false));
+   };
 
    return (
       <Card
@@ -34,39 +40,39 @@ export default function LoginForm() {
          flexDirection="column"
          gap="6"
          onSubmit={handleSubmit}
-         onInvalid={handleInvalid}
+         //  onInvalid={handleInvalid}
       >
          <CardBody display="flex" flexDirection="column" gap="4">
             <FormControl>
                <FormLabel>Email</FormLabel>
                <Input
                   type="email"
-                  value={data.email || ''}
-                  onChange={handleChange('email')}
+                  value={email}
+                  onChange={handleEmailInput}
                   placeholder="name@domain.com"
                />
             </FormControl>
             <FormControl>
                <FormLabel>Password</FormLabel>
                <Input
-                  value={data.password || ''}
-                  onChange={handleChange('password')}
+                  value={password}
+                  onChange={handlePasswordInput}
                   type="password"
                   placeholder="atleast 8 characters"
                />
             </FormControl>
-            {errorCode?.includes('auth') && (
+            {isLoginError && (
                <Alert status="error">
                   <AlertIcon />
                   Invalid username or password
                </Alert>
             )}
             <Button
-               isLoading={isSubmitting}
+               isLoading={isLoading}
                colorScheme="green"
                type="submit"
-               disabled={isSubmitting}
-               IconRight={BiLogIn}
+               disabled={isLoading}
+               rightIcon={<BiLogIn />}
             >
                Login
             </Button>

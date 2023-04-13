@@ -15,74 +15,75 @@ import {
    WrapItem,
 } from '@chakra-ui/react';
 import { IconFolder } from '@tabler/icons';
-import { format } from 'date-fns';
+import { format, formatISO, parseISO } from 'date-fns';
+import { Timestamp } from 'firebase/firestore';
 import { useState } from 'react';
-import { HabitsDoc } from 'types/firestoreDocTypes';
+import { Habit } from 'types/Habit';
 import { ModeProps } from './index';
 
 const today = format(new Date(), 'yyyy-MM-dd');
 
-const weekdays = [
-   'Sunday',
-   'Monday',
-   'Tuesday',
-   'Wednesday',
-   'Thursday',
-   'Friday',
-   'Saturday',
-];
-
-type FormProps = ModeProps & {
-   id: string;
-   onSubmit: (data: Partial<HabitsDoc>) => void;
+type HabitFormProps = ModeProps & {
+   formId: string;
+   onSubmit: (data: FormValues) => void;
 };
+
+export type FormValues = Omit<Habit, 'id'>;
 
 export default function HabitForm({
    mode,
-   id,
+   formId,
    initialValues,
    onSubmit,
-}: FormProps) {
+}: HabitFormProps) {
+   const [values, setValues] = useState<FormValues>(
+      mode === 'EDIT'
+         ? initialValues
+         : {
+              name: '',
+              category: '',
+              description: '',
+              repeatDays: {
+                 monday: true,
+                 tuesday: true,
+                 wednesday: true,
+                 thursday: true,
+                 friday: true,
+                 saturday: true,
+                 sunday: true,
+              },
+              trackingStartDate: new Date(),
+           }
+   );
    const [errors, setErrors] = useState<{
-      [Property in keyof HabitsDoc]?: string;
+      [Property in keyof FormValues]?: string;
    }>({});
 
-   const checkCustomValidity = (form: HTMLFormElement) => {
-      const isValid = new FormData(form).has('repeatDays');
-      setErrors((prevErrors) => ({
-         ...prevErrors,
-         repeatDays: isValid ? '' : 'Please select at least one day',
-      }));
-      return isValid;
-   };
-
-   const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      const form = e.target as HTMLFormElement;
-      const isValid = form.checkValidity();
-      const isCustomValid = checkCustomValidity(form);
-
-      if (isValid && isCustomValid) {
-         const formData = new FormData(form);
-         const repeatDays = formData.getAll('repeatDays') as string[];
-         onSubmit({ ...Object.fromEntries(formData.entries()), repeatDays });
-      }
-   };
-
-   const handleInvalid = (e: React.FormEvent) => {
-      const target = e.target as HTMLFormElement;
-      setErrors((prevErrors) => ({
-         ...prevErrors,
-         [target.name]: target.validationMessage,
-      }));
-   };
+   const handleChange =
+      (key: keyof Habit) => (e: React.ChangeEvent<HTMLInputElement>) => {
+         if (key === 'trackingStartDate') {
+            setValues({ ...values, [key]: parseISO(e.target.value) });
+         } else if (key === 'repeatDays') {
+            setValues({
+               ...values,
+               [key]: {
+                  ...values.repeatDays,
+                  [e.target.name]: e.target.checked,
+               },
+            });
+         } else {
+            setValues({ ...values, [key]: e.target.value });
+         }
+      };
 
    return (
       <Box
          as="form"
-         id={id}
-         onSubmit={handleSubmit}
-         onInvalid={handleInvalid}
+         id={formId}
+         onSubmit={(e: React.FormEvent) => {
+            e.preventDefault();
+            onSubmit(values);
+         }}
          noValidate
       >
          <VStack spacing="4" align="start">
@@ -95,8 +96,8 @@ export default function HabitForm({
                <Input
                   name="name"
                   placeholder="eg. Read for 30 minutes"
-                  onBlur={handleInvalid}
-                  defaultValue={initialValues?.name}
+                  value={values.name}
+                  onChange={handleChange('name')}
                   required
                />
                <FormErrorMessage>{errors.name}</FormErrorMessage>
@@ -115,10 +116,10 @@ export default function HabitForm({
                   <Input
                      name="category"
                      placeholder="Choose Category"
-                     defaultValue={initialValues?.category}
+                     value={values.category}
+                     onChange={handleChange('category')}
                   />
                </InputGroup>
-               {/* <FormErrorMessage>{errors.habitCategory}</FormErrorMessage> */}
             </FormControl>
          </VStack>
          <VStack spacing="4" align="start" mt="4">
@@ -131,11 +132,13 @@ export default function HabitForm({
                   type="date"
                   name="trackingStartDate"
                   disabled={mode === 'EDIT'}
-                  onBlur={handleInvalid}
-                  defaultValue={
-                     initialValues?.trackingStartDate ??
-                     format(new Date(), 'yyyy-MM-dd')
-                  }
+                  value={formatISO(
+                     values.trackingStartDate instanceof Timestamp
+                        ? values.trackingStartDate.toDate()
+                        : values.trackingStartDate,
+                     { representation: 'date' }
+                  )}
+                  onChange={handleChange('trackingStartDate')}
                   min={today}
                   required
                />
@@ -144,16 +147,14 @@ export default function HabitForm({
             <FormControl as="fieldset" isInvalid={!!errors.repeatDays}>
                <FormLabel as="legend">Habit repeat schedule</FormLabel>
                <Wrap spacing="4">
-                  {weekdays.map((day) => (
+                  {Object.keys(values.repeatDays).map((day) => (
                      <WrapItem key={day}>
                         <Checkbox
                            colorScheme="green"
-                           name="repeatDays"
+                           name={day}
                            value={day}
-                           onChange={(e) => checkCustomValidity(e.target.form)}
-                           defaultChecked={
-                              initialValues?.repeatDays.includes(day) ?? true
-                           }
+                           isChecked={values.repeatDays[day]}
+                           onChange={handleChange('repeatDays')}
                         >
                            {day}
                         </Checkbox>

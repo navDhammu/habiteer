@@ -7,9 +7,11 @@ export default async function createDateDoc(date: Date) {
    const querySnapshot = await getDocs(
       query(
          habitsColRef(),
-         where('repeatDays', 'array-contains', getDayOfWeek(date))
+         where(`repeatDays.${getDayOfWeek(date).toLowerCase()}`, '==', true)
       )
    );
+
+   console.log(querySnapshot);
 
    const habits: DateDoc['habits'] = {};
 

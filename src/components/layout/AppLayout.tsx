@@ -36,8 +36,8 @@ export default function AppLayout({ user }) {
                snapshot.docChanges().forEach(({ type, doc }) => {
                   const change = {
                      id: doc.id,
-                     ...(doc.data() as {}),
-                  } as Habit;
+                     ...doc.data(),
+                  };
                   switch (type) {
                      case 'added':
                         setHabits((prev) => [...prev, change]);

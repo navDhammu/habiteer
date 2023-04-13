@@ -8,13 +8,12 @@ import {
    DrawerOverlay,
    useToast,
 } from '@chakra-ui/react';
-import { DocumentReference } from 'firebase/firestore';
 import { useId, useState } from 'react';
 import createHabit from 'services/createHabit';
 import { Habit } from 'types/Habit';
 
 import editHabit from 'services/editHabit';
-import HabitForm from './HabitForm';
+import HabitForm, { FormValues } from './HabitForm';
 
 export type ModeProps =
    | {
@@ -45,10 +44,9 @@ export default function CreateOrEditHabit({
    const isEditMode = mode === 'EDIT';
    const toast = useToast();
 
-   const handleSubmit = (data: Partial<Habit>) => {
+   const handleSubmit = (data: FormValues) => {
       setIsSubmitting(true);
-      let promise: Promise<void | DocumentReference>;
-      promise = isEditMode ? editHabit(habitId, data) : createHabit(data);
+      let promise = isEditMode ? editHabit(habitId, data) : createHabit(data);
       promise
          .then(() =>
             toast({
@@ -82,14 +80,18 @@ export default function CreateOrEditHabit({
             <DrawerBody>
                {isEditMode ? (
                   <HabitForm
-                     id={formId}
+                     formId={formId}
                      mode={mode}
                      initialValues={initialValues}
                      onSubmit={handleSubmit}
-                     habitId="hksdjfhg"
+                     habitId={habitId}
                   />
                ) : (
-                  <HabitForm id={formId} mode={mode} onSubmit={handleSubmit} />
+                  <HabitForm
+                     formId={formId}
+                     mode={mode}
+                     onSubmit={handleSubmit}
+                  />
                )}
             </DrawerBody>
             <DrawerFooter>

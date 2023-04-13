@@ -1,16 +1,16 @@
-import { Navigate } from 'react-router';
-import LoginForm from './LoginForm';
 import {
    Box,
-   Heading,
-   Container,
    Center,
-   Text,
-   Icon,
-   VStack,
+   Container,
+   Heading,
    HStack,
+   Icon,
+   Text,
+   VStack,
 } from '@chakra-ui/react';
 import { IconSeeding } from '@tabler/icons';
+import { Navigate } from 'react-router';
+import LoginForm from './LoginForm';
 import TestUser from './TestUser';
 
 export default function Login({ user }) {

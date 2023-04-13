@@ -3,9 +3,9 @@ import { Habit } from './Habit';
 export type HabitsDoc = Omit<Habit, 'id'> & {
    createdOn: Date;
    lastUpdated: Date;
-   completions: 0;
-   currentStreak: 0;
-   bestStreak: 0;
+   completions: number;
+   currentStreak: number;
+   bestStreak: number;
 };
 
 export type DateDoc = {
