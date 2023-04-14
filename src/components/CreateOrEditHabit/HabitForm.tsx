@@ -52,7 +52,7 @@ export default function HabitForm({
                  saturday: true,
                  sunday: true,
               },
-              trackingStartDate: new Date(),
+              trackingStartDate: Timestamp.fromDate(new Date()),
            }
    );
    const [errors, setErrors] = useState<{
@@ -62,7 +62,10 @@ export default function HabitForm({
    const handleChange =
       (key: keyof Habit) => (e: React.ChangeEvent<HTMLInputElement>) => {
          if (key === 'trackingStartDate') {
-            setValues({ ...values, [key]: parseISO(e.target.value) });
+            setValues({
+               ...values,
+               [key]: Timestamp.fromDate(parseISO(e.target.value)),
+            });
          } else if (key === 'repeatDays') {
             setValues({
                ...values,

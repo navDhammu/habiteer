@@ -1,3 +1,4 @@
+import { endOfDay } from 'date-fns';
 import { addDoc, getDocs, query, where } from 'firebase/firestore';
 import { datesColRef, habitsColRef } from 'lib/db';
 import { DateDoc } from 'types/firestoreDocTypes';
@@ -7,6 +8,7 @@ export default async function createDateDoc(date: Date) {
    const querySnapshot = await getDocs(
       query(
          habitsColRef(),
+         where('trackingStartDate', '<', endOfDay(date)),
          where(`repeatDays.${getDayOfWeek(date).toLowerCase()}`, '==', true)
       )
    );
