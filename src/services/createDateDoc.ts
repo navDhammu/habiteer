@@ -13,8 +13,6 @@ export default async function createDateDoc(date: Date) {
       )
    );
 
-   console.log(querySnapshot);
-
    const habits: DateDoc['habits'] = {};
 
    querySnapshot.forEach((doc) => {

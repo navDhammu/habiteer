@@ -44,13 +44,13 @@ export default function HabitForm({
               category: '',
               description: '',
               repeatDays: {
-                 monday: true,
-                 tuesday: true,
-                 wednesday: true,
-                 thursday: true,
-                 friday: true,
-                 saturday: true,
-                 sunday: true,
+                 Monday: true,
+                 Tuesday: true,
+                 Wednesday: true,
+                 Thursday: true,
+                 Friday: true,
+                 Saturday: true,
+                 Sunday: true,
               },
               trackingStartDate: Timestamp.fromDate(new Date()),
            }
@@ -135,12 +135,9 @@ export default function HabitForm({
                   type="date"
                   name="trackingStartDate"
                   disabled={mode === 'EDIT'}
-                  value={formatISO(
-                     values.trackingStartDate instanceof Timestamp
-                        ? values.trackingStartDate.toDate()
-                        : values.trackingStartDate,
-                     { representation: 'date' }
-                  )}
+                  value={formatISO(values.trackingStartDate.toDate(), {
+                     representation: 'date',
+                  })}
                   onChange={handleChange('trackingStartDate')}
                   min={today}
                   required

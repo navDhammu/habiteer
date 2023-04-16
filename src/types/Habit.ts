@@ -5,14 +5,14 @@ export type Habit = {
    name: string;
    category: string;
    description: string;
-   trackingStartDate: Timestamp | Date;
+   trackingStartDate: Timestamp;
    repeatDays: {
-      monday: boolean;
-      tuesday: boolean;
-      wednesday: boolean;
-      thursday: boolean;
-      friday: boolean;
-      saturday: boolean;
-      sunday: boolean;
+      Monday: boolean;
+      Tuesday: boolean;
+      Wednesday: boolean;
+      Thursday: boolean;
+      Friday: boolean;
+      Saturday: boolean;
+      Sunday: boolean;
    };
 };

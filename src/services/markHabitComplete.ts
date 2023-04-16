@@ -8,16 +8,7 @@ export default async function markHabitComplete(
    docId: string
 ) {
    const batch = writeBatch(firestore);
-   batch.update(
-      datesDocRef(docId),
-      // 'habits': {
-      //            [habitId]: {
-      //                    isComplete
-      //            }
-      //    }
-      `habits.${habitId}.isComplete`,
-      isComplete
-   );
+   batch.update(datesDocRef(docId), `habits.${habitId}.isComplete`, isComplete);
    batch.update(habitsDocRef(habitId), {
       completions: increment(isComplete ? 1 : -1),
    });
