@@ -2,6 +2,7 @@ import {
    Card,
    CardBody,
    CardHeader,
+   CardProps,
    Checkbox,
    Heading,
    List,
@@ -17,10 +18,15 @@ type HabitTodosProps = {
    ) => (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
 };
 
-export function HabitTodos({ heading, todos, onCheckHabit }: HabitTodosProps) {
+export function HabitTodos({
+   heading,
+   todos,
+   onCheckHabit,
+   ...cardProps
+}: HabitTodosProps & CardProps) {
    if (!todos.length) return null;
    return (
-      <Card>
+      <Card {...cardProps}>
          <CardHeader as={Heading} size="sm">
             {heading}
          </CardHeader>
