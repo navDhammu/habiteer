@@ -44,7 +44,6 @@ export default function Today() {
    const [habitTodos, handleCheckHabit] = useHabitTodos(date);
 
    const completedHabits = habitTodos.filter((habit) => habit.isComplete);
-   const incompleteHabits = habitTodos.filter((habit) => !habit.isComplete);
    const isDateToday = isToday(date);
    const isDateYesterday = isYesterday(date);
 
@@ -115,20 +114,14 @@ export default function Today() {
             </TabList>
             <TabPanels>
                {new Array(7).fill(null).map((v, i) => (
-                  <TabPanel className="panel" key={i} p="0">
-                     <Text className="text-sm italic" my="4">
+                  <TabPanel className="panel" key={i} p="0" mt="8">
+                     {/* <Text className="text-sm italic" my="4">
                         {completedHabits.length} / {habitTodos.length} habits
                         complete
-                     </Text>
+                     </Text> */}
                      <HabitTodos
-                        mb="6"
-                        todos={incompleteHabits}
-                        heading="To do"
-                        onCheckHabit={handleCheckHabit}
-                     />
-                     <HabitTodos
-                        todos={completedHabits}
-                        heading="Completed"
+                        todos={habitTodos}
+                        heading="Habit Checklist"
                         onCheckHabit={handleCheckHabit}
                      />
                   </TabPanel>

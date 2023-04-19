@@ -1,12 +1,13 @@
 import {
+   Box,
    Card,
    CardBody,
    CardHeader,
    CardProps,
    Checkbox,
    Heading,
-   List,
-   ListItem,
+   StackDivider,
+   VStack,
 } from '@chakra-ui/react';
 import { HabitTodo } from '.';
 
@@ -31,20 +32,20 @@ export function HabitTodos({
             {heading}
          </CardHeader>
          <CardBody>
-            <List>
+            <VStack divider={<StackDivider />} align="stretch">
                {todos
                   .sort((a, b) => a.name < b.name && -1)
                   .map(({ id, isComplete, name }) => (
-                     <ListItem key={id}>
+                     <Box key={id}>
                         <Checkbox
                            isChecked={isComplete}
                            onChange={onCheckHabit(id)}
                         >
                            {name}
                         </Checkbox>
-                     </ListItem>
+                     </Box>
                   ))}
-            </List>
+            </VStack>
          </CardBody>
       </Card>
    );
