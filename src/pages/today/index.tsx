@@ -1,37 +1,22 @@
 import {
-   ArrowRightIcon,
-   ChevronLeftIcon,
-   ChevronRightIcon,
-} from '@chakra-ui/icons';
-import {
    Box,
    Button,
    Card,
    Container,
-   Flex,
-   HStack,
-   IconButton,
    TabList,
    TabPanel,
    TabPanels,
    TabProps,
    Tabs,
-   Text,
    useMultiStyleConfig,
    useTab,
 } from '@chakra-ui/react';
-import {
-   addDays,
-   isAfter,
-   isToday,
-   isYesterday,
-   startOfWeek,
-   subDays,
-} from 'date-fns';
+import { addDays, isAfter, isToday, startOfWeek } from 'date-fns';
 import useHabitTodos from 'hooks/useHabitTodos';
 import { forwardRef, useState } from 'react';
 import { getDayOfWeek, getWeekArray } from 'utils/dates';
 import { HabitTodos } from './HabitTodos';
+import Header from './Header';
 
 export type HabitTodo = {
    id: string;
@@ -43,58 +28,9 @@ export default function Today() {
    const [date, setDate] = useState(new Date());
    const [habitTodos, handleCheckHabit] = useHabitTodos(date);
 
-   const completedHabits = habitTodos.filter((habit) => habit.isComplete);
-   const isDateToday = isToday(date);
-   const isDateYesterday = isYesterday(date);
-
    return (
       <Container display="flex" flexDirection="column" gap="4">
-         <Box>
-            {/* <HStack> */}
-            <Flex justifyContent="space-between">
-               <Box>
-                  <Text
-                     textTransform="uppercase"
-                     color="gray.500"
-                     fontWeight="bold"
-                     fontSize="sm"
-                  >
-                     {isDateToday
-                        ? 'Today'
-                        : isDateYesterday
-                        ? 'Yesterday'
-                        : null}
-                  </Text>
-                  <Text fontSize="lg" fontWeight="bold">
-                     {date.toDateString()}
-                  </Text>
-               </Box>
-               <HStack justifyContent="end">
-                  {!isDateToday && (
-                     <Button
-                        onClick={() => setDate(new Date())}
-                        rightIcon={<ArrowRightIcon boxSize="3" />}
-                     >
-                        Today
-                     </Button>
-                  )}
-                  <IconButton
-                     variant="ghost"
-                     aria-label="previous"
-                     icon={<ChevronLeftIcon boxSize="7" />}
-                     onClick={() => setDate(subDays(date, 1))}
-                  />
-                  <IconButton
-                     variant="ghost"
-                     isDisabled={isDateToday}
-                     aria-label="next"
-                     icon={<ChevronRightIcon boxSize="7" />}
-                     onClick={() => setDate(addDays(date, 1))}
-                  />
-               </HStack>
-            </Flex>
-            {/* </HStack> */}
-         </Box>
+         <Header date={date} onDateChange={(date) => setDate(date)} />
          <Tabs
             variant="unstyled"
             isLazy
@@ -115,10 +51,6 @@ export default function Today() {
             <TabPanels>
                {new Array(7).fill(null).map((v, i) => (
                   <TabPanel className="panel" key={i} p="0" mt="8">
-                     {/* <Text className="text-sm italic" my="4">
-                        {completedHabits.length} / {habitTodos.length} habits
-                        complete
-                     </Text> */}
                      <HabitTodos
                         todos={habitTodos}
                         heading="Habit Checklist"
