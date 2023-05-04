@@ -1,4 +1,4 @@
-import { IconArrowLeft, IconListDetails, IconPointer } from '@tabler/icons';
+import { IconArrowLeft, IconListDetails, IconPointer } from '@tabler/icons-react';
 import clsx from 'clsx';
 import Heading from 'components/ui/Heading';
 import IconButton from 'components/ui/IconButton';

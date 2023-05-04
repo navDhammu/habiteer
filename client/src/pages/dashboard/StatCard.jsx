@@ -1,4 +1,4 @@
-import Card from '../../components/ui/Card';
+import Card from '../../../../habiteer/src/components/ui/Card';
 
 export default function StatCard({ icon: Icon, title, stat }) {
    return (

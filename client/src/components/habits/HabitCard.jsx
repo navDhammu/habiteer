@@ -1,4 +1,4 @@
-import { IconArrowRight, IconEdit, IconTag, IconTrash } from '@tabler/icons';
+import { IconArrowRight, IconEdit, IconTag, IconTrash } from '@tabler/icons-react';
 import { NavLink } from 'react-router-dom';
 import Card from '../ui/Card';
 import IconButton from '../ui/IconButton';
