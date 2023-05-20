@@ -1,80 +1,102 @@
-import { signInWithEmailAndPassword } from '@firebase/auth';
-import { auth } from 'lib/index';
 import {
-	Alert,
-	AlertIcon,
-	Button,
-	Card,
-	CardBody,
-	FormControl,
-	FormLabel,
-	Input,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { IconLogin } from '@tabler/icons-react';
+    Alert,
+    AlertIcon,
+    Button,
+    Card,
+    CardBody,
+    FormControl,
+    FormLabel,
+    Input,
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { IconLogin } from '@tabler/icons-react'
+import { LoginPageProps } from '.'
+import { User } from 'types/User'
 
-export default function LoginForm() {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [isLoginError, setIsLoginError] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
+type LoginFormProps = {
+    onLogin: LoginPageProps['onLogin']
+}
 
-	const handleEmailInput = (e: React.ChangeEvent<HTMLInputElement>) =>
-		setEmail(e.target.value);
-	const handlePasswordInput = (e: React.ChangeEvent<HTMLInputElement>) =>
-		setPassword(e.target.value);
+export default function LoginForm({ onLogin }: LoginFormProps) {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    })
+    const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		setIsLoading(true);
-		signInWithEmailAndPassword(auth, email, password)
-			.catch(() => setIsLoginError(true))
-			.finally(() => setIsLoading(false));
-	};
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setIsLoading(true)
+        try {
+            const response = await fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            })
+            if (!response.ok) return setError('error')
 
-	return (
-		<Card
-			as='form'
-			display='flex'
-			flexDirection='column'
-			gap='6'
-			onSubmit={handleSubmit}
-			//  onInvalid={handleInvalid}
-		>
-			<CardBody display='flex' flexDirection='column' gap='4'>
-				<FormControl>
-					<FormLabel>Email</FormLabel>
-					<Input
-						type='email'
-						value={email}
-						onChange={handleEmailInput}
-						placeholder='name@domain.com'
-					/>
-				</FormControl>
-				<FormControl>
-					<FormLabel>Password</FormLabel>
-					<Input
-						value={password}
-						onChange={handlePasswordInput}
-						type='password'
-						placeholder='atleast 8 characters'
-					/>
-				</FormControl>
-				{isLoginError && (
-					<Alert status='error'>
-						<AlertIcon />
-						Invalid username or password
-					</Alert>
-				)}
-				<Button
-					isLoading={isLoading}
-					colorScheme='green'
-					type='submit'
-					disabled={isLoading}
-					rightIcon={<IconLogin />}>
-					Login
-				</Button>
-			</CardBody>
-		</Card>
-	);
+            const user = (await response.json()) as User
+            onLogin(user)
+        } catch (error) {
+            console.log(error)
+            setError('Something went wrong, please try again later.')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    return (
+        <Card
+            as="form"
+            display="flex"
+            flexDirection="column"
+            gap="6"
+            onSubmit={handleSubmit}
+        >
+            <CardBody display="flex" flexDirection="column" gap="4">
+                <FormControl>
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                        }
+                        placeholder="name@domain.com"
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel>Password</FormLabel>
+                    <Input
+                        value={formData.password}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                password: e.target.value,
+                            })
+                        }
+                        type="password"
+                        placeholder="atleast 8 characters"
+                    />
+                </FormControl>
+                {error && (
+                    <Alert status="error">
+                        <AlertIcon />
+                        {error}
+                    </Alert>
+                )}
+                <Button
+                    isLoading={isLoading}
+                    colorScheme="green"
+                    type="submit"
+                    disabled={isLoading}
+                    rightIcon={<IconLogin />}
+                >
+                    Login
+                </Button>
+            </CardBody>
+        </Card>
+    )
 }
