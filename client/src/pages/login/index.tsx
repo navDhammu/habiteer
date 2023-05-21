@@ -11,13 +11,8 @@ import {
 import { IconSeeding } from '@tabler/icons-react'
 import LoginForm from './LoginForm'
 import TestUser from './TestUser'
-import { HandleUserUpdate } from 'src/App'
 
-export type LoginPageProps = {
-    onLogin: HandleUserUpdate
-}
-
-export default function LoginPage({ onLogin }: LoginPageProps) {
+export default function LoginPage() {
     //     if (user) return <Navigate to="/dashboard" />
 
     return (
@@ -44,7 +39,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                         <Text as="figcaption">&mdash; Jim Ryun</Text>
                     </Box>
                 </VStack>
-                <LoginForm onLogin={onLogin} />
+                <LoginForm />
                 <TestUser />
             </Container>
         </Center>

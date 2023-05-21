@@ -8,22 +8,19 @@ import {
     FormLabel,
     Input,
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { IconLogin } from '@tabler/icons-react'
-import { LoginPageProps } from '.'
 import { User } from 'types/User'
+import { AuthContext } from 'src/App'
 
-type LoginFormProps = {
-    onLogin: LoginPageProps['onLogin']
-}
-
-export default function LoginForm({ onLogin }: LoginFormProps) {
+export default function LoginForm() {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     })
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const auth = useContext(AuthContext)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -36,9 +33,8 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
                 body: JSON.stringify(formData),
             })
             if (!response.ok) return setError('error')
-
             const user = (await response.json()) as User
-            onLogin(user)
+            auth?.updateUser(user)
         } catch (error) {
             console.log(error)
             setError('Something went wrong, please try again later.')

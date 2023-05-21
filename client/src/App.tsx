@@ -1,5 +1,5 @@
 import AppLayout from 'components/layout/AppLayout'
-import { useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import { Redirect, Route, Switch } from 'wouter'
 import PageNotFound from 'pages/404'
 import Dashboard from 'pages/dashboard'
@@ -7,40 +7,43 @@ import Login from 'pages/login'
 import Today from 'pages/today'
 import { User } from 'types/User'
 
-export type HandleUserUpdate = (user: User) => void
+type AuthContextType = {
+    user: User | null
+    updateUser: (user: User | null) => void
+}
+
+export const AuthContext = createContext<AuthContextType | null>(null)
 
 function App() {
     const [user, setUser] = useState<User | null>(null)
 
-    const handleUserUpdate: HandleUserUpdate = (user) => {
+    const updateUser: AuthContextType['updateUser'] = (user) => {
         setUser(user)
     }
 
     return (
-        <Switch>
-            <Route path="/">
-                <div>first route</div>
-            </Route>
-            <Route path="/login">
-                {user ? (
-                    <Redirect to="/app/dashboard" />
-                ) : (
-                    <Login onLogin={handleUserUpdate} />
-                )}
-            </Route>
-            <Route path="/app/dashboard">
-                <AppLayout view={<Dashboard />} />
-            </Route>
-            <Route path="/app/today">
-                <AppLayout view={<Today />} />
-            </Route>
-            {/* <Route path="/app/habits">
+        <AuthContext.Provider value={{ user, updateUser }}>
+            <Switch>
+                <Route path="/">
+                    <div>first route</div>
+                </Route>
+                <Route path="/login">
+                    {user ? <Redirect to="/app/dashboard" /> : <Login />}
+                </Route>
+                <Route path="/app/dashboard">
+                    <AppLayout view={<Dashboard />} />
+                </Route>
+                <Route path="/app/today">
+                    <AppLayout view={<Today />} />
+                </Route>
+                {/* <Route path="/app/habits">
                 <AppLayout view={<AllHabits />} />
-            </Route> */}
-            <Route>
-                <PageNotFound />
-            </Route>
-        </Switch>
+	</Route> */}
+                <Route>
+                    <PageNotFound />
+                </Route>
+            </Switch>
+        </AuthContext.Provider>
     )
 }
 

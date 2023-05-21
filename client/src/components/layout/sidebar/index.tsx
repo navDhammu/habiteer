@@ -29,9 +29,10 @@ import {
 import CreateOrEditHabit from 'components/CreateOrEditHabit'
 // import { logout } from 'lib/auth'
 import { HabitTodo } from 'pages/today'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Link as WouterLink } from 'wouter'
 import { Habit } from 'types/Habit'
+import { AuthContext } from 'src/App'
 
 const links = [
     {
@@ -74,6 +75,7 @@ type ConditionalSidebarProps =
 
 export default function Sidebar(props: SidebarProps) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const auth = useContext(AuthContext)
     return (
         <Card
             as="aside"
@@ -162,7 +164,7 @@ export default function Sidebar(props: SidebarProps) {
                     </MenuButton>
                     <MenuList>
                         <MenuItem
-                            //     onClick={logout}
+                            onClick={() => auth?.updateUser(null)}
                             icon={
                                 <Icon
                                     as={IconLogout}
