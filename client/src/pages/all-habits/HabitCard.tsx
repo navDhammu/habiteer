@@ -26,19 +26,18 @@ import { Icon } from '@chakra-ui/icons'
 import { IconDots, IconEdit, IconTrash } from '@tabler/icons-react'
 import CreateOrEditHabit from 'components/CreateOrEditHabit'
 import { useRef, useState } from 'react'
-import deleteHabit from 'services/deleteHabit'
 import { Habit } from 'types/Habit'
 
 export default function HabitCard(props: Habit) {
     const [isEditingHabit, setIsEditingHabit] = useState(false)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-    const cancelRef = useRef()
+    const cancelRef = useRef(null)
     const toast = useToast()
 
     const closeDeleteDialogue = () => setIsDeleteDialogOpen(false)
 
     const handleDelete = () =>
-        deleteHabit(props.id).then(() => {
+        Promise.resolve().then(() => {
             closeDeleteDialogue()
             toast({
                 description: `Deleted habit ${props.name}`,
@@ -51,10 +50,8 @@ export default function HabitCard(props: Habit) {
     return (
         <>
             <CreateOrEditHabit
-                mode="EDIT"
                 isDrawerOpen={isEditingHabit}
                 initialValues={{ ...props }}
-                habitId={props.id}
                 onCloseDrawer={() => setIsEditingHabit(false)}
             />
             <AlertDialog

@@ -27,7 +27,6 @@ import {
 } from '@tabler/icons-react'
 
 import CreateOrEditHabit from 'components/CreateOrEditHabit'
-import { auth } from 'lib/index'
 // import { logout } from 'lib/auth'
 import { HabitTodo } from 'pages/today'
 import { useState } from 'react'
@@ -150,17 +149,13 @@ export default function Sidebar(props: SidebarProps) {
                 Create Habit
             </Button>
             <CreateOrEditHabit
-                mode="CREATE"
                 isDrawerOpen={isDrawerOpen}
                 onCloseDrawer={() => setIsDrawerOpen(false)}
             />
             <Divider orientation="horizontal" mt="3" />
             <HStack mx="auto" my="3">
-                <Avatar
-                    p="3"
-                    name={auth?.currentUser?.displayName || 'Navdeep Dhamu'}
-                />
-                <Text>{auth?.currentUser?.displayName || 'Navdeep Dhamu'}</Text>
+                <Avatar p="3" name={'Navdeep Dhamu'} />
+                <Text>{'Navdeep Dhamu'}</Text>
                 <Menu>
                     <MenuButton as={IconButton} icon={<ChevronDownIcon />}>
                         menu button
