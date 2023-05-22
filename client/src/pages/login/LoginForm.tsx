@@ -10,8 +10,8 @@ import {
 } from '@chakra-ui/react'
 import { useContext, useState } from 'react'
 import { IconLogin } from '@tabler/icons-react'
-import { User } from 'types/User'
 import { AuthContext } from 'src/App'
+import authAPI from 'src/api/authAPI'
 
 export default function LoginForm() {
     const [formData, setFormData] = useState({
@@ -20,27 +20,22 @@ export default function LoginForm() {
     })
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const auth = useContext(AuthContext)
+    const authContext = useContext(AuthContext)
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
-        try {
-            const response = await fetch('http://localhost:3000/api/login', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            })
-            if (!response.ok) return setError('error')
-            const user = (await response.json()) as User
-            auth?.updateUser(user)
-        } catch (error) {
-            console.log(error)
-            setError('Something went wrong, please try again later.')
-        } finally {
-            setIsLoading(false)
-        }
+        authAPI.login(
+            formData,
+            (user) => {
+                authContext?.updateUser(user)
+                setIsLoading(false)
+            },
+            (errorMessage) => {
+                setError(errorMessage)
+                setIsLoading(false)
+            }
+        )
     }
 
     return (
