@@ -21,5 +21,14 @@ export default {
             onError('Something went wrong, please try again later')
         }
     },
-    logout: async () => {},
+    logout: async (onSuccess: () => void, onError?: () => void) => {
+        try {
+            const response = await fetch('http://localhost:3000/api/logout', {
+                method: 'POST',
+                credentials: 'include',
+            })
+            if (!response.ok) throw new Error('Unable to logout')
+            onSuccess()
+        } catch (error) {}
+    },
 }

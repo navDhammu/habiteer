@@ -33,6 +33,7 @@ import { useContext, useState } from 'react'
 import { Link as WouterLink } from 'wouter'
 import { Habit } from 'types/Habit'
 import { AuthContext } from 'src/App'
+import authAPI from 'src/api/authAPI'
 
 const links = [
     {
@@ -164,7 +165,9 @@ export default function Sidebar(props: SidebarProps) {
                     </MenuButton>
                     <MenuList>
                         <MenuItem
-                            onClick={() => auth?.updateUser(null)}
+                            onClick={() => {
+                                authAPI.logout(() => auth?.updateUser(null))
+                            }}
                             icon={
                                 <Icon
                                     as={IconLogout}

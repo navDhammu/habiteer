@@ -6,6 +6,7 @@ import Dashboard from 'pages/dashboard'
 import Login from 'pages/login'
 import Today from 'pages/today'
 import { User } from 'types/User'
+import PrivateRoute from './PrivateRoute'
 
 type AuthContextType = {
     user: User | null
@@ -30,12 +31,12 @@ function App() {
                 <Route path="/login">
                     {user ? <Redirect to="/app/dashboard" /> : <Login />}
                 </Route>
-                <Route path="/app/dashboard">
+                <PrivateRoute path="/app/dashboard">
                     <AppLayout view={<Dashboard />} />
-                </Route>
-                <Route path="/app/today">
+                </PrivateRoute>
+                <PrivateRoute path="/app/today">
                     <AppLayout view={<Today />} />
-                </Route>
+                </PrivateRoute>
                 {/* <Route path="/app/habits">
                 <AppLayout view={<AllHabits />} />
 	</Route> */}

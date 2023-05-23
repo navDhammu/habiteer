@@ -10,7 +10,6 @@ import {
 } from '@chakra-ui/react'
 import { IconSeeding } from '@tabler/icons-react'
 import LoginForm from './LoginForm'
-import TestUser from './TestUser'
 
 export default function LoginPage() {
     //     if (user) return <Navigate to="/dashboard" />
@@ -40,7 +39,6 @@ export default function LoginPage() {
                     </Box>
                 </VStack>
                 <LoginForm />
-                <TestUser />
             </Container>
         </Center>
     )
