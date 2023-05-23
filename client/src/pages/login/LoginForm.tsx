@@ -4,6 +4,7 @@ import {
     Button,
     Card,
     CardBody,
+    Checkbox,
     FormControl,
     FormLabel,
     Input,
@@ -13,11 +14,13 @@ import { IconLogin } from '@tabler/icons-react'
 import { AuthContext } from 'src/App'
 import authAPI from 'src/api/authAPI'
 
+const testCredentials = {
+    email: 'test@email.com',
+    password: 'qwerasdf',
+}
+
 export default function LoginForm() {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    })
+    const [formData, setFormData] = useState(testCredentials)
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const authContext = useContext(AuthContext)
@@ -78,6 +81,21 @@ export default function LoginForm() {
                         {error}
                     </Alert>
                 )}
+                <Checkbox
+                    isChecked={
+                        formData.email === testCredentials.email &&
+                        formData.password === testCredentials.password
+                    }
+                    onChange={(e) =>
+                        setFormData(
+                            e.target.checked
+                                ? testCredentials
+                                : { email: '', password: '' }
+                        )
+                    }
+                >
+                    Use test login credentials
+                </Checkbox>
                 <Button
                     isLoading={isLoading}
                     colorScheme="green"
