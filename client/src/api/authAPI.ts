@@ -13,7 +13,7 @@ export default {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(credentials),
             })
-            if (!response.ok) return onError('Invalid login credentials')
+            if (!response.ok) return onError(await response.text())
             const user = (await response.json()) as User
             onSuccess(user)
         } catch (error) {
@@ -21,4 +21,5 @@ export default {
             onError('Something went wrong, please try again later')
         }
     },
+    logout: async () => {},
 }

@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { sql } from '@pgtyped/runtime'
 import { ISignupUserQuery, IUserExistsQuery } from './index.types'
@@ -7,6 +7,7 @@ import { body, validationResult } from 'express-validator'
 import cookieParser from 'cookie-parser'
 import { randomUUID } from 'crypto'
 import { config } from 'dotenv'
+import cors from 'cors'
 
 config()
 const app = express()
@@ -18,6 +19,7 @@ const sessions: {
     [key: string]: { userId: number }
 } = {}
 
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
 app.use(express.json())
 app.use(cookieParser())
 
@@ -27,8 +29,15 @@ const getUserByEmail = async (email: string) => {
     return user
 }
 
+const handleLoggedIn = (req: Request, res: Response, next: NextFunction) => {
+    if (sessions[req.cookies?.session_id])
+        return res.status(403).send('Already logged in')
+    next()
+}
+
 app.post(
     '/api/signup',
+    handleLoggedIn,
     body('email').isEmail(),
     body('password').isLength({ min: 8 }),
     body('passwordConfirmation').custom((value, { req }) => {
@@ -59,6 +68,7 @@ app.post(
 
 app.post(
     '/api/login',
+    handleLoggedIn,
     body('email').isEmail(),
     body('password').isLength({ min: 8 }),
     async (req, res) => {
@@ -74,11 +84,16 @@ app.post(
         sessions[sessionId] = {
             userId: user.user_id,
         }
-        res.cookie('session_id', sessionId, { httpOnly: true }).end()
+        res.cookie('session_id', sessionId, {
+            httpOnly: true,
+        })
+            .json({ email: user.email })
+            .end()
     }
 )
 
 app.use('/api', (req, res, next) => {
+    console.log(req.cookies)
     if (!sessions[req.cookies?.session_id]) {
         return res.sendStatus(401)
     }
