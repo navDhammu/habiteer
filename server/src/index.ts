@@ -16,7 +16,7 @@ const pool = new Pool({
 })
 
 const sessions: {
-    [key: string]: { userId: number }
+    [key: string]: { userId: number; name: string | null; email: string }
 } = {}
 
 app.use(cors({ origin: 'http://localhost:5173', credentials: true }))
@@ -30,14 +30,13 @@ const getUserByEmail = async (email: string) => {
 }
 
 const handleLoggedIn = (req: Request, res: Response, next: NextFunction) => {
-    if (sessions[req.cookies?.session_id])
-        return res.status(403).send('Already logged in')
+    const session = sessions[req.cookies?.session_id]
+    if (session) return res.json({ email: session.email })
     next()
 }
 
 app.post(
     '/api/signup',
-    handleLoggedIn,
     body('email').isEmail(),
     body('password').isLength({ min: 8 }),
     body('passwordConfirmation').custom((value, { req }) => {
@@ -71,6 +70,7 @@ app.post(
     handleLoggedIn,
     body('email').isEmail(),
     body('password').isLength({ min: 8 }),
+
     async (req, res) => {
         const validations = validationResult(req)
         if (!validations.isEmpty()) return res.sendStatus(400)
@@ -83,6 +83,8 @@ app.post(
         const sessionId = randomUUID()
         sessions[sessionId] = {
             userId: user.user_id,
+            name: user.name,
+            email: user.email,
         }
         res.cookie('session_id', sessionId, {
             httpOnly: true,

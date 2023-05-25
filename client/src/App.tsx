@@ -16,11 +16,24 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType | null>(null)
 
 function App() {
-    const [user, setUser] = useState<User | null>(null)
-
+    const [user, setUser] = useState<User | null>(() => {
+        try {
+            const user = localStorage.getItem('user')
+            if (user === null) return null
+            return JSON.parse(user)
+        } catch (error) {
+            // incase error in json parsing
+            return null
+        }
+    })
+    // const []
     const updateUser: AuthContextType['updateUser'] = (user) => {
+        localStorage.setItem('user', JSON.stringify(user))
         setUser(user)
     }
+
+    console.log(user)
+    useEffect(() => {})
 
     return (
         <AuthContext.Provider value={{ user, updateUser }}>
@@ -37,9 +50,6 @@ function App() {
                 <PrivateRoute path="/app/today">
                     <AppLayout view={<Today />} />
                 </PrivateRoute>
-                {/* <Route path="/app/habits">
-                <AppLayout view={<AllHabits />} />
-	</Route> */}
                 <Route>
                     <PageNotFound />
                 </Route>
