@@ -26,7 +26,7 @@ import {
     IconSeeding,
 } from '@tabler/icons-react'
 
-import CreateOrEditHabit from 'components/CreateOrEditHabit'
+import HabitFormDrawer from 'components/habits/HabitFormDrawer'
 // import { logout } from 'lib/auth'
 import { HabitTodo } from 'pages/today'
 import { useContext, useState } from 'react'
@@ -151,7 +151,7 @@ export default function Sidebar(props: SidebarProps) {
             >
                 Create Habit
             </Button>
-            <CreateOrEditHabit
+            <HabitFormDrawer
                 isDrawerOpen={isDrawerOpen}
                 onCloseDrawer={() => setIsDrawerOpen(false)}
             />

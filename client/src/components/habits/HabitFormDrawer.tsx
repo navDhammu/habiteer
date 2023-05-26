@@ -13,17 +13,17 @@ import { Habit } from 'types/Habit'
 
 import HabitForm, { FormValues } from './HabitForm'
 
-export type Props = {
+export type HabitFormDrawerProps = {
     isDrawerOpen: boolean
     onCloseDrawer: () => void
     initialValues?: Habit
 }
 
-export default function CreateOrEditHabit({
+export default function HabitFormDrawer({
     isDrawerOpen,
     onCloseDrawer,
     initialValues,
-}: Props) {
+}: HabitFormDrawerProps) {
     const formId = useId()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const isEditMode = !!initialValues
