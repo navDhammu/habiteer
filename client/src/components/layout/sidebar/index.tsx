@@ -45,23 +45,23 @@ const links = [
         to: 'today',
         icon: IconCalendarEvent,
         displayName: 'today',
-        getStat: (data: SidebarProps) =>
-            `${data.todayHabitTodos.reduce(
-                (num, todo) => (todo.isComplete ? num + 1 : num),
-                0
-            )}/${data.todayHabitTodos.length}`,
+        // getStat: (data: SidebarProps) =>
+        //     `${data.todayHabitTodos.reduce(
+        //         (num, todo) => (todo.isComplete ? num + 1 : num),
+        //         0
+        //     )}/${data.todayHabitTodos.length}`,
     },
     {
         to: 'habits',
         icon: IconFolder,
         displayName: 'habits',
-        getStat: (data: SidebarProps) => data.habits.length,
+        getStat: (componentProps: SidebarProps) =>
+            componentProps.habits.length || null,
     },
 ]
 
 type SidebarProps = {
     habits: Habit[]
-    todayHabitTodos: HabitTodo[]
 } & ConditionalSidebarProps
 
 type ConditionalSidebarProps =
@@ -77,6 +77,7 @@ type ConditionalSidebarProps =
 export default function Sidebar(props: SidebarProps) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const auth = useContext(AuthContext)
+
     return (
         <Card
             as="aside"
