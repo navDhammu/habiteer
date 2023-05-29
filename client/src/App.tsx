@@ -15,31 +15,36 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType | null>(null)
 
+const getUserFromLocalStorage = () => {
+    try {
+        const user = localStorage.getItem('user')
+        if (user === null) return null
+        return JSON.parse(user)
+    } catch (error) {
+        // incase error in json parsing
+        return null
+    }
+}
+
 function App() {
-    const [user, setUser] = useState<User | null>(() => {
-        try {
-            const user = localStorage.getItem('user')
-            if (user === null) return null
-            return JSON.parse(user)
-        } catch (error) {
-            // incase error in json parsing
-            return null
-        }
-    })
-    // const []
+    const [user, setUser] = useState<User | null>(getUserFromLocalStorage)
+
     const updateUser: AuthContextType['updateUser'] = (user) => {
         localStorage.setItem('user', JSON.stringify(user))
         setUser(user)
     }
 
-    console.log(user)
-    useEffect(() => {})
+    //     useEffect(() => {
+    // 	if (user) {
+
+    // 	}
+    //     }, [user])
 
     return (
         <AuthContext.Provider value={{ user, updateUser }}>
             <Switch>
                 <Route path="/">
-                    <div>first route</div>
+                    {user ? <Redirect to="/app/dashboard" /> : <Login />}
                 </Route>
                 <Route path="/login">
                     {user ? <Redirect to="/app/dashboard" /> : <Login />}
