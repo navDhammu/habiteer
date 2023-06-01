@@ -8,8 +8,6 @@ Habiteer is a web app intended to help users build good habits through habit org
 
 This project is in progress
 
-> Live demo https://trackhabit.netlify.app/
-
 ## Technologies Used
 
 -   Reactjs
