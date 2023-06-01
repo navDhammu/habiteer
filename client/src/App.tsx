@@ -7,13 +7,26 @@ import Login from 'pages/login'
 import Today from 'pages/today'
 import { User } from 'types/User'
 import PrivateRoute from './PrivateRoute'
+import { Habit } from 'types/Habit'
+import habitsAPI from './api/habitsAPI.ts'
 
 type AuthContextType = {
     user: User | null
     updateUser: (user: User | null) => void
 }
 
+type HabitsState = {
+    habits: Habit[]
+    isLoading: boolean
+    error: string
+}
+
+type HabitsContextType = HabitsState & {}
+
 export const AuthContext = createContext<AuthContextType | null>(null)
+export const HabitsContext = createContext<HabitsContextType>(
+    {} as HabitsContextType
+)
 
 const getUserFromLocalStorage = () => {
     try {
@@ -28,37 +41,61 @@ const getUserFromLocalStorage = () => {
 
 function App() {
     const [user, setUser] = useState<User | null>(getUserFromLocalStorage)
+    const [habits, setHabits] = useState<HabitsState>({
+        habits: [],
+        isLoading: false,
+        error: '',
+    })
+
+    useEffect(() => {
+        if (user) {
+            setHabits((prevHabits) => ({ ...prevHabits, isLoading: true }))
+            habitsAPI
+                .getAllHabits()
+                .then((habits) => {
+                    console.log(habits)
+                    setHabits((prevHabits) => ({
+                        ...prevHabits,
+                        isLoading: false,
+                        habits,
+                    }))
+                })
+                .catch((error) =>
+                    setHabits((prevHabits) => ({
+                        ...prevHabits,
+                        isLoading: false,
+                        error: 'Error fetching habits',
+                    }))
+                )
+        }
+    }, [user])
 
     const updateUser: AuthContextType['updateUser'] = (user) => {
         localStorage.setItem('user', JSON.stringify(user))
         setUser(user)
     }
 
-    //     useEffect(() => {
-    // 	if (user) {
-
-    // 	}
-    //     }, [user])
-
     return (
         <AuthContext.Provider value={{ user, updateUser }}>
-            <Switch>
-                <Route path="/">
-                    {user ? <Redirect to="/app/dashboard" /> : <Login />}
-                </Route>
-                <Route path="/login">
-                    {user ? <Redirect to="/app/dashboard" /> : <Login />}
-                </Route>
-                <PrivateRoute path="/app/dashboard">
-                    <AppLayout view={<Dashboard />} />
-                </PrivateRoute>
-                <PrivateRoute path="/app/today">
-                    <AppLayout view={<Today />} />
-                </PrivateRoute>
-                <Route>
-                    <PageNotFound />
-                </Route>
-            </Switch>
+            <HabitsContext.Provider value={habits}>
+                <Switch>
+                    <Route path="/">
+                        {user ? <Redirect to="/app/dashboard" /> : <Login />}
+                    </Route>
+                    <Route path="/login">
+                        {user ? <Redirect to="/app/dashboard" /> : <Login />}
+                    </Route>
+                    <PrivateRoute path="/app/dashboard">
+                        <AppLayout view={<Dashboard />} />
+                    </PrivateRoute>
+                    <PrivateRoute path="/app/today">
+                        <AppLayout view={<Today />} />
+                    </PrivateRoute>
+                    <Route>
+                        <PageNotFound />
+                    </Route>
+                </Switch>
+            </HabitsContext.Provider>
         </AuthContext.Provider>
     )
 }

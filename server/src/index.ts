@@ -1,7 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { sql } from '@pgtyped/runtime'
-import { ISignupUserQuery, IUserExistsQuery } from './index.types'
+import {
+    IGetAllHabitsQuery,
+    ISignupUserQuery,
+    IUserExistsQuery,
+} from './index.types'
 import { Pool } from 'pg'
 import { body, validationResult } from 'express-validator'
 import cookieParser from 'cookie-parser'
@@ -82,7 +86,7 @@ app.post(
 
         const sessionId = randomUUID()
         sessions[sessionId] = {
-            userId: user.user_id,
+            userId: user.id,
             name: user.name,
             email: user.email,
         }
@@ -95,7 +99,7 @@ app.post(
 )
 
 app.use('/api', (req, res, next) => {
-    console.log(req.cookies)
+    console.log(sessions[req.cookies?.session_id])
     if (!sessions[req.cookies?.session_id]) {
         return res.sendStatus(401)
     }
@@ -105,6 +109,13 @@ app.use('/api', (req, res, next) => {
 app.post('/api/logout', async (req, res) => {
     delete sessions[req.cookies.session_id]
     res.clearCookie('session_id').end()
+})
+
+app.get('/api/habits', async (req, res) => {
+    const userId = sessions[req.cookies.session_id].userId
+    const getAllHabits = sql<IGetAllHabitsQuery>`SELECT * FROM habits WHERE user_id = $userId`
+    const result = await getAllHabits.run({ userId }, pool)
+    res.json(result)
 })
 
 app.listen(3000, () => console.log('listening'))
