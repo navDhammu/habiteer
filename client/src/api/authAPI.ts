@@ -2,40 +2,20 @@ import { User } from 'types/User'
 import fetchWrapper from '.'
 
 export default {
-    login: async (
-        credentials: { email: string; password: string },
-        onSuccess: (user: User) => void,
-        onError: (e: string) => void
-    ) => {
-        try {
-            const response = await fetchWrapper(
-                'http://localhost:3000/api/login',
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(credentials),
-                }
-            )
-            if (!response.ok) return onError(await response.text())
-            const user = (await response.json()) as User
-            onSuccess(user)
-        } catch (error) {
-            console.log(error)
-            onError('Something went wrong, please try again later')
-        }
+    login: async (credentials: { email: string; password: string }) => {
+        const response = await fetchWrapper('http://localhost:3000/api/login', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials),
+        })
+        return response.json() as Promise<User>
     },
-    logout: async (onSuccess: () => void, onError?: () => void) => {
-        try {
-            const response = await fetchWrapper(
-                'http://localhost:3000/api/logout',
-                {
-                    method: 'POST',
-                    credentials: 'include',
-                }
-            )
-            if (!response.ok) throw new Error('Unable to logout')
-            onSuccess()
-        } catch (error) {}
+    logout: async () => {
+        await fetchWrapper('http://localhost:3000/api/logout', {
+            method: 'POST',
+            credentials: 'include',
+        })
+        return Promise.resolve()
     },
 }
