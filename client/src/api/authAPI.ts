@@ -1,4 +1,5 @@
 import { User } from 'types/User'
+import fetchWrapper from '.'
 
 export default {
     login: async (
@@ -7,12 +8,15 @@ export default {
         onError: (e: string) => void
     ) => {
         try {
-            const response = await fetch('http://localhost:3000/api/login', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(credentials),
-            })
+            const response = await fetchWrapper(
+                'http://localhost:3000/api/login',
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(credentials),
+                }
+            )
             if (!response.ok) return onError(await response.text())
             const user = (await response.json()) as User
             onSuccess(user)
@@ -23,10 +27,13 @@ export default {
     },
     logout: async (onSuccess: () => void, onError?: () => void) => {
         try {
-            const response = await fetch('http://localhost:3000/api/logout', {
-                method: 'POST',
-                credentials: 'include',
-            })
+            const response = await fetchWrapper(
+                'http://localhost:3000/api/logout',
+                {
+                    method: 'POST',
+                    credentials: 'include',
+                }
+            )
             if (!response.ok) throw new Error('Unable to logout')
             onSuccess()
         } catch (error) {}

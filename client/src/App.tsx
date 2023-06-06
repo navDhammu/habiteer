@@ -8,6 +8,7 @@ import Today from 'pages/today'
 import { User } from 'types/User'
 import PrivateRoute from './PrivateRoute'
 import { Habit } from 'types/Habit'
+import useAPIError from 'hooks/useAPIError.ts'
 import habitsAPI from './api/habitsAPI.ts'
 
 type AuthContextType = {
@@ -46,27 +47,21 @@ function App() {
         isLoading: false,
         error: '',
     })
+    const handleAPIError = useAPIError()
 
     useEffect(() => {
         if (user) {
             setHabits((prevHabits) => ({ ...prevHabits, isLoading: true }))
             habitsAPI
-                .getAllHabits()
+                .getAll()
                 .then((habits) => {
-                    console.log(habits)
                     setHabits((prevHabits) => ({
                         ...prevHabits,
                         isLoading: false,
                         habits,
                     }))
                 })
-                .catch((error) =>
-                    setHabits((prevHabits) => ({
-                        ...prevHabits,
-                        isLoading: false,
-                        error: 'Error fetching habits',
-                    }))
-                )
+                .catch((error) => handleAPIError(error))
         }
     }, [user])
 

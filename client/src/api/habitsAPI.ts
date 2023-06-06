@@ -1,11 +1,14 @@
 import { Habit } from 'types/Habit'
+import fetchWrapper from '.'
 
 export default {
-    getAllHabits: async () => {
-        const response = await fetch('http://localhost:3000/api/habits', {
-            credentials: 'include',
-        })
-        if (!response.ok) throw new Error(await response.text())
+    getAll: async () => {
+        const response = await fetchWrapper(
+            'http://localhost:3000/api/habits',
+            {
+                credentials: 'include',
+            }
+        )
         return response.json() as Promise<Habit[]>
     },
 }

@@ -34,6 +34,7 @@ import { Link as WouterLink } from 'wouter'
 import { Habit } from 'types/Habit'
 import { AuthContext } from 'src/App'
 import authAPI from 'src/api/authAPI'
+import useAPIError from 'hooks/useAPIError'
 
 const links = [
     {
@@ -77,6 +78,7 @@ type ConditionalSidebarProps =
 export default function Sidebar(props: SidebarProps) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const auth = useContext(AuthContext)
+    const handleAPIError = useAPIError()
 
     return (
         <Card
@@ -167,7 +169,10 @@ export default function Sidebar(props: SidebarProps) {
                     <MenuList>
                         <MenuItem
                             onClick={() => {
-                                authAPI.logout(() => auth?.updateUser(null))
+                                authAPI
+                                    .logout()
+                                    .then(() => auth?.updateUser(null))
+                                    .catch((error) => handleAPIError(error))
                             }}
                             icon={
                                 <Icon

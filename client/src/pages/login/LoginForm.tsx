@@ -13,6 +13,7 @@ import { useContext, useState } from 'react'
 import { IconLogin } from '@tabler/icons-react'
 import { AuthContext } from 'src/App'
 import authAPI from 'src/api/authAPI'
+import useAPIError from 'hooks/useAPIError'
 
 const testCredentials = {
     email: 'test@email.com',
@@ -24,21 +25,18 @@ export default function LoginForm() {
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const authContext = useContext(AuthContext)
+    const handleAPIError = useAPIError()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
-        authAPI.login(
-            formData,
-            (user) => {
-                authContext?.updateUser(user)
-                setIsLoading(false)
-            },
-            (errorMessage) => {
-                setError(errorMessage)
-                setIsLoading(false)
-            }
-        )
+        try {
+            const user = await authAPI.login(formData)
+            authContext?.updateUser(user)
+        } catch (error) {
+            console.log('dsafasdfsadf')
+            handleAPIError(error)
+        }
     }
 
     return (
