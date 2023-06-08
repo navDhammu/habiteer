@@ -1,40 +1,29 @@
-import { AddIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { AddIcon } from '@chakra-ui/icons'
 import {
-    Avatar,
     Box,
     Button,
     Card,
     Divider,
     HStack,
     Icon,
-    IconButton,
     Link,
     List,
     ListIcon,
     ListItem,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
     Text,
 } from '@chakra-ui/react'
 import {
     IconCalendarEvent,
     IconFolder,
     IconLayoutDashboard,
-    IconLogout,
     IconSeeding,
 } from '@tabler/icons-react'
 
 import HabitFormDrawer from 'components/habits/HabitFormDrawer'
-// import { logout } from 'lib/auth'
-import { HabitTodo } from 'pages/today'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Link as WouterLink } from 'wouter'
 import { Habit } from 'types/Habit'
-import { AuthContext } from 'src/App'
-import authAPI from 'src/api/authAPI'
-import useAPIError from 'hooks/useAPIError'
+import User from './User'
 
 const links = [
     {
@@ -77,8 +66,6 @@ type ConditionalSidebarProps =
 
 export default function Sidebar(props: SidebarProps) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
-    const auth = useContext(AuthContext)
-    const handleAPIError = useAPIError()
 
     return (
         <Card
@@ -159,34 +146,7 @@ export default function Sidebar(props: SidebarProps) {
                 onCloseDrawer={() => setIsDrawerOpen(false)}
             />
             <Divider orientation="horizontal" mt="3" />
-            <HStack mx="auto" my="3">
-                <Avatar p="3" name={'Navdeep Dhamu'} />
-                <Text>{'Navdeep Dhamu'}</Text>
-                <Menu>
-                    <MenuButton as={IconButton} icon={<ChevronDownIcon />}>
-                        menu button
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem
-                            onClick={() => {
-                                authAPI
-                                    .logout()
-                                    .then(() => auth?.updateUser(null))
-                                    .catch((error) => handleAPIError(error))
-                            }}
-                            icon={
-                                <Icon
-                                    as={IconLogout}
-                                    color="red.500"
-                                    boxSize="6"
-                                />
-                            }
-                        >
-                            Logout
-                        </MenuItem>
-                    </MenuList>
-                </Menu>
-            </HStack>
+            <User />
         </Card>
     )
 }

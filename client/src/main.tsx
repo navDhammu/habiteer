@@ -3,6 +3,7 @@ import App from './App'
 // import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react'
 import { extendTheme } from '@chakra-ui/react'
+import AuthProvider from './AuthProvider'
 
 const theme = extendTheme({
     styles: {
@@ -18,7 +19,9 @@ const root = createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
     <ChakraProvider theme={theme}>
-        <App />
+        <AuthProvider>
+            <App />
+        </AuthProvider>
     </ChakraProvider>
 )
 

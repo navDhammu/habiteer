@@ -14,7 +14,8 @@
             "utils/*": ["src/utils/*"],
             "lib/*": ["src/lib/*"],
             "assets/*": ["src/assets/*"],
-            "pages/*": ["src/pages/*"]
+            "pages/*": ["src/pages/*"],
+            "context/*": ["src/context/*"]
         },
 
         /* Bundler mode */

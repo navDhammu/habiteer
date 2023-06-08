@@ -11,8 +11,8 @@ export default function AppLayout({ view }: { view: ReactElement }) {
 
     return (
         <Flex h="100vh" direction={['column', null, 'row']}>
-            <Sidebar habits={habits} todayHabitTodos={[]} />
-            <Header habits={habits} todayHabitTodos={[]} />
+            <Sidebar habits={habits} />
+            <Header habits={habits} />
             <Box
                 as="main"
                 flex="1"

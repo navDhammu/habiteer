@@ -9,9 +9,9 @@ import {
     FormLabel,
     Input,
 } from '@chakra-ui/react'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { IconLogin } from '@tabler/icons-react'
-import { AuthContext } from 'src/App'
+import { useAuthContext } from 'context/AuthContext'
 import authAPI from 'src/api/authAPI'
 import useAPIError from 'hooks/useAPIError'
 
@@ -24,7 +24,7 @@ export default function LoginForm() {
     const [formData, setFormData] = useState(testCredentials)
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const authContext = useContext(AuthContext)
+    const { loginUser } = useAuthContext()
     const handleAPIError = useAPIError()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -32,9 +32,8 @@ export default function LoginForm() {
         setIsLoading(true)
         try {
             const user = await authAPI.login(formData)
-            authContext?.updateUser(user)
+            loginUser(user)
         } catch (error) {
-            console.log('dsafasdfsadf')
             handleAPIError(error)
         }
     }

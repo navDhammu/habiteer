@@ -5,12 +5,12 @@ export type Habit = {
     description: string
     trackingStartDate: Date
     repeatDays: {
-        ['Monday']: boolean
-        ['Tuesday']: boolean
-        ['Wednesday']: boolean
-        ['Thursday']: boolean
-        ['Friday']: boolean
-        ['Saturday']: boolean
-        ['Sunday']: boolean
+        Monday: boolean
+        Tuesday: boolean
+        Wednesday: boolean
+        Thursday: boolean
+        Friday: boolean
+        Saturday: boolean
+        Sunday: boolean
     }
 }
