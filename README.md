@@ -2,17 +2,11 @@
 
 ## About
 
-Habiteer is a web app intended to help users build good habits through habit organization and progress tracking.
+Habiteer is a web app that helps users build and maintain good habits through progress tracking and data visualization.
 
 ## Project Status
 
-This project is in progress
-
-## Technologies Used
-
--   Reactjs
--   Firebase
--   Chakra UI
+In progress
 
 #### Current features
 
@@ -20,11 +14,12 @@ This project is in progress
 2. Create habits and specify a repeat schedule
 3. Mark habits as complete or incomplete
 
-#### Presently working on:
+## Technologies Used
 
--   Implementing typescript and automated testing
--   Organizing habits into different areas
--   Progress charts
+-   Reactjs
+-   Chakra UI
+-   Node.js
+-   Postgresql
 
 ## Installation
 
