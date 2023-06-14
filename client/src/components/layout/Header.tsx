@@ -7,16 +7,10 @@ import {
     IconButton,
     useDisclosure,
 } from '@chakra-ui/react'
-import { Habit } from 'types/Habit'
 import Sidebar from './sidebar'
 
-type HeaderProps = {
-    habits: Habit[]
-}
-
-export default function Header({ habits }: HeaderProps) {
-    // mobile sidebar modal
-    const { isOpen, onClose, onOpen } = useDisclosure()
+export default function Header() {
+    const { isOpen: isMobileSidebarOpen, onClose, onOpen } = useDisclosure()
 
     return (
         <>
@@ -30,14 +24,14 @@ export default function Header({ habits }: HeaderProps) {
                 />
             </Box>
             <Drawer
-                isOpen={isOpen}
+                isOpen={isMobileSidebarOpen}
                 onClose={onClose}
                 placement="left"
                 size="xs"
             >
                 <DrawerOverlay />
                 <DrawerContent>
-                    <Sidebar habits={habits} isMobile onClose={onClose} />
+                    <Sidebar isMobile onClose={onClose} />
                 </DrawerContent>
             </Drawer>
         </>

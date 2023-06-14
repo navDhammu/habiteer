@@ -24,6 +24,7 @@ import { useState } from 'react'
 import { Link as WouterLink } from 'wouter'
 import { Habit } from 'types/Habit'
 import User from './User'
+import { useHabitsContext } from 'context/HabitsContext'
 
 const links = [
     {
@@ -35,26 +36,16 @@ const links = [
         to: 'today',
         icon: IconCalendarEvent,
         displayName: 'today',
-        // getStat: (data: SidebarProps) =>
-        //     `${data.todayHabitTodos.reduce(
-        //         (num, todo) => (todo.isComplete ? num + 1 : num),
-        //         0
-        //     )}/${data.todayHabitTodos.length}`,
     },
     {
         to: 'habits',
         icon: IconFolder,
         displayName: 'habits',
-        getStat: (componentProps: SidebarProps) =>
-            componentProps.habits.length || null,
+        getStat: (habits: Habit[]) => habits.length || null,
     },
 ]
 
-type SidebarProps = {
-    habits: Habit[]
-} & ConditionalSidebarProps
-
-type ConditionalSidebarProps =
+type SidebarProps =
     | {
           isMobile?: false
           onClose?: never
@@ -66,6 +57,7 @@ type ConditionalSidebarProps =
 
 export default function Sidebar(props: SidebarProps) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const { habits } = useHabitsContext()
 
     return (
         <Card
@@ -125,7 +117,7 @@ export default function Sidebar(props: SidebarProps) {
                                     color="gray.500"
                                     paddingX="2"
                                 >
-                                    {link.getStat?.(props)}
+                                    {link.getStat?.(habits)}
                                 </Box>
                             </Link>
                         </ListItem>

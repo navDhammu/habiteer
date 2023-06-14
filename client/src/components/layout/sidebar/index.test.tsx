@@ -1,6 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen } from 'test-utils'
 import Sidebar from '.'
-import { Habit } from 'types/Habit'
 
 const createMockHabits = (max: number) => {
     return Array.from({ length: Math.ceil(Math.random() * max) }, (v, i) => {
@@ -26,7 +25,7 @@ const createMockHabits = (max: number) => {
 describe('sidebar', () => {
     describe('when user has no habits', () => {
         test('does NOT display count beside "Habits" link', () => {
-            render(<Sidebar habits={[]} />)
+            render(<Sidebar />)
             const link = screen.getByRole('link', { name: /habits/ })
             expect(link).not.toHaveTextContent(/\d+/)
         })
@@ -36,7 +35,7 @@ describe('sidebar', () => {
             const numHabits = Math.ceil(Math.random() * 20)
             const mockHabits = createMockHabits(numHabits)
 
-            render(<Sidebar habits={mockHabits} />)
+            render(<Sidebar />)
             expect(
                 screen.getByRole('link', { name: /habits/ })
             ).toHaveTextContent(`${mockHabits.length}`)

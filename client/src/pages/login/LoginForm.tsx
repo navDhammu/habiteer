@@ -13,7 +13,7 @@ import { useState } from 'react'
 import { IconLogin } from '@tabler/icons-react'
 import { useAuthContext } from 'context/AuthContext'
 import authAPI from 'src/api/authAPI'
-import useAPIError from 'hooks/useAPIError'
+import useAPICallback from 'hooks/useAPICallback'
 
 const testCredentials = {
     email: 'test@email.com',
@@ -22,20 +22,16 @@ const testCredentials = {
 
 export default function LoginForm() {
     const [formData, setFormData] = useState(testCredentials)
-    const [error, setError] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
     const { loginUser } = useAuthContext()
-    const handleAPIError = useAPIError()
+    const {
+        error,
+        isLoading,
+        callback: handleLogin,
+    } = useAPICallback(() => authAPI.login(formData))
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setIsLoading(true)
-        try {
-            const user = await authAPI.login(formData)
-            loginUser(user)
-        } catch (error) {
-            handleAPIError(error)
-        }
+        handleLogin(loginUser)
     }
 
     return (

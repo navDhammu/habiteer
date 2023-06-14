@@ -11,25 +11,17 @@ import {
     Text,
 } from '@chakra-ui/react'
 import { IconLogout } from '@tabler/icons-react'
-import useAPIError from 'hooks/useAPIError'
 import { useAuthContext } from 'context/AuthContext'
 import authAPI from 'src/api/authAPI'
+import useAPICallback from 'hooks/useAPICallback'
 
 export default function User() {
     const { user, logoutUser } = useAuthContext()
-    const handleAPIError = useAPIError()
+    const { callback } = useAPICallback(authAPI.logout)
 
-    const handleLogoutClick = async () => {
-        try {
-            await authAPI.logout()
-            logoutUser()
-        } catch (error) {
-            handleAPIError(error)
-        }
-    }
     return (
         <HStack mx="auto" my="3">
-            <Avatar p="3" name={'Navdeep Dhamu'} />
+            <Avatar p="3" name="Test User" />
             <Text>{user?.name || user?.email}</Text>
             <Menu>
                 <MenuButton as={IconButton} icon={<ChevronDownIcon />}>
@@ -37,7 +29,7 @@ export default function User() {
                 </MenuButton>
                 <MenuList>
                     <MenuItem
-                        onClick={handleLogoutClick}
+                        onClick={() => callback(logoutUser)}
                         icon={
                             <Icon as={IconLogout} color="red.500" boxSize="6" />
                         }
