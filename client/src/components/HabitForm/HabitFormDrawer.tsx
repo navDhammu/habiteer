@@ -1,7 +1,9 @@
 import {
     Button,
+    ButtonGroup,
     Drawer,
     DrawerBody,
+    DrawerCloseButton,
     DrawerContent,
     DrawerFooter,
     DrawerHeader,
@@ -11,9 +13,9 @@ import {
 import { useId, useState } from 'react'
 import { Habit } from 'types/Habit'
 
-import HabitForm, { FormValues } from './HabitForm'
+import HabitForm, { FormState } from './HabitForm'
 
-export type HabitFormDrawerProps = {
+type HabitFormDrawerProps = {
     isDrawerOpen: boolean
     onCloseDrawer: () => void
     initialValues?: Habit
@@ -29,7 +31,7 @@ export default function HabitFormDrawer({
     const isEditMode = !!initialValues
     const toast = useToast()
 
-    const handleSubmit = (data: FormValues) => {
+    const handleSubmit = (data: FormState) => {
         setIsSubmitting(true)
         let promise = Promise.resolve()
         promise
@@ -59,6 +61,7 @@ export default function HabitFormDrawer({
         >
             <DrawerOverlay />
             <DrawerContent>
+                <DrawerCloseButton />
                 <DrawerHeader borderBottomWidth="1px">
                     {isEditMode ? 'Edit' : 'Create'} Habit
                 </DrawerHeader>
@@ -70,15 +73,18 @@ export default function HabitFormDrawer({
                     />
                 </DrawerBody>
                 <DrawerFooter>
-                    <Button
-                        isLoading={isSubmitting}
-                        type="submit"
-                        form={formId}
-                        variant="solid"
-                        colorScheme="green"
-                    >
-                        Save {isEditMode ? 'Changes' : 'Habit'}
-                    </Button>
+                    <ButtonGroup>
+                        <Button variant="outline">Cancel</Button>
+                        <Button
+                            isLoading={isSubmitting}
+                            type="submit"
+                            form={formId}
+                            variant="solid"
+                            colorScheme="green"
+                        >
+                            Save {isEditMode ? 'Changes' : 'Habit'}
+                        </Button>
+                    </ButtonGroup>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>

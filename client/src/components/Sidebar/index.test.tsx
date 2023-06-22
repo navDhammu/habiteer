@@ -1,5 +1,5 @@
 import { render, screen } from 'test-utils'
-import Sidebar from '.'
+import Sidebar from '../../Sidebar'
 
 const createMockHabits = (max: number) => {
     return Array.from({ length: Math.ceil(Math.random() * max) }, (v, i) => {

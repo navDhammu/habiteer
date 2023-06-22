@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react'
 import { ReactElement } from 'react'
 import Header from './Header'
-import Sidebar from './sidebar'
+import Sidebar from '../Sidebar'
 
 export default function AppLayout({ view }: { view: ReactElement }) {
     return (

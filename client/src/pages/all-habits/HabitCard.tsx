@@ -24,7 +24,7 @@ import {
 
 import { Icon } from '@chakra-ui/icons'
 import { IconDots, IconEdit, IconTrash } from '@tabler/icons-react'
-import CreateOrEditHabit from 'components/habits/HabitFormDrawer'
+import CreateOrEditHabit from 'components/HabitForm/HabitFormDrawer'
 import { useRef, useState } from 'react'
 import { Habit } from 'types/Habit'
 

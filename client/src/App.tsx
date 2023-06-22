@@ -8,6 +8,7 @@ import PrivateRoute from './PrivateRoute'
 import PublicRoute from './PublicRoute'
 import AuthProvider from 'context/AuthContext.tsx'
 import HabitsProvider from 'context/HabitsContext.tsx'
+import AllHabitsPage from 'pages/all-habits'
 
 function App() {
     return (
@@ -25,6 +26,9 @@ function App() {
                     </PrivateRoute>
                     <PrivateRoute path="/app/today">
                         <AppLayout view={<Today />} />
+                    </PrivateRoute>
+                    <PrivateRoute path="/app/habits">
+                        <AppLayout view={<AllHabitsPage />} />
                     </PrivateRoute>
                     <Route>
                         <PageNotFound />

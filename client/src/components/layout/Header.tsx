@@ -7,7 +7,7 @@ import {
     IconButton,
     useDisclosure,
 } from '@chakra-ui/react'
-import Sidebar from './sidebar'
+import Sidebar from '../Sidebar'
 
 export default function Header() {
     const { isOpen: isMobileSidebarOpen, onClose, onOpen } = useDisclosure()

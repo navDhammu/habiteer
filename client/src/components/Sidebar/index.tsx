@@ -19,7 +19,7 @@ import {
     IconSeeding,
 } from '@tabler/icons-react'
 
-import HabitFormDrawer from 'components/habits/HabitFormDrawer'
+import HabitFormDrawer from 'components/HabitForm/HabitFormDrawer'
 import { useState } from 'react'
 import { Link as WouterLink } from 'wouter'
 import { Habit } from 'types/Habit'
@@ -65,19 +65,17 @@ export default function Sidebar(props: SidebarProps) {
             display={[props.isMobile ? 'flex' : 'none', null, 'flex']}
             w={props.isMobile ? 'full' : '250px'}
             h="full"
-            //     variant={props.isMobile && 'unstyled'}
-            bgColor="white"
             borderColor="gray.200"
             overflow="hidden"
         >
             <HStack spacing="3" py="3">
                 <Icon as={IconSeeding} color="green.300" w="12" h="12" />
-                <Text fontSize="xl" fontWeight="bold">
+                <Text fontSize="xl" fontWeight="bold" textTransform="uppercase">
                     Habiteer
                 </Text>
             </HStack>
             <Divider orientation="horizontal" mt="3" />
-            <Box as="nav" flex="1">
+            <Box as="nav" flex="1" p="4">
                 <List>
                     {links.map((link) => (
                         <ListItem>
@@ -86,7 +84,9 @@ export default function Sidebar(props: SidebarProps) {
                                 display="flex"
                                 alignItems="center"
                                 gap="2"
-                                textTransform="capitalize"
+                                fontSize={13}
+                                color="gray.500"
+                                textTransform="uppercase"
                                 as={WouterLink}
                                 _activeLink={{
                                     bg: 'gray.100',
@@ -107,7 +107,7 @@ export default function Sidebar(props: SidebarProps) {
                                 p="2"
                                 to={link.to}
                             >
-                                <ListIcon as={link.icon} fontSize="lg" />
+                                <ListIcon as={link.icon} fontSize="2xl" />
                                 {link.displayName}
                                 <Box
                                     ml="auto"

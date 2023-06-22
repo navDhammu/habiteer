@@ -4,13 +4,8 @@ export type Habit = {
     category: string
     description: string
     trackingStartDate: Date
-    repeatDays: {
-        Monday: boolean
-        Tuesday: boolean
-        Wednesday: boolean
-        Thursday: boolean
-        Friday: boolean
-        Saturday: boolean
-        Sunday: boolean
+    repeatSchedule: {
+        frequency: 'daily' | 'weekly'
+        days: Set<string>
     }
 }
