@@ -1,5 +1,4 @@
-/** Types generated for queries found in "src/index.ts" */
-export type stringArray = (string)[];
+/** Types generated for queries found in "src/api/auth/routes.ts" */
 
 /** 'UserExists' parameters type */
 export interface IUserExistsParams {
@@ -33,27 +32,5 @@ export type ISignupUserResult = void;
 export interface ISignupUserQuery {
   params: ISignupUserParams;
   result: ISignupUserResult;
-}
-
-/** 'GetAllHabits' parameters type */
-export interface IGetAllHabitsParams {
-  userId?: number | null | void;
-}
-
-/** 'GetAllHabits' return type */
-export interface IGetAllHabitsResult {
-  created: Date;
-  description: string | null;
-  id: number;
-  lastUpdated: Date | null;
-  name: string;
-  repeatSchedule: stringArray;
-  userId: number;
-}
-
-/** 'GetAllHabits' query type */
-export interface IGetAllHabitsQuery {
-  params: IGetAllHabitsParams;
-  result: IGetAllHabitsResult;
 }
 
