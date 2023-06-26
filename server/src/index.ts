@@ -3,8 +3,8 @@ import { Pool } from 'pg';
 import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
 import cors from 'cors';
-import habitsRouter from './api/habits/routes';
-import authRouter from './api/auth/routes';
+import habitsRouter from './api/habits/habit.routes';
+import authRouter from './api/auth/auth.routes';
 
 config();
 const app = express();
@@ -23,9 +23,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api', (req, res, next) => {
-   if (!sessions[req.cookies?.session_id]) {
-      return res.sendStatus(401);
-   }
+   const session = sessions[req.cookies?.session_id];
+   if (!session) return res.sendStatus(401);
+   req.user = {
+      id: session.userId,
+      email: session.email,
+      name: session.name,
+   };
    next();
 });
 
