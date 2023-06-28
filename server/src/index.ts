@@ -1,7 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import habitsRouter from './api/habits/habit.routes';
+import habitsRouter from './api/habits/habits.routes';
 import authRouter from './api/auth/auth.routes';
 
 const app = express();
@@ -20,7 +20,6 @@ app.use('/api', (req, res, next) => {
    req.user = {
       id: session.userId,
       email: session.email,
-      name: session.name,
    };
    next();
 });
