@@ -50,6 +50,7 @@ authRouter.post(
             httpOnly: true,
          }).send(`Successfully logged in as ${req.body.email}`);
       } catch (error) {
+         console.log(error);
          if (error instanceof AuthError) res.status(error.httpCode).send(error.message);
          else res.sendStatus(500);
       }

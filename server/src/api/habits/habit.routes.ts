@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
-import { pool, sessions } from '../..';
-import { getAllHabits } from './habits.services';
+import { getAllHabits } from '../../db/habitsTable';
 
 const habitsRouter = Router();
 

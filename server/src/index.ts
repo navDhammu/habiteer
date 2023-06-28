@@ -1,18 +1,10 @@
 import express from 'express';
-import { Pool } from 'pg';
 import cookieParser from 'cookie-parser';
-import { config } from 'dotenv';
 import cors from 'cors';
 import habitsRouter from './api/habits/habit.routes';
 import authRouter from './api/auth/auth.routes';
 
-config();
 const app = express();
-
-export const pool = new Pool({
-   connectionString: process.env.DB_URL,
-   max: 5,
-});
 
 export const sessions: {
    [key: string]: { userId: number; name: string | null; email: string };
