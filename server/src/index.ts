@@ -4,7 +4,7 @@ import cors from 'cors';
 import habitsRouter from './api/habits/habits.routes';
 import authRouter from './api/auth/auth.routes';
 
-const app = express();
+export const app = express();
 
 export const sessions: {
    [key: string]: { userId: number; name: string | null; email: string };
