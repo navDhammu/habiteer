@@ -27,7 +27,7 @@ export async function login({ email, password }: Credentials) {
       name: user.name,
       email: user.email,
    };
-   return sessionId;
+   return { user: { email: user.email, name: user.name }, sessionId };
 }
 
 export const logout = async (sessionId: string) => {

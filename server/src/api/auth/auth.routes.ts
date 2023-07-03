@@ -6,6 +6,17 @@ import { AuthError } from './auth.errors';
 
 const authRouter = Router();
 
+authRouter.post('/logout', async (req, res) => {
+   try {
+      await logout(req.cookies.session_id);
+      res.clearCookie('session_id').end();
+   } catch (error) {
+      if (error instanceof AuthError)
+         res.status(error.httpCode).send(error.message);
+      else res.sendStatus(500);
+   }
+});
+
 // handles already logged in
 authRouter.use((req, res, next) => {
    const session = sessions[req.cookies?.session_id];
@@ -29,7 +40,8 @@ authRouter.post(
          await signup({ email, password });
          res.status(201).send(`user ${req.body.email} has been created`);
       } catch (error) {
-         if (error instanceof AuthError) res.status(error.httpCode).send(error.message);
+         if (error instanceof AuthError)
+            res.status(error.httpCode).send(error.message);
          else res.sendStatus(500);
       }
    }
@@ -41,30 +53,21 @@ authRouter.post(
    body('password').isLength({ min: 8 }),
    async (req, res) => {
       const validations = validationResult(req);
-      if (!validations.isEmpty()) return res.sendStatus(400);
+      if (!validations.isEmpty()) return res.sendStatus(401);
       const { email, password } = req.body;
 
       try {
-         const sessionId = await login({ email, password });
+         const { user, sessionId } = await login({ email, password });
          res.cookie('session_id', sessionId, {
             httpOnly: true,
-         }).send(`Successfully logged in as ${req.body.email}`);
+         }).json(user);
       } catch (error) {
          console.log(error);
-         if (error instanceof AuthError) res.status(error.httpCode).send(error.message);
+         if (error instanceof AuthError)
+            res.status(error.httpCode).send(error.message);
          else res.sendStatus(500);
       }
    }
 );
-
-authRouter.post('/logout', async (req, res) => {
-   try {
-      await logout(req.cookies.session_id);
-      res.clearCookie('session_id').end();
-   } catch (error) {
-      if (error instanceof AuthError) res.status(error.httpCode).send(error.message);
-      else res.sendStatus(500);
-   }
-});
 
 export default authRouter;

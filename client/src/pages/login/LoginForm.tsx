@@ -12,10 +12,6 @@ import {
 import { useState } from 'react';
 import { IconLogin } from '@tabler/icons-react';
 import { useAuthContext } from 'context/AuthContext';
-import authAPI from 'src/api/authAPI';
-import useAPICallback from 'hooks/useAPICallback';
-import HttpStatusText from 'src/api/HttpStatusText';
-import { APIError } from 'src/api';
 
 const testCredentials = {
    email: 'test@email.com',
@@ -24,22 +20,11 @@ const testCredentials = {
 
 export default function LoginForm() {
    const [formData, setFormData] = useState(testCredentials);
-   const [error, setError] = useState('');
-   const [isLoading, setIsLoading] = useState(false);
-   const { loginUser } = useAuthContext();
+   const { loginUser, error, isLoading } = useAuthContext();
 
    const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      setIsLoading(true);
-      authAPI
-         .login(formData)
-         .then((user) => loginUser(user))
-         .catch((err) => {
-            if (err instanceof APIError && err.statusText === 'Unauthorized')
-               setError('Invalid email and/or password combination');
-            else setError('Something went wrong, please try again later');
-         })
-         .finally(() => setIsLoading(false));
+      loginUser(formData);
    };
 
    return (

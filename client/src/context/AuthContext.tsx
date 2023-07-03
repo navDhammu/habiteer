@@ -1,51 +1,65 @@
-import useValidContext from 'hooks/useValidContext'
-import { createContext } from 'react'
-import { User } from 'types/User'
-import { ReactNode, useState } from 'react'
-import useAPICallback from 'hooks/useAPICallback'
-import habitsAPI from 'src/api/habitsAPI'
-import authAPI from 'src/api/authAPI'
+import useValidContext from 'hooks/useValidContext';
+import { createContext } from 'react';
+import { User } from 'types/User';
+import { ReactNode, useState } from 'react';
+import authAPI from 'src/api/authAPI';
+import { APIError } from 'src/api';
 
 export type AuthContextType = {
-    user: User | null
-    loginUser: (user: User) => void
-    logoutUser: () => void
-}
+   user: User | null;
+   isLoading: boolean;
+   error: string;
+   loginUser: (details: { email: string; password: string }) => void;
+   logoutUser: () => void;
+};
 
-export const AuthContext = createContext<AuthContextType | null>(null)
+export const AuthContext = createContext<AuthContextType | null>(null);
 
-export const useAuthContext = () => useValidContext(AuthContext)
+export const useAuthContext = () => useValidContext(AuthContext);
 
 const getUserFromLocalStorage = () => {
-    try {
-        const user = localStorage.getItem('user')
-        if (user === null) return null
-        return JSON.parse(user)
-    } catch (error) {
-        // incase error in json parsing
-        return null
-    }
-}
+   try {
+      const user = localStorage.getItem('user');
+      if (user === null) return null;
+      return JSON.parse(user);
+   } catch (error) {
+      // incase error in json parsing
+      return null;
+   }
+};
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-    const [user, setUser] = useState<User | null>(getUserFromLocalStorage)
+   const [user, setUser] = useState<User | null>(getUserFromLocalStorage);
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState('');
 
-    const loginUser = (user: User) => {
-        setUser(user)
-        localStorage.setItem('user', JSON.stringify(user))
-    }
+   const loginUser: AuthContextType['loginUser'] = async (details) => {
+      try {
+         const user = await authAPI.login(details);
+         localStorage.setItem('user', JSON.stringify(user));
+         setUser(user);
+         setError('');
+      } catch (error) {
+         console.log(error);
+         if (error instanceof APIError && error.statusText === 'Unauthorized')
+            setError('Invalid email and/or password combination');
+         else setError('Something went wrong, please try again later');
+      } finally {
+         setIsLoading(false);
+      }
+   };
 
-    const logoutUser = () => setUser(null)
+   const logoutUser = async () => {
+      await authAPI.logout();
+      localStorage.removeItem('user');
+      setUser(null);
+   };
 
-    // const login = async (email: string, password: string) => {
-    //         const user = await authAPI.login({email, password})
-    //         setUser(user)
-    //         localStorage.setItem('user', JSON.stringify(user))
-    //     }
-
-    return (
-        <AuthContext.Provider value={{ user, loginUser, logoutUser }}>
-            {children}
-        </AuthContext.Provider>
-    )
+   return (
+      <AuthContext.Provider
+         value={{ user, loginUser, logoutUser, error, isLoading }}
+      >
+         {children}
+      </AuthContext.Provider>
+   );
 }

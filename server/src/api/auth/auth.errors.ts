@@ -27,6 +27,6 @@ const AUTH_ERRORS: AuthErrors = {
    },
    INVALID_CREDENTIALS: {
       message: 'Invalid email or password combination',
-      httpCode: 400,
+      httpCode: 401,
    },
 };
