@@ -1,23 +1,27 @@
-import { useAuthContext } from 'context/AuthContext'
-import { useState } from 'react'
+import { useAuthContext } from 'context/AuthContext';
+import { useState } from 'react';
+import { APIError } from 'src/api';
+import HttpStatusText from 'src/api/HttpStatusText';
+
+// type Errors = 'Bad Request' | 'unknown' | ''
 
 export default function useAPIErrorHandler() {
-    const [error, setError] = useState('')
-    const { logoutUser } = useAuthContext()
+   const [error, setError] = useState<HttpStatusText | 'Unknown' | ''>('');
+   const { logoutUser } = useAuthContext();
 
-    const errorHandler = (error: unknown) => {
-        if (error instanceof Error) {
-            setError(error.message)
-            if (error.message === 'Unauthorized') {
-                logoutUser()
-            }
-        } else {
-            setError('unknown error')
-        }
-    }
+   const errorHandler = (err: unknown) => {
+      if (err instanceof APIError) {
+         if (err.statusText === 'Unauthorized') {
+            logoutUser();
+         }
+         setError(err.statusText);
+      } else {
+         setError('Unknown');
+      }
+   };
 
-    return {
-        error,
-        errorHandler,
-    }
+   return {
+      error,
+      errorHandler,
+   };
 }
