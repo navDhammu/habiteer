@@ -53,8 +53,7 @@ export default function HabitFormDrawer({
          } catch (err) {
             toast({
                title: 'Failed to create habit',
-               description:
-                  'Something has gone wrong, we apologize for the inconvenience',
+               description: 'Something has gone wrong, please try again later',
                status: 'error',
                isClosable: true,
             });
@@ -80,20 +79,7 @@ export default function HabitFormDrawer({
                <HabitForm
                   formId={formId}
                   onSubmit={handleSubmit}
-                  initialValues={
-                     !isCreatingHabit
-                        ? {
-                             ...editHabitDetails,
-                             repeatSchedule: {
-                                days: editHabitDetails.repeatDays,
-                                frequency:
-                                   editHabitDetails.repeatDays.length === 7
-                                      ? 'daily'
-                                      : 'weekly',
-                             },
-                          }
-                        : undefined
-                  }
+                  editHabitDetails={editHabitDetails}
                />
             </DrawerBody>
             <DrawerFooter>
