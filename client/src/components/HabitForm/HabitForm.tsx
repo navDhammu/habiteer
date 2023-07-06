@@ -17,12 +17,23 @@ import { IconFolder } from '@tabler/icons-react';
 import { format, formatISO } from 'date-fns';
 import { useReducer } from 'react';
 import { Habit } from 'types/Habit';
-import { WEEKDAYS } from 'utils/dates';
+import { initializeState } from './reducer.ts';
 import React from 'react';
 import WeekdayCheckboxes from './WeekdayCheckboxes.tsx';
 import reducer from './reducer';
+import { validateForm } from './validation.ts';
 
-export type FormState = Omit<Habit, 'id'>;
+export type FormState = FormValues & {
+   errors: {
+      [Key in keyof FormValues]: string;
+   };
+};
+export type FormValues = Omit<Habit, 'repeatDays' | 'id'> & {
+   repeatSchedule: {
+      frequency: 'daily' | 'weekly';
+      days: string[];
+   };
+};
 
 export type TextInputKey = keyof Pick<
    FormState,
@@ -32,37 +43,49 @@ export type TextInputKey = keyof Pick<
 type HabitFormProps = {
    formId: string;
    onSubmit: (data: FormState) => void;
-   initialValues?: FormState;
+   editHabitDetails?: Habit;
 };
 
-export default function HabitForm({ formId, initialValues, onSubmit }: HabitFormProps) {
-   const [formState, dispatch] = useReducer(reducer, initialValues, initializeState);
+export default function HabitForm({
+   formId,
+   editHabitDetails,
+   onSubmit,
+}: HabitFormProps) {
+   const [formState, dispatch] = useReducer(
+      reducer,
+      editHabitDetails!,
+      initializeState
+   );
 
-   const isEditMode = !!initialValues;
+   const isEditMode = !!editHabitDetails;
 
-   const handleTextInput = (key: TextInputKey) => (e: React.ChangeEvent<HTMLInputElement>) =>
-      dispatch({ type: key, payload: e.target.value });
+   const handleTextInput =
+      (key: TextInputKey) => (e: React.ChangeEvent<HTMLInputElement>) =>
+         dispatch({ type: key, payload: e.target.value });
 
-   const handleFrequencyChange = (value: FormState['repeatSchedule']['frequency']) =>
-      dispatch({ type: 'frequency', payload: value });
+   const handleFrequencyChange = (
+      value: FormState['repeatSchedule']['frequency']
+   ) => dispatch({ type: 'frequency', payload: value });
 
    const handleDaysChange: UseCheckboxGroupProps['onChange'] = (value) => {
       console.log(value);
       dispatch({ type: 'days', payload: value as string[] });
    };
 
+   const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+      e.preventDefault();
+      const errors = validateForm(formState);
+      if (Object.values(errors).some((value) => !!value)) {
+         dispatch({ type: 'form_submit_error', payload: errors });
+      } else {
+         onSubmit(formState);
+      }
+   };
+
    return (
-      <Box
-         as="form"
-         id={formId}
-         onSubmit={(e: React.FormEvent) => {
-            e.preventDefault();
-            onSubmit(formState);
-         }}
-         noValidate
-      >
+      <Box as="form" id={formId} onSubmit={handleFormSubmit} noValidate>
          <VStack spacing="4" align="start">
-            <FormControl>
+            <FormControl isInvalid={!!formState.errors.name}>
                <FormLabel fontSize="sm" color="gray.600" fontWeight="bold">
                   Habit Name
                </FormLabel>
@@ -70,9 +93,9 @@ export default function HabitForm({ formId, initialValues, onSubmit }: HabitForm
                   placeholder="eg. Read for 30 minutes"
                   value={formState.name}
                   onChange={handleTextInput('name')}
-                  required
+                  isRequired
                />
-               <FormErrorMessage></FormErrorMessage>
+               <FormErrorMessage>{formState.errors.name}</FormErrorMessage>
             </FormControl>
             <FormControl>
                <FormLabel fontSize="sm" color="gray.600" fontWeight="bold">
@@ -91,10 +114,11 @@ export default function HabitForm({ formId, initialValues, onSubmit }: HabitForm
                      onChange={handleTextInput('category')}
                   />
                </InputGroup>
+               <FormErrorMessage>{formState.errors.category}</FormErrorMessage>
             </FormControl>
          </VStack>
          <VStack spacing="4" align="start" mt="4">
-            <FormControl>
+            <FormControl isInvalid={!!formState.errors.trackingStartDate}>
                <FormLabel fontSize="sm" color="gray.600" fontWeight="bold">
                   Start tracking from
                </FormLabel>
@@ -108,11 +132,18 @@ export default function HabitForm({ formId, initialValues, onSubmit }: HabitForm
                   min={format(new Date(), 'yyyy-MM-dd')}
                   required
                />
-               <FormErrorMessage>{/* {errors.trackingStartDate} */}</FormErrorMessage>
+               <FormErrorMessage>
+                  {formState.errors.trackingStartDate}
+               </FormErrorMessage>
             </FormControl>
 
             <FormControl as="fieldset">
-               <FormLabel as="legend" fontSize="sm" color="gray.600" fontWeight="bold">
+               <FormLabel
+                  as="legend"
+                  fontSize="sm"
+                  color="gray.600"
+                  fontWeight="bold"
+               >
                   Repeat schedule
                </FormLabel>
                <RadioGroup
@@ -126,30 +157,27 @@ export default function HabitForm({ formId, initialValues, onSubmit }: HabitForm
                   <Radio value="weekly">Weekly</Radio>
                </RadioGroup>
             </FormControl>
-
-            <FormControl as="fieldset" isInvalid={!formState.repeatSchedule.days.length}>
-               <FormLabel as="legend" fontSize="sm" color="gray.600" fontWeight="bold">
+            <FormControl
+               as="fieldset"
+               isInvalid={!!formState.errors.repeatSchedule}
+            >
+               <FormLabel
+                  as="legend"
+                  fontSize="sm"
+                  color="gray.600"
+                  fontWeight="bold"
+               >
                   Select days:
                </FormLabel>
                <WeekdayCheckboxes
                   value={formState.repeatSchedule.days}
                   onChange={handleDaysChange}
                />
-               <FormErrorMessage></FormErrorMessage>
+               <FormErrorMessage>
+                  {formState.errors.repeatSchedule}
+               </FormErrorMessage>
             </FormControl>
          </VStack>
       </Box>
-   );
-}
-
-function initializeState(initialValues: HabitFormProps['initialValues']) {
-   return (
-      initialValues ?? {
-         name: '',
-         category: '',
-         description: '',
-         repeatSchedule: { days: WEEKDAYS, frequency: 'daily' },
-         trackingStartDate: new Date(),
-      }
    );
 }

@@ -14,52 +14,87 @@ import { useId, useState } from 'react';
 import { Habit } from 'types/Habit';
 
 import HabitForm, { FormState } from './HabitForm';
+import habitsAPI from 'src/api/habitsAPI';
 
 type HabitFormDrawerProps = {
    isDrawerOpen: boolean;
    onCloseDrawer: () => void;
-   initialValues?: Habit;
+   editHabitDetails?: Habit;
 };
 
 export default function HabitFormDrawer({
    isDrawerOpen,
    onCloseDrawer,
-   initialValues,
+   editHabitDetails,
 }: HabitFormDrawerProps) {
    const formId = useId();
    const [isSubmitting, setIsSubmitting] = useState(false);
-   const isEditMode = !!initialValues;
+   const isCreatingHabit = !editHabitDetails;
    const toast = useToast();
 
-   const handleSubmit = (data: FormState) => {
-      setIsSubmitting(true);
-      let promise = Promise.resolve();
-      promise
-         .then(() =>
+   const handleSubmit = async (data: FormState) => {
+      if (isCreatingHabit) {
+         const { repeatSchedule, ...rest } = data;
+         const newHabit = {
+            ...rest,
+            repeatDays: repeatSchedule.days,
+         };
+
+         setIsSubmitting(true);
+         try {
+            await habitsAPI.create(newHabit);
             toast({
-               title: `${isEditMode ? 'Edit' : 'Create'} Habit`,
-               description: `habit successfully ${isEditMode ? 'edited' : 'created'}`,
+               title: 'Create Habit',
+               description: 'Habit successfully created!',
                status: 'success',
                duration: 5000,
                isClosable: true,
-            })
-         )
-         .catch((e) => alert(e))
-         .finally(() => {
+            });
+         } catch (err) {
+            toast({
+               title: 'Failed to create habit',
+               description:
+                  'Something has gone wrong, we apologize for the inconvenience',
+               status: 'error',
+               isClosable: true,
+            });
+         } finally {
             setIsSubmitting(false);
-            onCloseDrawer();
-         });
+         }
+      }
    };
    return (
-      <Drawer isOpen={isDrawerOpen} onClose={onCloseDrawer} placement="right" size="md">
+      <Drawer
+         isOpen={isDrawerOpen}
+         onClose={onCloseDrawer}
+         placement="right"
+         size="md"
+      >
          <DrawerOverlay />
          <DrawerContent>
             <DrawerCloseButton />
             <DrawerHeader borderBottomWidth="1px">
-               {isEditMode ? 'Edit' : 'Create'} Habit
+               {isCreatingHabit ? 'Create' : 'Edit'} Habit
             </DrawerHeader>
             <DrawerBody>
-               <HabitForm formId={formId} onSubmit={handleSubmit} initialValues={initialValues} />
+               <HabitForm
+                  formId={formId}
+                  onSubmit={handleSubmit}
+                  initialValues={
+                     !isCreatingHabit
+                        ? {
+                             ...editHabitDetails,
+                             repeatSchedule: {
+                                days: editHabitDetails.repeatDays,
+                                frequency:
+                                   editHabitDetails.repeatDays.length === 7
+                                      ? 'daily'
+                                      : 'weekly',
+                             },
+                          }
+                        : undefined
+                  }
+               />
             </DrawerBody>
             <DrawerFooter>
                <ButtonGroup>
@@ -71,7 +106,7 @@ export default function HabitFormDrawer({
                      variant="solid"
                      colorScheme="green"
                   >
-                     Save {isEditMode ? 'Changes' : 'Habit'}
+                     Save {isCreatingHabit ? 'Habit' : 'Changes'}
                   </Button>
                </ButtonGroup>
             </DrawerFooter>
