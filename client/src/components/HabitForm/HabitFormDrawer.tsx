@@ -34,7 +34,7 @@ export default function HabitFormDrawer({
 
    const handleSubmit = async (data: FormState) => {
       if (isCreatingHabit) {
-         const { repeatSchedule, ...rest } = data;
+         const { repeatSchedule, errors, ...rest } = data;
          const newHabit = {
             ...rest,
             repeatDays: repeatSchedule.days,
@@ -51,6 +51,7 @@ export default function HabitFormDrawer({
                isClosable: true,
             });
          } catch (err) {
+            console.log(err);
             toast({
                title: 'Failed to create habit',
                description: 'Something has gone wrong, please try again later',
