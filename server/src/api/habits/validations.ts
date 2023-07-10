@@ -8,7 +8,7 @@ type CreateHabitSchema = {
 const schema: CreateHabitSchema = {
    name: { isString: true, exists: true },
    description: { isString: true },
-   repeatSchedule: { isArray: true },
+   repeatDays: { isArray: true },
 };
 
 export const validateCreateHabit: RequestHandler = async (req, res, next) => {

@@ -25,3 +25,8 @@ dist-ssr
 *.sw?
 
 server/pgconfig.json
+
+# The `outDir` for declarations
+lib/
+# Build cache manifests
+*.tsbuildinfo

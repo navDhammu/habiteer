@@ -6,7 +6,8 @@
    "scripts": {
       "test": "jest --verbose",
       "dev": "ts-node-dev --files src/index.ts",
-      "tsc": "tsc"
+      "tsc": "tsc",
+      "codegen": "kysely-codegen --camel-case"
    },
    "author": "",
    "license": "ISC",

@@ -1,4 +1,4 @@
-import HttpStatusText from './HttpStatusText';
+import { HttpStatusText } from './HttpStatusText';
 
 export default async function fetchWrapper(
    path: RequestInfo,

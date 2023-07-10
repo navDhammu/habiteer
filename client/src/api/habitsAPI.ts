@@ -6,7 +6,7 @@ export default {
       const response = await fetchWrapper('http://localhost:3000/api/habits', {
          credentials: 'include',
       });
-      return response.json() as Promise<Habit[]>;
+      return response.json() as Promise<Habit>;
    },
    create: async (habit: CreatableHabit) => {
       await fetchWrapper('http://localhost:3000/api/habits', {

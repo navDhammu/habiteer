@@ -1,38 +1,39 @@
 {
-    "compilerOptions": {
-        "target": "ESNext",
-        "lib": ["DOM", "DOM.Iterable", "ESNext"],
-        "module": "ESNext",
-        "skipLibCheck": true,
-        "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals"],
-        "baseUrl": ".",
-        "paths": {
-            "services/*": ["src/services/*"],
-            "hooks/*": ["src/hooks/*"],
-            "components/*": ["src/components/*"],
-            "types/*": ["src/types/*"],
-            "utils/*": ["src/utils/*"],
-            "lib/*": ["src/lib/*"],
-            "assets/*": ["src/assets/*"],
-            "pages/*": ["src/pages/*"],
-            "context/*": ["src/context/*"],
-            "test-utils": ["src/utils/test-utils"]
-        },
+   "compilerOptions": {
+      "target": "ESNext",
+      "lib": ["DOM", "DOM.Iterable", "ESNext"],
+      "module": "ESNext",
+      "skipLibCheck": true,
+      "types": ["vite/client", "vite-plugin-svgr/client", "vitest/globals"],
+      "baseUrl": ".",
+      "rootDir": "src",
+      "paths": {
+         "@shared/*": ["../shared/*"],
+         "services/*": ["src/services/*"],
+         "hooks/*": ["src/hooks/*"],
+         "components/*": ["src/components/*"],
+         "types/*": ["src/types/*"],
+         "utils/*": ["src/utils/*"],
+         "lib/*": ["src/lib/*"],
+         "assets/*": ["src/assets/*"],
+         "pages/*": ["src/pages/*"],
+         "context/*": ["src/context/*"],
+         "test-utils": ["src/utils/test-utils"]
+      },
 
-        /* Bundler mode */
-        "moduleResolution": "bundler",
-        "allowImportingTsExtensions": true,
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
+      /* Bundler mode */
+      "moduleResolution": "bundler",
+      "allowImportingTsExtensions": true,
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": true,
+      "jsx": "react-jsx",
 
-        /* Linting */
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true
-    },
-    "include": ["src"],
-    "references": [{ "path": "./tsconfig.node.json" }]
+      /* Linting */
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true
+   },
+   "references": [{ "path": "./tsconfig.node.json" }, { "path": "../shared" }]
 }
