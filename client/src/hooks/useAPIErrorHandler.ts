@@ -1,7 +1,7 @@
 import { useAuthContext } from 'context/AuthContext';
 import { useState } from 'react';
 import { APIError } from 'src/api';
-import HttpStatusText from 'src/api/HttpStatusText';
+import { HttpStatusText } from 'src/api/HttpStatusText';
 
 // type Errors = 'Bad Request' | 'unknown' | ''
 

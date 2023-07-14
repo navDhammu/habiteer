@@ -21,7 +21,7 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
             email: req.body.email,
             password: req.body.password,
          });
-         req.session.set<any>('user', user);
+         req.session.userId = user.id;
          res.send(user);
       }
    );

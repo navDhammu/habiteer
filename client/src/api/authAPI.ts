@@ -1,9 +1,9 @@
 import { User } from 'types/User';
-import fetchWrapper from '.';
+import fetchWrapper, { BASE_URL } from '.';
 
 export default {
    login: async (credentials: { email: string; password: string }) => {
-      const response = await fetchWrapper('http://localhost:3000/auth/login', {
+      const response = await fetchWrapper(`${BASE_URL}/login`, {
          method: 'POST',
          credentials: 'include',
          headers: { 'Content-Type': 'application/json' },
@@ -11,8 +11,9 @@ export default {
       });
       return response.json() as Promise<User>;
    },
+
    logout: async () => {
-      await fetchWrapper('http://localhost:3000/auth/logout', {
+      await fetchWrapper(`${BASE_URL}/logout`, {
          method: 'POST',
          credentials: 'include',
       });

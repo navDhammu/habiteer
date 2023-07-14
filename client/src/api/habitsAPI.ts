@@ -1,15 +1,15 @@
 import { CreatableHabit, EditableHabit, Habit } from 'types/Habit';
-import fetchWrapper from '.';
+import fetchWrapper, { BASE_URL } from '.';
 
 export default {
    getAll: async () => {
-      const response = await fetchWrapper('http://localhost:3000/api/habits', {
+      const response = await fetchWrapper(`${BASE_URL}/habits`, {
          credentials: 'include',
       });
-      return response.json() as Promise<Habit>;
+      return response.json() as Promise<Habit[]>;
    },
    create: async (habit: CreatableHabit) => {
-      await fetchWrapper('http://localhost:3000/api/habits', {
+      await fetchWrapper(`${BASE_URL}/habits`, {
          method: 'POST',
          credentials: 'include',
          headers: { 'Content-Type': 'application/json' },
@@ -17,8 +17,8 @@ export default {
       });
    },
    edit: async (habit: EditableHabit) => {
-      await fetchWrapper(`http://localhost:3000/api/habits${habitId}`, {
-         method: 'POST',
+      await fetchWrapper(`${BASE_URL}/habits/${habit}`, {
+         method: 'PATCH',
          credentials: 'include',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(habit),

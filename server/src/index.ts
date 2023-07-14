@@ -3,11 +3,14 @@ import authRoutes from './auth/routes';
 import habitsRoutes from './habits/routes';
 import fastifyCookie from '@fastify/cookie';
 import fastifySession from '@fastify/session';
+import cors from '@fastify/cors';
 
 const app = Fastify({
+   logger: true,
    ajv: { customOptions: { $data: true } },
 });
 
+app.register(cors, { credentials: true, origin: 'http://localhost:5173' });
 app.register(fastifyCookie, {});
 app.register(fastifySession, {
    secret: 'cNaoPYAwF60HZJzkcNaoPYAwF60HZJzk',
