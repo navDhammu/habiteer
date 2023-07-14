@@ -1,30 +1,39 @@
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import habitsRouter from './api/habits/habits.routes';
-import authRouter from './api/auth/auth.routes';
+import Fastify from 'fastify';
+import authRoutes from './auth/routes';
+import habitsRoutes from './habits/routes';
+import fastifyCookie from '@fastify/cookie';
+import fastifySession from '@fastify/session';
 
-export const app = express();
-
-export const sessions: {
-   [key: string]: { userId: number; name: string | null; email: string };
-} = {};
-
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
-app.use(express.json());
-app.use(cookieParser());
-
-app.use('/api', (req, res, next) => {
-   const session = sessions[req.cookies?.session_id];
-   if (!session) return res.sendStatus(401);
-   req.user = {
-      id: session.userId,
-      email: session.email,
-   };
-   next();
+const app = Fastify({
+   ajv: { customOptions: { $data: true } },
 });
 
-app.use('/auth', authRouter);
-app.use('/api/habits', habitsRouter);
+app.register(fastifyCookie, {});
+app.register(fastifySession, {
+   secret: 'cNaoPYAwF60HZJzkcNaoPYAwF60HZJzk',
+   cookie: { secure: false },
+});
 
-app.listen(3000, () => console.log('listening'));
+app.addHook('preHandler', async (req, res) => {
+   if (
+      req.url === '/api/login' ||
+      req.url === '/api/logout' ||
+      req.url === '/api/signup'
+   )
+      return;
+   if (!req.session.userId) {
+      res.code(401).send();
+   }
+});
+
+//routes
+app.register(authRoutes, { prefix: '/api' });
+app.register(habitsRoutes, { prefix: '/api' });
+
+app.listen({ port: 3000 }, function (err, address) {
+   if (err) {
+      app.log.error(err);
+      process.exit(1);
+   }
+   console.log(`listening on ${address}`);
+});

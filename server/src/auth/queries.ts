@@ -1,5 +1,5 @@
 import { Users } from 'kysely-codegen';
-import { db } from '../../db';
+import { db } from '../db';
 import { Insertable } from 'kysely';
 
 export async function getUserByEmail(email: Users['email']) {
@@ -11,5 +11,9 @@ export async function getUserByEmail(email: Users['email']) {
 }
 
 export async function createUser(user: Insertable<Users>) {
-   return db.insertInto('users').values(user).execute();
+   return db
+      .insertInto('users')
+      .values(user)
+      .returning(['email', 'id', 'name'])
+      .executeTakeFirstOrThrow();
 }
