@@ -10,6 +10,7 @@ export default async function fetchWrapper(
    if (!response.ok) {
       const CustomError = new Error();
       CustomError.name = response.statusText;
+      console.log(CustomError);
       throw CustomError;
    }
    return response;

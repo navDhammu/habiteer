@@ -3,7 +3,6 @@ import { createContext } from 'react';
 import { User } from 'types/User';
 import { ReactNode, useState } from 'react';
 import authAPI from 'src/api/authAPI';
-import { APIError } from 'src/api';
 
 export type AuthContextType = {
    user: User | null;
@@ -34,14 +33,14 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
    const [error, setError] = useState('');
 
    const loginUser: AuthContextType['loginUser'] = async (details) => {
+      setIsLoading(true);
       try {
          const user = await authAPI.login(details);
          localStorage.setItem('user', JSON.stringify(user));
          setUser(user);
          setError('');
       } catch (error) {
-         console.log(error);
-         if (error instanceof APIError && error.statusText === 'Unauthorized')
+         if ((error as Error).name === 'Unauthorized')
             setError('Invalid email and/or password combination');
          else setError('Something went wrong, please try again later');
       } finally {

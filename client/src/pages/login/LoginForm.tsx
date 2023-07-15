@@ -6,6 +6,7 @@ import {
    CardBody,
    Checkbox,
    FormControl,
+   FormErrorMessage,
    FormLabel,
    Input,
 } from '@chakra-ui/react';
@@ -16,6 +17,10 @@ import { useAuthContext } from 'context/AuthContext';
 const testCredentials = {
    email: 'test@email.com',
    password: 'qwerasdf',
+   errors: {
+      email: '',
+      password: '',
+   },
 };
 
 export default function LoginForm() {
@@ -24,8 +29,27 @@ export default function LoginForm() {
 
    const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      loginUser(formData);
+      const form = e.target as HTMLFormElement;
+      const isFormValid = form.checkValidity();
+      if (isFormValid) {
+         loginUser(formData);
+      }
    };
+
+   const handleError = (key: 'email' | 'password', error: string) => {
+      setFormData((prev) => {
+         return {
+            ...prev,
+            errors: {
+               ...prev.errors,
+               [key]: error,
+            },
+         };
+      });
+   };
+
+   const isEmailValid = !formData.errors.email;
+   const isPasswordValid = !formData.errors.password;
 
    return (
       <Card
@@ -33,24 +57,40 @@ export default function LoginForm() {
          display="flex"
          flexDirection="column"
          gap="6"
+         noValidate
          onSubmit={handleSubmit}
       >
          <CardBody display="flex" flexDirection="column" gap="4">
-            <FormControl>
+            <FormControl isInvalid={!isEmailValid}>
                <FormLabel>Email</FormLabel>
                <Input
                   type="email"
+                  isRequired
                   value={formData.email}
+                  onInvalid={(e) =>
+                     handleError(
+                        'email',
+                        (e.target as HTMLInputElement).validationMessage
+                     )
+                  }
                   onChange={(e) =>
                      setFormData({ ...formData, email: e.target.value })
                   }
                   placeholder="name@domain.com"
                />
+               <FormErrorMessage>{formData.errors.email}</FormErrorMessage>
             </FormControl>
-            <FormControl>
+            <FormControl isInvalid={!isPasswordValid}>
                <FormLabel>Password</FormLabel>
                <Input
                   value={formData.password}
+                  onInvalid={(e) =>
+                     handleError(
+                        'password',
+                        (e.target as HTMLInputElement).validationMessage
+                     )
+                  }
+                  isRequired
                   onChange={(e) =>
                      setFormData({
                         ...formData,
@@ -58,8 +98,10 @@ export default function LoginForm() {
                      })
                   }
                   type="password"
+                  minLength={6}
                   placeholder="atleast 8 characters"
                />
+               <FormErrorMessage>{formData.errors.password}</FormErrorMessage>
             </FormControl>
             {error && (
                <Alert status="error">
@@ -76,7 +118,11 @@ export default function LoginForm() {
                   setFormData(
                      e.target.checked
                         ? testCredentials
-                        : { email: '', password: '' }
+                        : {
+                             email: '',
+                             password: '',
+                             errors: { email: '', password: '' },
+                          }
                   )
                }
             >
