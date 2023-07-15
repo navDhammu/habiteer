@@ -22,6 +22,8 @@ export default function HabitsProvider(props: PropsWithChildren) {
       dependency: [user],
    });
 
+   console.log(data);
+
    return (
       <HabitsContext.Provider value={{ habits: data ?? [], isLoading, error }}>
          {props.children}

@@ -124,10 +124,13 @@ export default function HabitForm({
                </FormLabel>
                <Input
                   type="date"
-                  disabled={isEditMode}
-                  value={formatISO(formState.trackingStartDate, {
-                     representation: 'date',
-                  })}
+                  value={
+                     isEditMode
+                        ? (formState.trackingStartDate as unknown as string)
+                        : formatISO(formState.trackingStartDate, {
+                             representation: 'date',
+                          })
+                  }
                   onChange={handleTextInput('trackingStartDate')}
                   min={format(new Date(), 'yyyy-MM-dd')}
                   required
