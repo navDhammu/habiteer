@@ -5,7 +5,6 @@ import {
    AlertDialogFooter,
    AlertDialogHeader,
    AlertDialogOverlay,
-   Badge,
    Box,
    Button,
    Card,
@@ -27,7 +26,7 @@ import {
 import { Icon } from '@chakra-ui/icons';
 import { IconDots, IconEdit, IconTrash } from '@tabler/icons-react';
 import HabitFormDrawer from 'components/HabitForm/HabitFormDrawer';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Habit } from 'types/Habit';
 
 export default function HabitCard(props: Habit) {
@@ -58,6 +57,38 @@ export default function HabitCard(props: Habit) {
 
    return (
       <>
+         <Card>
+            <CardHeader as={Flex} alignItems="center" gap="2">
+               <Heading size="sm">{props.name}</Heading>
+               {props.category && <Tag>{props.category}</Tag>}
+               <Menu>
+                  <MenuButton
+                     as={IconButton}
+                     variant="ghost"
+                     ml="auto"
+                     aria-label="habit actions"
+                     icon={<IconDots />}
+                  />
+                  <MenuList>
+                     <MenuItem onClick={onHabitFormOpen}>
+                        <Icon as={IconEdit} mr="3" />
+                        Edit
+                     </MenuItem>
+                     <MenuItem onClick={onDeleModalOpen} color="red">
+                        <Icon as={IconTrash} mr="3" />
+                        Delete
+                     </MenuItem>
+                  </MenuList>
+               </Menu>
+            </CardHeader>
+            <CardBody fontSize="sm">
+               <Text>{props.description}</Text>
+               <Text> Repeats every: {props.repeatDays.join(', ')}</Text>
+               <Text> Tracking since: {props.trackingStartDate}</Text>
+            </CardBody>
+         </Card>
+
+         {/* Modals */}
          <HabitFormDrawer
             isDrawerOpen={isHabitFormOpen}
             onCloseDrawer={onHabitFormClose}
@@ -91,36 +122,6 @@ export default function HabitCard(props: Habit) {
                </AlertDialogContent>
             </AlertDialogOverlay>
          </AlertDialog>
-         <Card>
-            <CardHeader as={Flex} alignItems="center" gap="2">
-               <Heading size="sm">{props.name}</Heading>
-               {props.category && <Tag>{props.category}</Tag>}
-               <Menu>
-                  <MenuButton
-                     as={IconButton}
-                     variant="ghost"
-                     ml="auto"
-                     aria-label="habit actions"
-                     icon={<IconDots />}
-                  />
-                  <MenuList>
-                     <MenuItem onClick={onHabitFormOpen}>
-                        <Icon as={IconEdit} mr="3" />
-                        Edit
-                     </MenuItem>
-                     <MenuItem onClick={onDeleModalOpen} color="red">
-                        <Icon as={IconTrash} mr="3" />
-                        Delete
-                     </MenuItem>
-                  </MenuList>
-               </Menu>
-            </CardHeader>
-            <CardBody fontSize="sm">
-               <Text>{props.description}</Text>
-               <Text> Repeats every: {props.repeatDays.join(', ')}</Text>
-               <Text> Tracking since: {props.trackingStartDate}</Text>
-            </CardBody>
-         </Card>
       </>
    );
 }

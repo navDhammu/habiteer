@@ -30,3 +30,4 @@ server/pgconfig.json
 lib/
 # Build cache manifests
 *.tsbuildinfo
+drizzle/

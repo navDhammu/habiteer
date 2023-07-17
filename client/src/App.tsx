@@ -8,7 +8,7 @@ import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import AuthProvider from 'context/AuthContext.tsx';
 import HabitsProvider from 'context/HabitsContext.tsx';
-import AllHabitsPage from 'pages/all-habits';
+import AllHabitsPage from 'pages/all-habits/AllHabitsPage';
 
 function App() {
    return (
