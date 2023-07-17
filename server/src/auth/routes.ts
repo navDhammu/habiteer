@@ -17,12 +17,12 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
          preHandler: handleAlreadySignedIn,
       },
       async (req, res) => {
-         const user = await signup({
+         const insertedId = await signup({
             email: req.body.email,
             password: req.body.password,
          });
-         req.session.userId = user.id;
-         res.send(user);
+         req.session.userId = insertedId;
+         res.send('User created');
       }
    );
 

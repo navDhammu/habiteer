@@ -7,8 +7,8 @@
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
-      "rootDir": "src",
-      "moduleResolution": "node16"
+      "rootDir": ".",
+      "moduleResolution": "Node"
    },
    "references": [{ "path": "../shared" }]
 }

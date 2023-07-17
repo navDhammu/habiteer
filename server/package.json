@@ -8,7 +8,7 @@
       "test": "jest --verbose",
       "dev": "nodemon --exec node -r @swc-node/register src/index.ts",
       "tsc": "tsc",
-      "codegen": "kysely-codegen --camel-case"
+      "drizzle": "drizzle-kit introspect:pg --config=drizzle.config.ts"
    },
    "author": "",
    "license": "ISC",
@@ -20,9 +20,9 @@
       "bcrypt": "^5.1.0",
       "cors": "^2.8.5",
       "dotenv": "^16.0.3",
+      "drizzle-orm": "^0.27.2",
       "fastify": "^4.19.2",
-      "kysely": "^0.25.0",
-      "pg": "^8.11.1"
+      "postgres": "^3.3.5"
    },
    "devDependencies": {
       "@swc-node/register": "^1.6.6",
@@ -30,9 +30,8 @@
       "@types/bcrypt": "^5.0.0",
       "@types/cors": "^2.8.13",
       "@types/node": "^20.1.2",
-      "@types/pg": "^8.10.2",
+      "drizzle-kit": "^0.19.5",
       "json-schema-to-ts": "^2.9.1",
-      "kysely-codegen": "^0.10.1",
       "nodemon": "^2.0.22",
       "typescript": "^5.0.4"
    }

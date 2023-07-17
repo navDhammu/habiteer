@@ -1,10 +1,10 @@
-import { createUser, getUserByEmail } from './queries';
 import bcrypt from 'bcrypt';
 import { createError } from '@fastify/error';
+import { NewUser, getUserByEmail, insertUser } from './db';
 
 type Credentials = {
-   email: string;
-   password: string;
+   email: NewUser['email'];
+   password: NewUser['password'];
 };
 
 export async function signup(userDetails: Credentials) {
@@ -18,7 +18,7 @@ export async function signup(userDetails: Credentials) {
       throw new CustomError();
    }
    const passwordHash = await bcrypt.hash(userDetails.email, 10);
-   return createUser({ email: userDetails.email, password: passwordHash });
+   return insertUser({ email: userDetails.email, password: passwordHash });
 }
 
 export async function login({ email, password }: Credentials) {

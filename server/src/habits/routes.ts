@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import { selectAllHabits } from './queries';
+import { selectAllHabits } from './db';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
    instance.get('/habits', async (req, res) => {
