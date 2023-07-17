@@ -8,7 +8,8 @@
       "test": "jest --verbose",
       "dev": "nodemon --exec node -r @swc-node/register src/index.ts",
       "tsc": "tsc",
-      "drizzle": "drizzle-kit introspect:pg --config=drizzle.config.ts"
+      "drizzle:introspect": "drizzle-kit introspect:pg --config=drizzle.config.ts",
+      "drizzle:migrate": "drizzle-kit generate:pg --config=./drizzle/drizzle.config.ts"
    },
    "author": "",
    "license": "ISC",

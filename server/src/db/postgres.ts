@@ -5,6 +5,4 @@ import { config } from 'dotenv';
 config();
 
 const queryClient = postgres(process.env.DATABASE_URL!);
-const db = drizzle(queryClient);
-
-export default db;
+export const db = drizzle(queryClient);

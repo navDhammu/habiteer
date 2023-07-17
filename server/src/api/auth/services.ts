@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { createError } from '@fastify/error';
-import { NewUser, getUserByEmail, insertUser } from './db';
+import { NewUser, getUserByEmail, insertUser } from './queries';
 
 type Credentials = {
    email: NewUser['email'];
