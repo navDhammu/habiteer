@@ -1,0 +1,149 @@
+{
+   "openapi": "3.0.3",
+   "info": {
+      "title": "Habit tracker",
+      "description": "Open api spec for habit tracker (habiteer)",
+      "version": "0.1.0"
+   },
+   "components": { "schemas": {} },
+   "paths": {
+      "/api/signup": {
+         "post": {
+            "tags": ["users"],
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "email": { "type": "string", "format": "email" },
+                           "password": { "type": "string", "minLength": 6 },
+                           "confirmPassword": {
+                              "enum": [{ "$data": "1/password" }]
+                           }
+                        },
+                        "required": ["email", "password", "confirmPassword"]
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": { "200": { "description": "Default Response" } }
+         }
+      },
+      "/api/login": {
+         "post": {
+            "tags": ["users"],
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "email": { "type": "string", "format": "email" },
+                           "password": { "type": "string", "minLength": 6 }
+                        },
+                        "required": ["email", "password"]
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": { "200": { "description": "Default Response" } }
+         }
+      },
+      "/api/logout": {
+         "post": {
+            "responses": { "200": { "description": "Default Response" } }
+         }
+      },
+      "/api/habits": {
+         "get": {
+            "operationId": "getAllHabits",
+            "tags": ["habits"],
+            "responses": {
+               "200": {
+                  "description": "Default Response",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {
+                              "name": { "type": "string" },
+                              "id": { "type": "number" },
+                              "description": { "type": "string" },
+                              "category": { "type": "string" },
+                              "trackingStartDate": {
+                                 "type": "string",
+                                 "format": "date"
+                              },
+                              "repeatDays": { "type": "array" }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         },
+         "post": {
+            "operationId": "createHabit",
+            "tags": ["habits"],
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "name": { "type": "string" },
+                           "description": { "type": "string" },
+                           "category": { "type": "string" },
+                           "trackingStartDate": {
+                              "type": "string",
+                              "format": "date"
+                           },
+                           "repeatDays": {
+                              "type": "array",
+                              "minItems": 1,
+                              "maxItems": 7,
+                              "items": {
+                                 "type": "string",
+                                 "enum": [
+                                    "monday",
+                                    "tuesday",
+                                    "wednesday",
+                                    "thursday",
+                                    "friday",
+                                    "saturday",
+                                    "sunday"
+                                 ]
+                              }
+                           }
+                        },
+                        "required": ["name", "repeatDays", "trackingStartDate"],
+                        "additionalProperties": false
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": { "200": { "description": "Default Response" } }
+         }
+      },
+      "/api/habits/{habitId}": {
+         "delete": {
+            "operationId": "deleteHabit",
+            "tags": ["habits"],
+            "parameters": [
+               {
+                  "schema": { "type": "number" },
+                  "in": "path",
+                  "name": "habitId",
+                  "required": true
+               }
+            ],
+            "responses": { "200": { "description": "Default Response" } }
+         }
+      }
+   },
+   "servers": [{ "url": "http://localhost" }]
+}

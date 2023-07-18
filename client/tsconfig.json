@@ -9,7 +9,7 @@
       "rootDir": "src",
       "paths": {
          "@shared/*": ["../shared/*"],
-         "services/*": ["src/services/*"],
+         "@api": ["src/api/index"],
          "hooks/*": ["src/hooks/*"],
          "components/*": ["src/components/*"],
          "types/*": ["src/types/*"],

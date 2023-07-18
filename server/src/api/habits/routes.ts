@@ -1,18 +1,22 @@
 import { FastifyPluginAsync } from 'fastify';
 import { deleteHabit, insertHabit, selectAllHabits } from './queries';
 import { FromSchema } from 'json-schema-to-ts';
-import { createHabitBodySchema, deleteParamsSchema } from './schemas';
+import {
+   createHabitSchema,
+   deleteHabitSchema,
+   getHabitSchema,
+} from './schemas';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
-   instance.get('/habits', async (req, res) => {
+   instance.get('/habits', { schema: getHabitSchema }, async (req, res) => {
       const userId = req.session.userId;
       const habits = await selectAllHabits(userId);
       res.send(habits);
    });
 
-   instance.post<{ Body: FromSchema<(typeof createHabitBodySchema)['body']> }>(
+   instance.post<{ Body: FromSchema<(typeof createHabitSchema)['body']> }>(
       '/habits',
-      { schema: createHabitBodySchema },
+      { schema: createHabitSchema },
       async (req, res) => {
          await insertHabit({ ...req.body, userId: req.session.userId });
          res.send();
@@ -20,11 +24,11 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
    );
 
    instance.delete<{
-      Params: FromSchema<(typeof deleteParamsSchema)['params']>;
+      Params: FromSchema<(typeof deleteHabitSchema)['params']>;
    }>(
       '/habits/:habitId',
       {
-         schema: deleteParamsSchema,
+         schema: deleteHabitSchema,
       },
       async (req, res) => {
          await deleteHabit(req.params.habitId);

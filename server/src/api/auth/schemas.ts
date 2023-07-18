@@ -1,4 +1,5 @@
 const signupSchema = {
+   tags: ['users'],
    body: {
       type: 'object',
       properties: {
@@ -21,6 +22,7 @@ const signupSchema = {
 };
 
 const loginSchema = {
+   tags: ['users'],
    body: {
       type: 'object',
       properties: {

@@ -1,4 +1,29 @@
-const createHabitBodySchema = {
+const getHabitSchema = {
+   operationId: 'getAllHabits',
+   tags: ['habits'],
+   response: {
+      200: {
+         type: 'object',
+         properties: {
+            name: { type: 'string' },
+            id: { type: 'number' },
+            description: { type: 'string' },
+            category: { type: 'string' },
+            trackingStartDate: {
+               type: 'string',
+               format: 'date',
+            },
+            repeatDays: {
+               type: 'array',
+            },
+         },
+      },
+   },
+} as const;
+
+const createHabitSchema = {
+   tags: ['habits'],
+   operationId: 'createHabit',
    body: {
       type: 'object',
       properties: {
@@ -38,7 +63,9 @@ const createHabitBodySchema = {
    },
 } as const;
 
-const deleteParamsSchema = {
+const deleteHabitSchema = {
+   operationId: 'deleteHabit',
+   tags: ['habits'],
    params: {
       type: 'object',
       properties: {
@@ -50,4 +77,4 @@ const deleteParamsSchema = {
    },
 } as const;
 
-export { deleteParamsSchema, createHabitBodySchema };
+export { deleteHabitSchema, createHabitSchema, getHabitSchema };
