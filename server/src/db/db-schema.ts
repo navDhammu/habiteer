@@ -1,3 +1,4 @@
+import { Static, Type } from '@sinclair/typebox';
 import { InferModel } from 'drizzle-orm';
 import { pgTable, text, serial, date, integer } from 'drizzle-orm/pg-core';
 
@@ -15,7 +16,19 @@ const habitsTable = pgTable('habits', {
    id: serial('id').primaryKey().notNull(),
    name: text('name').notNull(),
    description: text('description'),
-   repeatDays: text('repeat_days').array().notNull(),
+   repeatDays: text('repeat_days', {
+      enum: [
+         'monday',
+         'tuesday',
+         'wednesday',
+         'thursday',
+         'friday',
+         'saturday',
+         'sunday',
+      ],
+   })
+      .array()
+      .notNull(),
    created: date('created').default(new Date().toISOString()).notNull(),
    lastUpdated: date('last_updated'),
    userId: integer('user_id')
