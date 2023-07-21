@@ -71,6 +71,7 @@
                            "items": {
                               "type": "object",
                               "properties": {
+                                 "id": { "type": "integer" },
                                  "name": { "type": "string" },
                                  "description": {
                                     "anyOf": [
@@ -106,18 +107,14 @@
                                     }
                                  }
                               },
+                              "additionalProperties": false,
                               "required": [
-                                 "description",
-                                 "name",
                                  "id",
-                                 "category",
-                                 "trackingStartDate",
+                                 "name",
                                  "repeatDays",
-                                 "created",
-                                 "lastUpdated"
+                                 "trackingStartDate"
                               ]
-                           },
-                           "additionalProperties": false
+                           }
                         }
                      }
                   }
@@ -125,11 +122,61 @@
             }
          },
          "post": {
+            "operationId": "createHabit",
+            "tags": ["habits"],
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "name": { "type": "string" },
+                           "description": { "type": "string" },
+                           "category": { "type": "string" },
+                           "trackingStartDate": {
+                              "type": "string",
+                              "format": "date"
+                           },
+                           "repeatDays": {
+                              "type": "array",
+                              "minItems": 1,
+                              "maxItems": 7,
+                              "items": {
+                                 "type": "string",
+                                 "enum": [
+                                    "monday",
+                                    "tuesday",
+                                    "wednesday",
+                                    "thursday",
+                                    "friday",
+                                    "saturday",
+                                    "sunday"
+                                 ]
+                              }
+                           }
+                        },
+                        "required": ["name", "repeatDays", "trackingStartDate"],
+                        "additionalProperties": false
+                     }
+                  }
+               },
+               "required": true
+            },
             "responses": { "200": { "description": "Default Response" } }
          }
       },
       "/api/habits/{habitId}": {
          "delete": {
+            "operationId": "deleteHabit",
+            "tags": ["habits"],
+            "parameters": [
+               {
+                  "schema": { "type": "integer" },
+                  "in": "path",
+                  "name": "habitId",
+                  "required": true
+               }
+            ],
             "responses": { "200": { "description": "Default Response" } }
          }
       }

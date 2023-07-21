@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import fastify from 'fastify';
 import authRoutes from './api/auth/routes';
 import habitsRoutes from './api/habits/routes';
 import fastifyCookie from '@fastify/cookie';
@@ -8,7 +8,7 @@ import { fastifySwagger } from '@fastify/swagger';
 import fs from 'fs';
 import { generate } from 'openapi-typescript-codegen';
 
-const app = Fastify({
+const app = fastify({
    ajv: { customOptions: { $data: true } },
 });
 
