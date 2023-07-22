@@ -1,8 +1,9 @@
-import { FromSchema, JSONSchema } from 'json-schema-to-ts';
+import { FromSchema, JSONSchema, JSONSchema7 } from 'json-schema-to-ts';
 
-export const createHabitSchema = {
+export const habitSchema = {
    type: 'object',
    properties: {
+      id: { type: 'integer' },
       name: {
          type: 'string',
       },
@@ -34,8 +35,13 @@ export const createHabitSchema = {
          },
       },
    },
-   required: ['name', 'repeatDays', 'trackingStartDate'],
    additionalProperties: false,
-} as const satisfies JSONSchema;
-
-export type CreateHabitType = FromSchema<typeof createHabitSchema>;
+   required: [
+      'id',
+      'name',
+      'repeatDays',
+      'trackingStartDate',
+      'description',
+      'category',
+   ],
+} as const satisfies JSONSchema7;

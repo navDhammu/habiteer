@@ -6,6 +6,7 @@ import fastifySession from '@fastify/session';
 import cors from '@fastify/cors';
 import { fastifySwagger } from '@fastify/swagger';
 import fs from 'fs';
+import { habitSchema } from './api/habits/schemas/habitSchema';
 import { generate } from 'openapi-typescript-codegen';
 
 const app = fastify({
@@ -21,14 +22,21 @@ app.register(fastifySession, {
 
 app.register(fastifySwagger, {
    openapi: {
-      info: {
-         title: 'Habit tracker',
-         description: 'Open api spec for habit tracker (habiteer)',
-         version: '0.1.0',
+      openapi: '3.1.0',
+      components: {
+         schemas: { Habit: habitSchema as {} },
+         securitySchemes: {
+            cookieAuth: {
+               type: 'apiKey',
+               in: 'cookie',
+               name: 'sessionId',
+            },
+         },
       },
+      security: [{ cookieAuth: [] }],
       servers: [
          {
-            url: 'http://localhost',
+            url: 'http://localhost:3000',
          },
       ],
    },

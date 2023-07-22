@@ -1,45 +1,9 @@
 import { FromSchema, JSONSchema } from 'json-schema-to-ts';
+import { habitSchema } from './habitSchema';
 
 export const habitsResponseSchema = {
    type: 'array',
-   items: {
-      type: 'object',
-      properties: {
-         id: { type: 'integer' },
-         name: {
-            type: 'string',
-         },
-         description: {
-            anyOf: [{ type: 'string' }, { type: 'null' }],
-         },
-         category: {
-            anyOf: [{ type: 'string' }, { type: 'null' }],
-         },
-         trackingStartDate: {
-            type: 'string',
-            format: 'date',
-         },
-         repeatDays: {
-            type: 'array',
-            minItems: 1,
-            maxItems: 7,
-            items: {
-               type: 'string',
-               enum: [
-                  'monday',
-                  'tuesday',
-                  'wednesday',
-                  'thursday',
-                  'friday',
-                  'saturday',
-                  'sunday',
-               ],
-            },
-         },
-      },
-      additionalProperties: false,
-      required: ['id', 'name', 'repeatDays', 'trackingStartDate'],
-   },
+   items: habitSchema,
 } as const satisfies JSONSchema;
 
 export type HabitsResponseType = FromSchema<typeof habitsResponseSchema>;
