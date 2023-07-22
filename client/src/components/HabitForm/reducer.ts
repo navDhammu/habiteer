@@ -1,7 +1,6 @@
-import { parseISO } from 'date-fns';
 import { WEEKDAYS } from 'utils/dates';
-import { FormState, FormValues, TextInputKey } from './HabitForm';
-import { Habit } from 'types/Habit';
+import { FormState, FormInputs, TextInputKey } from './types';
+import { Habit } from '@api';
 
 type ActionType =
    | {
@@ -23,7 +22,7 @@ type ActionType =
    | {
         type: 'input_error';
         payload: {
-           key: keyof FormValues;
+           key: keyof FormInputs;
            error: string;
         };
      };
@@ -43,7 +42,7 @@ export default function reducer(
       case 'trackingStartDate':
          return {
             ...state,
-            [action.type]: parseISO(action.payload),
+            [action.type]: action.payload,
          };
       case 'frequency':
          const frequency = action.payload;
@@ -51,7 +50,7 @@ export default function reducer(
             ...state,
             repeatSchedule: {
                frequency,
-               days: frequency === 'daily' ? WEEKDAYS : [],
+               days: frequency === 'daily' ? [...WEEKDAYS] : [],
             },
          };
       case 'days':
@@ -74,31 +73,31 @@ export default function reducer(
 }
 
 export function initializeState(editHabitDetails: Habit): FormState {
-   const errors = {
+   const formState: FormState = {
       name: '',
-      category: '',
       description: '',
-      repeatSchedule: '',
       trackingStartDate: '',
+      category: '',
+      repeatSchedule: { days: [...WEEKDAYS], frequency: 'daily' },
+      errors: {
+         name: '',
+         category: '',
+         description: '',
+         repeatSchedule: '',
+         trackingStartDate: '',
+      },
    };
 
-   if (editHabitDetails) {
-      const { repeatDays, ...rest } = editHabitDetails;
-      return {
-         ...rest,
-         repeatSchedule: {
-            days: repeatDays,
-            frequency: repeatDays.length === 7 ? 'daily' : 'weekly',
-         },
-         errors,
-      };
-   }
-   return {
-      name: '',
-      category: '',
-      description: '',
-      repeatSchedule: { days: WEEKDAYS, frequency: 'daily' },
-      trackingStartDate: new Date(),
-      errors,
+   if (!editHabitDetails) return formState;
+
+   formState.name = editHabitDetails.name;
+   formState.description = editHabitDetails.description ?? '';
+   formState.category = editHabitDetails.category ?? '';
+   formState.trackingStartDate = editHabitDetails.trackingStartDate;
+   formState.repeatSchedule = {
+      days: editHabitDetails.repeatDays,
+      frequency: editHabitDetails.repeatDays.length === 7 ? 'daily' : 'weekly',
    };
+
+   return formState;
 }

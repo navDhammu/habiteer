@@ -2,7 +2,7 @@ import useValidContext from 'hooks/useValidContext';
 import { createContext } from 'react';
 import { User } from 'types/User';
 import { ReactNode, useState } from 'react';
-import authAPI from 'src/api/authAPI';
+import { ApiError, AuthService } from '@api';
 
 export type AuthContextType = {
    user: User | null;
@@ -30,26 +30,25 @@ const getUserFromLocalStorage = () => {
 export default function AuthProvider({ children }: { children: ReactNode }) {
    const [user, setUser] = useState<User | null>(getUserFromLocalStorage);
    const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState('');
+   const [error, setError] = useState<AuthContextType['error']>('');
 
    const loginUser: AuthContextType['loginUser'] = async (details) => {
       setIsLoading(true);
       try {
-         const user = await authAPI.login(details);
+         const user = await AuthService.login(details);
          localStorage.setItem('user', JSON.stringify(user));
          setUser(user);
-         setError('');
       } catch (error) {
-         if ((error as Error).name === 'Unauthorized')
-            setError('Invalid email and/or password combination');
-         else setError('Something went wrong, please try again later');
+         error instanceof ApiError
+            ? setError(error.body.message)
+            : setError('Something went wrong');
       } finally {
          setIsLoading(false);
       }
    };
 
    const logoutUser = async () => {
-      await authAPI.logout();
+      await AuthService.logout();
       localStorage.removeItem('user');
       setUser(null);
    };

@@ -27,7 +27,8 @@ import { Icon } from '@chakra-ui/icons';
 import { IconDots, IconEdit, IconTrash } from '@tabler/icons-react';
 import HabitFormDrawer from 'components/HabitForm/HabitFormDrawer';
 import { useRef } from 'react';
-import { Habit } from 'types/Habit';
+import { Habit } from '@api';
+import { HabitsService } from '@api';
 
 export default function HabitCard(props: Habit) {
    const {
@@ -44,16 +45,25 @@ export default function HabitCard(props: Habit) {
    const cancelRef = useRef(null);
    const toast = useToast();
 
-   const handleDelete = () =>
-      Promise.resolve().then(() => {
-         onDeleteModalClose();
+   const handleDelete = async () => {
+      try {
+         await HabitsService.deleteHabit(props.id);
          toast({
-            description: `Deleted habit ${props.name}`,
+            title: 'Habit deleted',
             status: 'success',
+            variant: 'top-accent',
             duration: 5000,
             isClosable: true,
          });
-      });
+      } catch (error) {
+         toast({
+            status: 'error',
+            description: 'Something went wrong',
+         });
+      } finally {
+         onDeleteModalClose();
+      }
+   };
 
    return (
       <>

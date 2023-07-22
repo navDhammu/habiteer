@@ -1,11 +1,11 @@
-export type Habit = {
-   id: string;
-   name: string;
-   category?: string;
-   description?: string;
-   trackingStartDate: Date;
-   repeatDays: string[];
-};
+// export type Habit = {
+//    id: number;
+//    name: string;
+//    category: string;
+//    description: string;
+//    trackingStartDate: string;
+//    repeatDays:
+// };
 
-export type CreatableHabit = Omit<Habit, 'id'>;
-export type EditableHabit = Pick<Habit, 'id'> & Partial<CreatableHabit>;
+// export type CreatableHabit = Omit<Habit, 'id'>;
+// export type EditableHabit = Pick<Habit, 'id'> & Partial<CreatableHabit>;

@@ -11,10 +11,11 @@ import {
    useToast,
 } from '@chakra-ui/react';
 import { useId, useState } from 'react';
-import { Habit } from 'types/Habit';
+import { Habit } from '@api';
 
-import HabitForm, { FormState } from './HabitForm';
-import habitsAPI from 'src/api/habitsAPI';
+import HabitForm from './HabitForm';
+import { HabitsService } from '@api';
+import { FormState } from './types';
 
 type HabitFormDrawerProps = {
    isDrawerOpen: boolean;
@@ -32,9 +33,9 @@ export default function HabitFormDrawer({
    const isCreatingHabit = !editHabitDetails;
    const toast = useToast();
 
-   const handleSubmit = async (data: FormState) => {
+   const handleSubmit = async (formState: FormState) => {
       if (isCreatingHabit) {
-         const { repeatSchedule, errors, ...rest } = data;
+         const { repeatSchedule, errors, ...rest } = formState;
          const newHabit = {
             ...rest,
             repeatDays: repeatSchedule.days,
@@ -42,7 +43,8 @@ export default function HabitFormDrawer({
 
          setIsSubmitting(true);
          try {
-            await habitsAPI.create(newHabit);
+            await HabitsService.createHabit(newHabit);
+
             toast({
                title: 'Create Habit',
                description: 'Habit successfully created!',

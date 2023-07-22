@@ -14,31 +14,15 @@ import {
    UseCheckboxGroupProps,
 } from '@chakra-ui/react';
 import { IconFolder } from '@tabler/icons-react';
-import { format, formatISO } from 'date-fns';
+import { format } from 'date-fns';
 import { useReducer } from 'react';
-import { Habit } from 'types/Habit';
+import { Habit } from '@api';
 import { initializeState } from './reducer.ts';
 import React from 'react';
 import WeekdayCheckboxes from './WeekdayCheckboxes.tsx';
 import reducer from './reducer';
 import { validateForm } from './validation.ts';
-
-export type FormState = FormValues & {
-   errors: {
-      [Key in keyof FormValues]: string;
-   };
-};
-export type FormValues = Omit<Habit, 'repeatDays' | 'id'> & {
-   repeatSchedule: {
-      frequency: 'daily' | 'weekly';
-      days: string[];
-   };
-};
-
-export type TextInputKey = keyof Pick<
-   FormState,
-   'name' | 'category' | 'description' | 'trackingStartDate'
->;
+import { FormState, TextInputKey } from './types.ts';
 
 type HabitFormProps = {
    formId: string;
@@ -69,7 +53,7 @@ export default function HabitForm({
 
    const handleDaysChange: UseCheckboxGroupProps['onChange'] = (value) => {
       console.log(value);
-      dispatch({ type: 'days', payload: value as string[] });
+      dispatch({ type: 'days', payload: value as Habit['repeatDays'] });
    };
 
    const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
@@ -110,7 +94,7 @@ export default function HabitForm({
                   </InputLeftElement>
                   <Input
                      placeholder="Choose Category"
-                     value={formState.category}
+                     value={formState.category || ''}
                      onChange={handleTextInput('category')}
                   />
                </InputGroup>
@@ -124,13 +108,7 @@ export default function HabitForm({
                </FormLabel>
                <Input
                   type="date"
-                  value={
-                     isEditMode
-                        ? (formState.trackingStartDate as unknown as string)
-                        : formatISO(formState.trackingStartDate, {
-                             representation: 'date',
-                          })
-                  }
+                  value={formState.trackingStartDate}
                   onChange={handleTextInput('trackingStartDate')}
                   min={format(new Date(), 'yyyy-MM-dd')}
                   required

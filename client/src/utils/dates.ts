@@ -1,3 +1,4 @@
+import { Habit } from '@api';
 import {
    addDays,
    format,
@@ -20,11 +21,11 @@ export function getWeekArray(date: Date) {
 }
 
 export const WEEKDAYS = [
-   'Monday',
-   'Tuesday',
-   'Wednesday',
-   'Thursday',
-   'Friday',
-   'Saturday',
-   'Sunday',
-];
+   'monday',
+   'tuesday',
+   'wednesday',
+   'thursday',
+   'friday',
+   'saturday',
+   'sunday',
+] as const;

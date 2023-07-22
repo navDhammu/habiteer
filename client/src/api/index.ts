@@ -1,28 +1,13 @@
-import { HttpStatusText } from './HttpStatusText';
+/* generated using openapi-typescript-codegen -- do no edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export { ApiError } from './core/ApiError';
+export { CancelablePromise, CancelError } from './core/CancelablePromise';
+export { OpenAPI } from './core/OpenAPI';
+export type { OpenAPIConfig } from './core/OpenAPI';
 
-export const BASE_URL = 'http://localhost:3000/api';
+export type { Habit } from './models/Habit';
 
-export default async function fetchWrapper(
-   path: RequestInfo,
-   options: RequestInit
-) {
-   const response = await fetch(path, options);
-   if (!response.ok) {
-      const CustomError = new Error();
-      CustomError.name = response.statusText;
-      console.log(CustomError);
-      throw CustomError;
-   }
-   return response;
-}
-
-export class APIError extends Error {
-   public readonly httpCode: number;
-   public readonly statusText: HttpStatusText;
-
-   constructor(response: Response) {
-      super();
-      this.httpCode = response.status;
-      this.statusText = response.statusText as HttpStatusText;
-   }
-}
+export { AuthService } from './services/AuthService';
+export { HabitsService } from './services/HabitsService';

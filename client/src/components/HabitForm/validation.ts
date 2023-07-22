@@ -1,44 +1,34 @@
-import { isBefore, startOfDay } from 'date-fns';
-import { FormState, FormValues } from './HabitForm';
+import { isBefore, parseISO, startOfDay } from 'date-fns';
+import { FormState, FormInputs } from './types';
 import { Entries } from 'type-fest';
 
-type Validation = {
-   [K in keyof FormValues]: (value: FormValues[K]) => string;
-};
-
-export const validation: Validation = {
-   name: (value) => (value.length ? '' : 'Habit name is required'),
-   repeatSchedule: (value) => {
-      return !value.days.length
-         ? 'A minimum of 1 day needs to be selected'
-         : '';
-   },
-   trackingStartDate: (value) =>
-      isBefore(value, startOfDay(new Date()))
-         ? 'Start date cannot be before today'
-         : '',
-};
-
 export function validateForm(formState: FormState) {
-   const { errors: prevErrors, ...formValues } = formState;
+   const { errors: prevErrors, ...formInputs } = formState;
    let errors = { ...prevErrors };
 
-   for (let [key, value] of Object.entries(formValues) as Entries<
-      typeof formValues
+   for (let [key, value] of Object.entries(formInputs) as Entries<
+      typeof formInputs
    >)
       switch (key) {
          case 'name':
-            errors.name = validation.name(value as string);
+            errors.name = (value as string).length
+               ? ''
+               : 'Habit name is required';
             break;
          case 'repeatSchedule':
-            errors.repeatSchedule = validation.repeatSchedule(
-               value as FormValues['repeatSchedule']
-            );
+            errors.repeatSchedule = !(value as FormInputs['repeatSchedule'])
+               .days.length
+               ? 'Start date cannot be before today'
+               : '';
             break;
          case 'trackingStartDate':
-            errors.trackingStartDate = validation.trackingStartDate(
-               value as FormValues['trackingStartDate']
-            );
+            const trackingStartDate = parseISO(value as string);
+            errors.trackingStartDate = isBefore(
+               trackingStartDate,
+               startOfDay(new Date())
+            )
+               ? 'Start date cannot be before today'
+               : '';
             break;
          default:
             break;
