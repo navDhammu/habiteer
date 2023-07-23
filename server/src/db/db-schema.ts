@@ -29,7 +29,7 @@ const habitsTable = pgTable('habits', {
    })
       .array()
       .notNull(),
-   created: date('created').default(new Date().toISOString()).notNull(),
+   created: date('created').default('CURRENT_DATE').notNull(),
    lastUpdated: date('last_updated'),
    userId: integer('user_id')
       .notNull()
