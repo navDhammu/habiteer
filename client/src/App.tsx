@@ -7,7 +7,7 @@ import Today from 'pages/today';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import AuthProvider from 'context/AuthContext.tsx';
-import HabitsProvider from 'context/HabitsContext.tsx';
+import HabitsProvider from 'context/HabitsProvider';
 import AllHabitsPage from 'pages/all-habits/AllHabitsPage';
 
 function App() {

@@ -26,11 +26,14 @@ import {
 import { Icon } from '@chakra-ui/icons';
 import { IconDots, IconEdit, IconTrash } from '@tabler/icons-react';
 import HabitFormDrawer from 'components/HabitForm/HabitFormDrawer';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Habit } from '@api';
 import { HabitsService } from '@api';
+import { useHabitsContext } from 'context/HabitsContext';
 
 export default function HabitCard(props: Habit) {
+   const { deleteHabit } = useHabitsContext();
+   const [isDeletingHabit, setIsDeletingHabit] = useState(false);
    const {
       isOpen: isDeleteModalOpen,
       onOpen: onDeleModalOpen,
@@ -45,11 +48,14 @@ export default function HabitCard(props: Habit) {
    const cancelRef = useRef(null);
    const toast = useToast();
 
-   const handleDelete = async () => {
+   const handleDeleteClick = async () => {
+      setIsDeletingHabit(true);
       try {
          await HabitsService.deleteHabit(props.id);
+         deleteHabit(props.id);
          toast({
-            title: 'Habit deleted',
+            title: 'Delete Habit',
+            description: `Successfully deleted habit ${props.name}`,
             status: 'success',
             variant: 'top-accent',
             duration: 5000,
@@ -57,10 +63,12 @@ export default function HabitCard(props: Habit) {
          });
       } catch (error) {
          toast({
+            title: 'Delete Habit',
             status: 'error',
             description: 'Something went wrong',
          });
       } finally {
+         setIsDeletingHabit(false);
          onDeleteModalClose();
       }
    };
@@ -125,7 +133,13 @@ export default function HabitCard(props: Habit) {
                      <Button onClick={onDeleteModalClose} ref={cancelRef}>
                         Cancel
                      </Button>
-                     <Button colorScheme="red" onClick={handleDelete} ml={3}>
+                     <Button
+                        colorScheme="red"
+                        isLoading={isDeletingHabit}
+                        isDisabled={isDeletingHabit}
+                        onClick={handleDeleteClick}
+                        ml={3}
+                     >
                         Delete Habit
                      </Button>
                   </AlertDialogFooter>

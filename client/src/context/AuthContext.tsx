@@ -1,4 +1,4 @@
-import useValidContext from 'hooks/useValidContext';
+import useValidContext from 'context/useValidContext';
 import { createContext } from 'react';
 import { User } from 'types/User';
 import { ReactNode, useState } from 'react';
