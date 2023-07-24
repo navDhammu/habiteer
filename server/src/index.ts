@@ -61,6 +61,7 @@ app.addHook('preHandler', async (req, res) => {
 //routes
 app.register(authRoutes, { prefix: '/api' });
 app.register(habitsRoutes, { prefix: '/api' });
+app.get('/health-check', (req, res) => res.code(200).send());
 
 app.listen(
    { port: (process.env.PORT as unknown as number) || 3000, host: '0.0.0.0' },
