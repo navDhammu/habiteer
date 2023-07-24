@@ -6,7 +6,7 @@
    "scripts": {
       "test": "jest --verbose",
       "dev": "nodemon --ignore api-spec.json --exec node -r @swc-node/register src/index.ts",
-      "start": "node dist/index.js",
+      "start": "node index.js",
       "build": "tsc",
       "generate-client": "openapi --input ./api-spec.json --output ../client/src/api",
       "drizzle:introspect": "drizzle-kit introspect:pg --config=./drizzle/drizzle.config.ts",
