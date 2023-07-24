@@ -59,13 +59,16 @@ app.addHook('preHandler', async (req, res) => {
 app.register(authRoutes, { prefix: '/api' });
 app.register(habitsRoutes, { prefix: '/api' });
 
-app.listen({ port: 3000 }, function (err, address) {
-   if (err) {
-      app.log.error(err);
-      process.exit(1);
+app.listen(
+   { port: (process.env.PORT as unknown as number) || 3000 },
+   function (err, address) {
+      if (err) {
+         app.log.error(err);
+         process.exit(1);
+      }
+      console.log(`listening on ${address}`);
    }
-   console.log(`listening on ${address}`);
-});
+);
 
 app.ready().then(() => {
    const fileLocation = './api-spec.json';
