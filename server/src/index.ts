@@ -10,6 +10,7 @@ import { habitSchema } from './api/habits/schemas/habitSchema';
 import { generate } from 'openapi-typescript-codegen';
 
 const app = fastify({
+   logger: true,
    ajv: { customOptions: { $data: true } },
 });
 
