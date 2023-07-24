@@ -8,6 +8,8 @@ export type Habit = {
     name: string;
     description: (string | null);
     category: (string | null);
+    created: string;
+    lastUpdated: (string | null);
     trackingStartDate: string;
     repeatDays: Array<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'>;
 };

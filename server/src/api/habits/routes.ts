@@ -2,10 +2,6 @@ import { FastifyPluginAsync } from 'fastify';
 import { deleteHabit, insertHabit, selectAllHabits } from './queries';
 
 import {
-   HabitsResponseType,
-   habitsResponseSchema,
-} from './schemas/habitsResponseSchema';
-import {
    CreateHabitType,
    createHabitSchema,
 } from './schemas/createHabitSchema';
@@ -13,17 +9,27 @@ import {
    DeleteHabitParamsType,
    deleteHabitParamsSchema,
 } from './schemas/deleteHabitParamsSchema';
+import { habitSchema } from './schemas/habitSchema';
+import { FromSchema, JSONSchema } from 'json-schema-to-ts';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
    //get all habits route
-   instance.get<{ Reply: { 200: HabitsResponseType } }>(
+   const habitsResponseSchema = {
+      type: 'array',
+      items: habitSchema,
+   } satisfies JSONSchema;
+
+   instance.get<{ Reply: { 200: FromSchema<typeof habitsResponseSchema> } }>(
       '/habits',
       {
          schema: {
             operationId: 'getAllHabits',
             tags: ['habits'],
             response: {
-               200: habitsResponseSchema,
+               200: {
+                  type: 'array',
+                  items: habitSchema,
+               },
             },
          },
       },
@@ -35,18 +41,27 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
    );
 
    //create habit route
-   instance.post<{ Body: CreateHabitType }>(
+   instance.post<{
+      Body: CreateHabitType;
+      Reply: { 200: FromSchema<typeof habitSchema> };
+   }>(
       '/habits',
       {
          schema: {
             tags: ['habits'],
             operationId: 'createHabit',
             body: createHabitSchema,
+            response: {
+               200: habitSchema,
+            },
          },
       },
       async (req, res) => {
-         await insertHabit({ ...req.body, userId: req.session.userId });
-         res.send();
+         const [habit] = await insertHabit({
+            ...req.body,
+            userId: req.session.userId,
+         });
+         res.code(200).send(habit);
       }
    );
 

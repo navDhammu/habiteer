@@ -16,6 +16,7 @@ import { Habit } from '@api';
 import HabitForm from './HabitForm';
 import { HabitsService } from '@api';
 import { FormState } from './types';
+import { useHabitsContext } from 'context/HabitsContext';
 
 type HabitFormDrawerProps = {
    isDrawerOpen: boolean;
@@ -30,6 +31,7 @@ export default function HabitFormDrawer({
 }: HabitFormDrawerProps) {
    const formId = useId();
    const [isSubmitting, setIsSubmitting] = useState(false);
+   const habitsContext = useHabitsContext();
    const isCreatingHabit = !editHabitDetails;
    const toast = useToast();
 
@@ -43,8 +45,8 @@ export default function HabitFormDrawer({
 
          setIsSubmitting(true);
          try {
-            await HabitsService.createHabit(newHabit);
-
+            const createdHabit = await HabitsService.createHabit(newHabit);
+            habitsContext.addHabit(createdHabit);
             toast({
                title: 'Create Habit',
                description: 'Habit successfully created!',
@@ -62,6 +64,7 @@ export default function HabitFormDrawer({
             });
          } finally {
             setIsSubmitting(false);
+            onCloseDrawer();
          }
       }
    };

@@ -22,11 +22,10 @@ export function validateForm(formState: FormState) {
                : '';
             break;
          case 'trackingStartDate':
-            const trackingStartDate = parseISO(value as string);
-            errors.trackingStartDate = isBefore(
-               trackingStartDate,
-               startOfDay(new Date())
-            )
+            const dateString = value as string;
+            errors.trackingStartDate = !dateString
+               ? 'Please choose a tracking start date'
+               : isBefore(parseISO(dateString), startOfDay(new Date()))
                ? 'Start date cannot be before today'
                : '';
             break;

@@ -6,7 +6,7 @@ async function selectAllHabits(userId: Habit['userId']) {
 }
 
 async function insertHabit(habit: InsertableHabit) {
-   return db.insert(habitsTable).values(habit);
+   return db.insert(habitsTable).values(habit).returning();
 }
 
 async function deleteHabit(id: Habit['id']) {

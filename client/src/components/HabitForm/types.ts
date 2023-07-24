@@ -5,7 +5,7 @@ type FormInputs = Omit<
    {
       [Key in keyof Habit]: NonNullable<Habit[Key]>;
    },
-   'repeatDays' | 'id'
+   'repeatDays' | 'id' | 'lastUpdated' | 'created'
 > & {
    repeatSchedule: {
       frequency: 'daily' | 'weekly';

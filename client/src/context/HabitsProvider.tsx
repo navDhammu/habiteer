@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PropsWithChildren } from 'react';
 import { useAuthContext } from './AuthContext';
-import { HabitsService } from '@api';
+import { Habit, HabitsService } from '@api';
 import { HabitsContext, HabitsContextType } from './HabitsContext';
 
 export default function HabitsProvider(props: PropsWithChildren) {
@@ -13,6 +13,8 @@ export default function HabitsProvider(props: PropsWithChildren) {
    const deleteHabit = (id: number) => {
       setHabits(habits.filter((habit) => habit.id !== id));
    };
+
+   const addHabit = (habit: Habit) => setHabits([...habits, habit]);
 
    useEffect(() => {
       if (user) {
@@ -31,6 +33,7 @@ export default function HabitsProvider(props: PropsWithChildren) {
       isLoading,
       error,
       deleteHabit,
+      addHabit,
    } satisfies HabitsContextType;
 
    return (

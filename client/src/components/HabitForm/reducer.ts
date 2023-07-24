@@ -1,6 +1,7 @@
 import { WEEKDAYS } from 'utils/dates';
 import { FormState, FormInputs, TextInputKey } from './types';
 import { Habit } from '@api';
+import { format } from 'date-fns';
 
 type ActionType =
    | {
@@ -76,7 +77,7 @@ export function initializeState(editHabitDetails: Habit): FormState {
    const formState: FormState = {
       name: '',
       description: '',
-      trackingStartDate: '',
+      trackingStartDate: format(new Date(), 'yyyy-MM-dd'),
       category: '',
       repeatSchedule: { days: [...WEEKDAYS], frequency: 'daily' },
       errors: {

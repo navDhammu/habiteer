@@ -1,4 +1,4 @@
-import { FromSchema, JSONSchema, JSONSchema7 } from 'json-schema-to-ts';
+import { JSONSchema7 } from 'json-schema-to-ts';
 
 export const habitSchema = {
    type: 'object',
@@ -12,6 +12,21 @@ export const habitSchema = {
       },
       category: {
          anyOf: [{ type: 'string' }, { type: 'null' }],
+      },
+      created: {
+         type: 'string',
+         format: 'date',
+      },
+      lastUpdated: {
+         anyOf: [
+            {
+               type: 'string',
+               format: 'date',
+            },
+            {
+               type: 'null',
+            },
+         ],
       },
       trackingStartDate: {
          type: 'string',
@@ -41,6 +56,8 @@ export const habitSchema = {
       'name',
       'repeatDays',
       'trackingStartDate',
+      'created',
+      'lastUpdated',
       'description',
       'category',
    ],

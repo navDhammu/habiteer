@@ -7,6 +7,7 @@ export type HabitsContextType = {
    isLoading: boolean;
    error: null | Error;
    deleteHabit: (id: Habit['id']) => void;
+   addHabit: (habit: Habit) => void;
 };
 
 export const HabitsContext = createContext<HabitsContextType | null>(null);
