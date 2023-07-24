@@ -13,7 +13,7 @@ const app = fastify({
    ajv: { customOptions: { $data: true } },
 });
 
-app.register(cors, { credentials: true, origin: 'http://localhost:5173' });
+app.register(cors, { credentials: true });
 app.register(fastifyCookie, {});
 app.register(fastifySession, {
    secret: 'cNaoPYAwF60HZJzkcNaoPYAwF60HZJzk',
