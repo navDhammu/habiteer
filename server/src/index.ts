@@ -63,7 +63,7 @@ app.register(authRoutes, { prefix: '/api' });
 app.register(habitsRoutes, { prefix: '/api' });
 
 app.listen(
-   { port: (process.env.PORT as unknown as number) || 3000 },
+   { port: (process.env.PORT as unknown as number) || 3000, host: '0.0.0.0' },
    function (err, address) {
       if (err) {
          app.log.error(err);
