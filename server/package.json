@@ -2,10 +2,11 @@
    "name": "server",
    "version": "1.0.0",
    "description": "",
-   "main": "./dist/index.js",
+   "main": "index.js",
    "scripts": {
       "test": "jest --verbose",
       "dev": "nodemon --ignore api-spec.json --exec node -r @swc-node/register src/index.ts",
+      "start": "node src/index.js",
       "build": "tsc",
       "generate-client": "openapi --input ./api-spec.json --output ../client/src/api",
       "drizzle:introspect": "drizzle-kit introspect:pg --config=./drizzle/drizzle.config.ts",
