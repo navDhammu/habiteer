@@ -53,6 +53,7 @@ app.addHook('preHandler', async (req, res) => {
       req.url === '/api/signup'
    )
       return;
+   if (req.url === '/health-check') return res.code(200).send();
    if (!req.session.userId) {
       res.code(401).send();
    }
@@ -61,7 +62,6 @@ app.addHook('preHandler', async (req, res) => {
 //routes
 app.register(authRoutes, { prefix: '/api' });
 app.register(habitsRoutes, { prefix: '/api' });
-app.get('/health-check', (req, res) => res.code(200).send());
 
 app.listen(
    { port: (process.env.PORT as unknown as number) || 3000, host: '0.0.0.0' },
