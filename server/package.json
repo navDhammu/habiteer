@@ -2,7 +2,7 @@
    "name": "server",
    "version": "1.0.0",
    "description": "",
-   "main": "index.js",
+   "main": "./dist/index.js",
    "scripts": {
       "test": "jest --verbose",
       "dev": "nodemon --ignore api-spec.json --exec node -r @swc-node/register src/index.ts",
