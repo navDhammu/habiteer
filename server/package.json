@@ -4,7 +4,6 @@
    "description": "",
    "main": "index.js",
    "scripts": {
-      "preinstall": "npx only-allow pnpm",
       "test": "jest --verbose",
       "dev": "nodemon --ignore api-spec.json --exec node -r @swc-node/register src/index.ts",
       "start": "node dist/index.js",
