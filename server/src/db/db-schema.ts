@@ -1,4 +1,3 @@
-import { Static, Type } from '@sinclair/typebox';
 import { InferModel } from 'drizzle-orm';
 import { pgTable, text, serial, date, integer } from 'drizzle-orm/pg-core';
 
