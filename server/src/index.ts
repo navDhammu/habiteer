@@ -8,6 +8,9 @@ import { fastifySwagger } from '@fastify/swagger';
 import fs from 'fs';
 import { habitSchema } from './api/habits/schemas/habitSchema';
 import { generate } from 'openapi-typescript-codegen';
+import { config } from 'dotenv';
+
+config();
 
 const app = fastify({
    logger: true,
@@ -60,7 +63,7 @@ app.register(authRoutes, { prefix: '/api' });
 app.register(habitsRoutes, { prefix: '/api' });
 
 app.listen(
-   { port: (process.env.PORT as unknown as number) || 3000 },
+   { ipv6Only: true, port: (process.env.PORT as unknown as number) || 3000 },
    function (err, address) {
       if (err) {
          app.log.error(err);
