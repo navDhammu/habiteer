@@ -31,7 +31,7 @@ setupOpenAPI(app);
 app.get('/', (req, res) => res.code(200).send('health check'));
 //private routes
 app.register(
-   (instance, opts) => {
+   async (instance, opts) => {
       instance.register(authRoutes);
       instance.register(habitsRoutes);
       instance.addHook('preHandler', async (req, res) => {
