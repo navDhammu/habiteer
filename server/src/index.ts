@@ -14,41 +14,31 @@ const app = fastify({
    ajv: { customOptions: { $data: true } },
 });
 
-app.register(cors, {
-   credentials: true,
-   origin: ['http://localhost:5173'],
-});
+setupOpenAPI(app);
 
 app.register(fastifyCookie, {});
 app.register(fastifySession, {
    secret: 'cNaoPYAwF60HZJzkcNaoPYAwF60HZJzk',
    cookie: { secure: false },
 });
-app.register(fastifyStatic, { root: path.join(__dirname, '/dist') });
 
-setupOpenAPI(app);
+app.get('/', (_, res) => res.code(200).send('health check'));
 
-app.get('/', (req, res) => res.code(200).send('health check'));
-//private routes
-app.register(
-   async (instance, opts) => {
-      instance.register(authRoutes);
-      instance.register(habitsRoutes);
-      instance.addHook('preHandler', async (req, res) => {
-         if (
-            req.url === '/api/login' ||
-            req.url === '/api/logout' ||
-            req.url === '/api/signup'
-         )
-            return;
-         // if (req.url === '/health-check') return res.code(200).send();
-         if (!req.session.userId) {
-            res.code(401).send();
-         }
-      });
-   },
-   { prefix: '/api' }
-);
+app.register(authRoutes, { prefix: '/api' });
+app.register(habitsRoutes, { prefix: '/api' });
+
+app.addHook('onRequest', async (req, res) => {
+   if (
+      req.url === '/' ||
+      req.url === '/api/login' ||
+      req.url === '/api/logout' ||
+      req.url === '/api/signup'
+   )
+      return;
+   if (!req.session.userId) {
+      res.code(401).send();
+   }
+});
 
 //server
 app.listen(
