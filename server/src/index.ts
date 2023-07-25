@@ -6,9 +6,11 @@ import fastifySession from '@fastify/session';
 import cors from '@fastify/cors';
 import setupOpenAPI from './openAPI';
 import fastifyStatic from '@fastify/static';
+import path from 'path';
 
 const app = fastify({
    logger: true,
+
    ajv: { customOptions: { $data: true } },
 });
 
@@ -22,15 +24,11 @@ app.register(fastifySession, {
    secret: 'cNaoPYAwF60HZJzkcNaoPYAwF60HZJzk',
    cookie: { secure: false },
 });
-app.register(fastifyStatic, { root: '../dist' });
+app.register(fastifyStatic, { root: path.join(__dirname, '/dist') });
 
 setupOpenAPI(app);
 
-//public
-app.get('/', (req, res) => {
-   res.sendFile('index.html');
-});
-
+app.get('/', (req, res) => res.code(200).send('health check'));
 //private routes
 app.register(
    (instance, opts) => {
