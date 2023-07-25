@@ -41,8 +41,6 @@ export default function HabitForm({
       initializeState
    );
 
-   const isEditMode = !!editHabitDetails;
-
    const handleTextInput =
       (key: TextInputKey) => (e: React.ChangeEvent<HTMLInputElement>) =>
          dispatch({ type: key, payload: e.target.value });

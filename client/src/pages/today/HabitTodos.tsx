@@ -1,10 +1,8 @@
 import {
-   Box,
    Card,
    CardBody,
    CardHeader,
    CardProps,
-   Checkbox,
    Heading,
    StackDivider,
    VStack,
@@ -33,7 +31,7 @@ export function HabitTodos({
          </CardHeader>
          <CardBody>
             <VStack divider={<StackDivider />} align="stretch">
-               {todos
+               {/* {todos
                   .sort((a, b) => a.name < b.name && -1)
                   .map(({ id, isComplete, name }) => (
                      <Box key={id}>
@@ -44,7 +42,7 @@ export function HabitTodos({
                            {name}
                         </Checkbox>
                      </Box>
-                  ))}
+                  ))} */}
             </VStack>
          </CardBody>
       </Card>

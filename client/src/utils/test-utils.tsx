@@ -1,20 +1,20 @@
-import React, { ReactElement } from 'react'
-import { render, RenderOptions } from '@testing-library/react'
-import AuthProvider from 'context/AuthContext'
-import HabitsProvider from 'context/HabitsContext'
+import React, { ReactElement } from 'react';
+import { render, RenderOptions } from '@testing-library/react';
+import AuthProvider from 'context/AuthContext';
+import HabitsProvider from 'context/HabitsProvider';
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <AuthProvider>
-            <HabitsProvider>{children}</HabitsProvider>
-        </AuthProvider>
-    )
-}
+   return (
+      <AuthProvider>
+         <HabitsProvider>{children}</HabitsProvider>
+      </AuthProvider>
+   );
+};
 
 const customRender = (
-    ui: ReactElement,
-    options?: Omit<RenderOptions, 'wrapper'>
-) => render(ui, { wrapper: Providers, ...options })
+   ui: ReactElement,
+   options?: Omit<RenderOptions, 'wrapper'>
+) => render(ui, { wrapper: Providers, ...options });
 
-export * from '@testing-library/react'
-export { customRender as render }
+export * from '@testing-library/react';
+export { customRender as render };

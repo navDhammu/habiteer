@@ -9,7 +9,7 @@ export function getDayOfWeek(date: Date) {
 }
 
 export function getWeekArray(date: Date) {
-   return Array.from({ length: 7 }, (v, i) => addDays(startOfWeek(date), i));
+   return Array.from({ length: 7 }, (_, i) => addDays(startOfWeek(date), i));
 }
 
 export const WEEKDAYS = [

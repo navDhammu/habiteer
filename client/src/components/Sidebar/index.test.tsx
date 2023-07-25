@@ -2,7 +2,7 @@ import { render, screen } from 'test-utils';
 import Sidebar from '.';
 
 const createMockHabits = (max: number) => {
-   return Array.from({ length: Math.ceil(Math.random() * max) }, (v, i) => {
+   return Array.from({ length: Math.ceil(Math.random() * max) }, (_, i) => {
       return {
          id: `${i}`,
          name: `habit ${i}`,
