@@ -5,6 +5,7 @@ import fastifyCookie from '@fastify/cookie';
 import fastifySession from '@fastify/session';
 import cors from '@fastify/cors';
 import setupOpenAPI from './openAPI';
+import fastifyStatic from '@fastify/static';
 
 const app = fastify({
    logger: true,
@@ -13,35 +14,43 @@ const app = fastify({
 
 app.register(cors, {
    credentials: true,
-   origin: [
-      'http://localhost:5173',
-      'https://jellyfish-app-3nmmp.ondigitalocean.app/',
-   ],
+   origin: ['http://localhost:5173'],
 });
+
 app.register(fastifyCookie, {});
 app.register(fastifySession, {
    secret: 'cNaoPYAwF60HZJzkcNaoPYAwF60HZJzk',
    cookie: { secure: false },
 });
+app.register(fastifyStatic, { root: '../dist' });
 
 setupOpenAPI(app);
 
-//routes
-app.register(authRoutes, { prefix: '/api' });
-app.register(habitsRoutes, { prefix: '/api' });
-
-app.addHook('preHandler', async (req, res) => {
-   if (
-      req.url === '/api/login' ||
-      req.url === '/api/logout' ||
-      req.url === '/api/signup'
-   )
-      return;
-   if (req.url === '/health-check') return res.code(200).send();
-   if (!req.session.userId) {
-      res.code(401).send();
-   }
+//public
+app.get('/', (req, res) => {
+   res.sendFile('index.html');
 });
+
+//private routes
+app.register(
+   (instance, opts) => {
+      instance.register(authRoutes);
+      instance.register(habitsRoutes);
+      instance.addHook('preHandler', async (req, res) => {
+         if (
+            req.url === '/api/login' ||
+            req.url === '/api/logout' ||
+            req.url === '/api/signup'
+         )
+            return;
+         // if (req.url === '/health-check') return res.code(200).send();
+         if (!req.session.userId) {
+            res.code(401).send();
+         }
+      });
+   },
+   { prefix: '/api' }
+);
 
 //server
 app.listen(
