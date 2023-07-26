@@ -10,6 +10,5 @@
       "rootDir": "src",
       "outDir": "dist",
       "moduleResolution": "Node"
-   },
-   "references": [{ "path": "../shared" }]
+   }
 }
