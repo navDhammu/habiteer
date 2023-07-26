@@ -3,6 +3,7 @@ import {
    Button,
    Card,
    Container,
+   Spacer,
    TabList,
    TabPanel,
    TabPanels,
@@ -15,6 +16,7 @@ import { addDays, isAfter, isToday, startOfWeek } from 'date-fns';
 import { forwardRef, useState } from 'react';
 import { getDayOfWeek, getWeekArray } from 'utils/dates';
 import Header from './Header';
+import WorkInProgress from 'components/WorkInProgress';
 
 export type HabitTodo = {
    id: string;
@@ -45,16 +47,17 @@ export default function Today() {
                   />
                ))}
             </TabList>
-            <TabPanels>
-               {new Array(7).fill(null).map((_, i) => (
+            <TabPanels mt={8}>
+               <WorkInProgress />
+               {/* {new Array(7).fill(null).map((_, i) => (
                   <TabPanel className="panel" key={i} p="0" mt="8">
-                     {/* <HabitTodos
+                     <HabitTodos
                                 todos={[]}
                                 heading="Habit Checklist"
                                 onCheckHabit={(id) => (e) => Promise.resolve()}
-                            /> */}
+                            />
                   </TabPanel>
-               ))}
+               ))} */}
             </TabPanels>
          </Tabs>
       </Container>

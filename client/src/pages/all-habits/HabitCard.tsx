@@ -16,6 +16,7 @@ import { Icon } from '@chakra-ui/icons';
 import { IconClock, IconCalendarRepeat } from '@tabler/icons-react';
 import { Habit } from '@api';
 import HabitCardMenuDropdown from './HabitCardMenuDropdown';
+import { WorkInProgressPopover } from 'components/WorkInProgress';
 
 export default function HabitCard(props: Habit) {
    return (
@@ -50,9 +51,13 @@ export default function HabitCard(props: Habit) {
             </HStack>
          </CardBody>
          <CardFooter alignItems="center">
-            <Button ml="auto" variant="ghost" colorScheme="green">
-               See details
-            </Button>
+            <WorkInProgressPopover
+               trigger={
+                  <Button ml="auto" variant="ghost" colorScheme="green">
+                     See details
+                  </Button>
+               }
+            />
          </CardFooter>
       </Card>
    );
