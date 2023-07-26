@@ -3,10 +3,7 @@ import authRoutes from './api/auth/routes';
 import habitsRoutes from './api/habits/routes';
 import fastifyCookie from '@fastify/cookie';
 import fastifySession from '@fastify/session';
-import cors from '@fastify/cors';
 import setupOpenAPI from './openAPI';
-import fastifyStatic from '@fastify/static';
-import path from 'path';
 
 const app = fastify({
    logger: true,
