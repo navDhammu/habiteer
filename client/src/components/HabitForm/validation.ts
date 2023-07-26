@@ -18,7 +18,7 @@ export function validateForm(formState: FormState) {
          case 'repeatSchedule':
             errors.repeatSchedule = !(value as FormInputs['repeatSchedule'])
                .days.length
-               ? 'Start date cannot be before today'
+               ? 'Please select at least one day'
                : '';
             break;
          case 'trackingStartDate':
