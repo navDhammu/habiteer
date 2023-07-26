@@ -18,9 +18,12 @@ export default function WeekdayCheckboxes(props: UseCheckboxGroupProps) {
    });
 
    return (
-      <HStack wrap="wrap" fontSize="sm">
+      <HStack wrap="wrap" fontSize="sm" textTransform="capitalize">
          {WEEKDAYS.map((weekday) => (
-            <WeekdayCheckbox id={weekday} {...getCheckboxProps({ value: weekday })} />
+            <WeekdayCheckbox
+               id={weekday}
+               {...getCheckboxProps({ value: weekday })}
+            />
          ))}
       </HStack>
    );
@@ -42,9 +45,9 @@ function WeekdayCheckbox(props: UseCheckboxProps) {
          alignItems="center"
          gridColumnGap={2}
          maxW="40"
-         bg={isChecked ? 'green.50' : 'gray.50'}
+         // bg={isChecked ? 'green.50' : }
          border="1px solid"
-         borderColor={isChecked ? 'green.500' : 'gray.500'}
+         borderColor={isChecked ? 'green.600' : 'gray.400'}
          rounded="lg"
          px={3}
          py={1}
@@ -56,7 +59,7 @@ function WeekdayCheckbox(props: UseCheckboxProps) {
             alignItems="center"
             justifyContent="center"
             border="2px solid"
-            borderColor={isChecked ? 'green.500' : 'gray.500'}
+            borderColor={isChecked ? 'green.500' : 'gray.400'}
             w={4}
             h={4}
             {...getCheckboxProps()}
@@ -64,7 +67,7 @@ function WeekdayCheckbox(props: UseCheckboxProps) {
             {isChecked && <Box w={2} h={2} bg="green.500" />}
          </Flex>
          <Text color="gray.700" {...getLabelProps()}>
-            {props.value}
+            {(props.value as string).slice(0, 3)}
          </Text>
       </chakra.label>
    );

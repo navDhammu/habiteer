@@ -36,6 +36,7 @@ export default function HabitFormDrawer({
    const toast = useToast();
 
    const handleSubmit = async (formState: FormState) => {
+      console.log(formState);
       if (isCreatingHabit) {
          const { repeatSchedule, errors, ...rest } = formState;
          const newHabit = {

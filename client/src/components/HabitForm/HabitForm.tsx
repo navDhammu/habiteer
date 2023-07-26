@@ -3,17 +3,13 @@ import {
    FormControl,
    FormErrorMessage,
    FormLabel,
-   Icon,
    Input,
-   InputGroup,
-   InputLeftElement,
    Radio,
+   Textarea,
    RadioGroup,
    Text,
-   VStack,
    UseCheckboxGroupProps,
 } from '@chakra-ui/react';
-import { IconFolder } from '@tabler/icons-react';
 import { format } from 'date-fns';
 import { useReducer } from 'react';
 import { Habit } from '@api';
@@ -42,7 +38,8 @@ export default function HabitForm({
    );
 
    const handleTextInput =
-      (key: TextInputKey) => (e: React.ChangeEvent<HTMLInputElement>) =>
+      (key: TextInputKey) =>
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
          dispatch({ type: key, payload: e.target.value });
 
    const handleFrequencyChange = (
@@ -65,98 +62,91 @@ export default function HabitForm({
    };
 
    return (
-      <Box as="form" id={formId} onSubmit={handleFormSubmit} noValidate>
-         <VStack spacing="4" align="start">
-            <FormControl isInvalid={!!formState.errors.name}>
-               <FormLabel fontSize="sm" color="gray.600" fontWeight="bold">
-                  Habit Name
-               </FormLabel>
-               <Input
-                  placeholder="eg. Read for 30 minutes"
-                  value={formState.name}
-                  onChange={handleTextInput('name')}
-                  isRequired
-               />
-               <FormErrorMessage>{formState.errors.name}</FormErrorMessage>
-            </FormControl>
-            <FormControl>
-               <FormLabel fontSize="sm" color="gray.600" fontWeight="bold">
-                  Habit Category
-                  <Text as="span" ml="2" fontSize="sm" color="gray.400">
-                     optional
-                  </Text>
-               </FormLabel>
-               <InputGroup>
-                  <InputLeftElement pointerEvents="none">
-                     <Icon as={IconFolder} color="gray.400" />
-                  </InputLeftElement>
-                  <Input
-                     placeholder="Choose Category"
-                     value={formState.category || ''}
-                     onChange={handleTextInput('category')}
-                  />
-               </InputGroup>
-               <FormErrorMessage>{formState.errors.category}</FormErrorMessage>
-            </FormControl>
-         </VStack>
-         <VStack spacing="4" align="start" mt="4">
-            <FormControl isInvalid={!!formState.errors.trackingStartDate}>
-               <FormLabel fontSize="sm" color="gray.600" fontWeight="bold">
-                  Start tracking from
-               </FormLabel>
-               <Input
-                  type="date"
-                  value={formState.trackingStartDate}
-                  onChange={handleTextInput('trackingStartDate')}
-                  min={format(new Date(), 'yyyy-MM-dd')}
-                  required
-               />
-               <FormErrorMessage>
-                  {formState.errors.trackingStartDate}
-               </FormErrorMessage>
-            </FormControl>
+      <Box
+         as="form"
+         id={formId}
+         onSubmit={handleFormSubmit}
+         noValidate
+         display="flex"
+         flexDir="column"
+         gap="4"
+      >
+         <FormControl isInvalid={!!formState.errors.name}>
+            <FormLabel>Habit Name</FormLabel>
+            <Input
+               placeholder="eg. Read for 30 minutes"
+               value={formState.name}
+               onChange={handleTextInput('name')}
+               isRequired
+            />
+            <FormErrorMessage>{formState.errors.name}</FormErrorMessage>
+         </FormControl>
+         <FormControl>
+            <FormLabel>
+               Habit Category
+               <Text as="span" ml="2" fontSize="sm" color="gray.400">
+                  optional
+               </Text>
+            </FormLabel>
+            <Input
+               placeholder="Choose Category"
+               value={formState.category || ''}
+               onChange={handleTextInput('category')}
+            />
+            <FormErrorMessage>{formState.errors.category} </FormErrorMessage>
+         </FormControl>
+         <FormControl>
+            <FormLabel>
+               Description{' '}
+               <Text as="span" ml="2" fontSize="sm" color="gray.400">
+                  optional
+               </Text>
+            </FormLabel>
+            <Textarea
+               value={formState.description}
+               onChange={handleTextInput('description')}
+            />
+         </FormControl>
+         <FormControl isInvalid={!!formState.errors.trackingStartDate}>
+            <FormLabel>Start tracking from</FormLabel>
+            <Input
+               type="date"
+               value={formState.trackingStartDate}
+               onChange={handleTextInput('trackingStartDate')}
+               min={format(new Date(), 'yyyy-MM-dd')}
+               required
+            />
+            <FormErrorMessage>
+               {formState.errors.trackingStartDate}
+            </FormErrorMessage>
+         </FormControl>
 
-            <FormControl as="fieldset">
-               <FormLabel
-                  as="legend"
-                  fontSize="sm"
-                  color="gray.600"
-                  fontWeight="bold"
-               >
-                  Repeat schedule
-               </FormLabel>
-               <RadioGroup
-                  value={formState.repeatSchedule.frequency}
-                  onChange={handleFrequencyChange}
-                  colorScheme="green"
-               >
-                  <Radio value="daily" mr="2">
-                     Daily
-                  </Radio>
-                  <Radio value="weekly">Weekly</Radio>
-               </RadioGroup>
-            </FormControl>
-            <FormControl
-               as="fieldset"
-               isInvalid={!!formState.errors.repeatSchedule}
+         <FormControl as="fieldset">
+            <FormLabel as="legend">Repeat schedule</FormLabel>
+            <RadioGroup
+               value={formState.repeatSchedule.frequency}
+               onChange={handleFrequencyChange}
+               colorScheme="green"
             >
-               <FormLabel
-                  as="legend"
-                  fontSize="sm"
-                  color="gray.600"
-                  fontWeight="bold"
-               >
-                  Select days:
-               </FormLabel>
-               <WeekdayCheckboxes
-                  value={formState.repeatSchedule.days}
-                  onChange={handleDaysChange}
-               />
-               <FormErrorMessage>
-                  {formState.errors.repeatSchedule}
-               </FormErrorMessage>
-            </FormControl>
-         </VStack>
+               <Radio value="daily" mr="2">
+                  Daily
+               </Radio>
+               <Radio value="weekly">Weekly</Radio>
+            </RadioGroup>
+         </FormControl>
+         <FormControl
+            as="fieldset"
+            isInvalid={!!formState.errors.repeatSchedule}
+         >
+            <FormLabel as="legend">Select days:</FormLabel>
+            <WeekdayCheckboxes
+               value={formState.repeatSchedule.days}
+               onChange={handleDaysChange}
+            />
+            <FormErrorMessage>
+               {formState.errors.repeatSchedule}
+            </FormErrorMessage>
+         </FormControl>
       </Box>
    );
 }

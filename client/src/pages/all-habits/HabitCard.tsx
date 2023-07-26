@@ -31,7 +31,7 @@ export default function HabitCard(props: Habit) {
             <HabitCardMenuDropdown habit={props} />
          </CardHeader>
          <CardBody fontSize="sm" py="0">
-            <Text>{props.description}</Text>
+            <Text fontSize="md">{props.description}</Text>
             <HStack>
                <Icon as={IconCalendarRepeat} boxSize={5} />
                <Text textTransform="capitalize">
