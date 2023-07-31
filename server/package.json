@@ -10,8 +10,8 @@
       "build": "tsc",
       "build:digitalocean": "npm install --production=false && npm run build && npm ci",
       "generate-client": "openapi --input ./api-spec.json --output ../client/src/api",
-      "drizzle:introspect": "drizzle-kit introspect:pg --config=./drizzle/drizzle.config.ts",
-      "drizzle:migrate": "drizzle-kit generate:pg --config=./drizzle/drizzle.config.ts"
+      "drizzle:introspect": "drizzle-kit introspect:pg --config=./drizzle/drizzle.config.js",
+      "drizzle:migrate": "drizzle-kit generate:pg --config=./drizzle/drizzle.config.js"
    },
    "author": "",
    "license": "ISC",
@@ -22,6 +22,7 @@
       "@fastify/session": "^10.4.0",
       "@fastify/swagger": "^8.8.0",
       "bcrypt": "^5.1.0",
+      "dayjs": "^1.11.9",
       "dotenv": "^16.0.3",
       "drizzle-orm": "^0.27.2",
       "fastify": "^4.19.2",

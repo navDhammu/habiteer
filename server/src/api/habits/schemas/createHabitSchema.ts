@@ -1,4 +1,5 @@
 import { FromSchema, JSONSchema } from 'json-schema-to-ts';
+import { WEEKDAYS } from '../../../utils';
 
 export const createHabitSchema = {
    type: 'object',
@@ -22,15 +23,7 @@ export const createHabitSchema = {
          maxItems: 7,
          items: {
             type: 'string',
-            enum: [
-               'monday',
-               'tuesday',
-               'wednesday',
-               'thursday',
-               'friday',
-               'saturday',
-               'sunday',
-            ],
+            enum: WEEKDAYS,
          },
       },
    },

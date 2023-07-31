@@ -29,13 +29,13 @@
                   "items": {
                      "type": "string",
                      "enum": [
-                        "monday",
-                        "tuesday",
-                        "wednesday",
-                        "thursday",
-                        "friday",
-                        "saturday",
-                        "sunday"
+                        "Sunday",
+                        "Monday",
+                        "Tuesday",
+                        "Wednesday",
+                        "Thursday",
+                        "Friday",
+                        "Saturday"
                      ]
                   }
                }
@@ -114,7 +114,7 @@
       },
       "/api/habits": {
          "get": {
-            "operationId": "getAllHabits",
+            "operationId": "getHabits",
             "tags": ["habits"],
             "responses": {
                "200": {
@@ -161,13 +161,13 @@
                                     "items": {
                                        "type": "string",
                                        "enum": [
-                                          "monday",
-                                          "tuesday",
-                                          "wednesday",
-                                          "thursday",
-                                          "friday",
-                                          "saturday",
-                                          "sunday"
+                                          "Sunday",
+                                          "Monday",
+                                          "Tuesday",
+                                          "Wednesday",
+                                          "Thursday",
+                                          "Friday",
+                                          "Saturday"
                                        ]
                                     }
                                  }
@@ -223,13 +223,13 @@
                               "items": {
                                  "type": "string",
                                  "enum": [
-                                    "monday",
-                                    "tuesday",
-                                    "wednesday",
-                                    "thursday",
-                                    "friday",
-                                    "saturday",
-                                    "sunday"
+                                    "Sunday",
+                                    "Monday",
+                                    "Tuesday",
+                                    "Wednesday",
+                                    "Thursday",
+                                    "Friday",
+                                    "Saturday"
                                  ]
                               }
                            }
@@ -281,13 +281,13 @@
                                  "items": {
                                     "type": "string",
                                     "enum": [
-                                       "monday",
-                                       "tuesday",
-                                       "wednesday",
-                                       "thursday",
-                                       "friday",
-                                       "saturday",
-                                       "sunday"
+                                       "Sunday",
+                                       "Monday",
+                                       "Tuesday",
+                                       "Wednesday",
+                                       "Thursday",
+                                       "Friday",
+                                       "Saturday"
                                     ]
                                  }
                               }

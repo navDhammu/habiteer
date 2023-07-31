@@ -1,4 +1,5 @@
-import { JSONSchema7 } from 'json-schema-to-ts';
+import { FromSchema, JSONSchema7 } from 'json-schema-to-ts';
+import { WEEKDAYS } from '../../../utils';
 
 export const habitSchema = {
    type: 'object',
@@ -38,15 +39,7 @@ export const habitSchema = {
          maxItems: 7,
          items: {
             type: 'string',
-            enum: [
-               'monday',
-               'tuesday',
-               'wednesday',
-               'thursday',
-               'friday',
-               'saturday',
-               'sunday',
-            ],
+            enum: WEEKDAYS,
          },
       },
    },
@@ -62,3 +55,10 @@ export const habitSchema = {
       'category',
    ],
 } as const satisfies JSONSchema7;
+
+export const habitsResponse = {
+   type: 'array',
+   items: habitSchema,
+} as const;
+
+export type HabitsResponse = FromSchema<typeof habitsResponse>;

@@ -1,5 +1,10 @@
 import { FastifyPluginAsync } from 'fastify';
-import { deleteHabit, insertHabit, selectAllHabits } from './queries';
+import {
+   deleteHabit,
+   insertCompletions,
+   insertHabit,
+   selectAllHabits,
+} from './queries';
 
 import {
    CreateHabitType,
@@ -9,34 +14,31 @@ import {
    DeleteHabitParamsType,
    deleteHabitParamsSchema,
 } from './schemas/deleteHabitParamsSchema';
-import { habitSchema } from './schemas/habitSchema';
-import { FromSchema, JSONSchema } from 'json-schema-to-ts';
+import {
+   habitSchema,
+   habitsResponse,
+   HabitsResponse,
+} from './schemas/habitSchema';
+import { FromSchema } from 'json-schema-to-ts';
+import { InsertableCompletion, completionsTable, db } from '../../db';
+import dayjs from 'dayjs';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
-   //get all habits route
-   const habitsResponseSchema = {
-      type: 'array',
-      items: habitSchema,
-   } satisfies JSONSchema;
-
-   instance.get<{ Reply: { 200: FromSchema<typeof habitsResponseSchema> } }>(
+   // get habits route
+   instance.get<{ Reply: { 200: HabitsResponse } }>(
       '/habits',
       {
          schema: {
-            operationId: 'getAllHabits',
+            operationId: 'getHabits',
             tags: ['habits'],
             response: {
-               200: {
-                  type: 'array',
-                  items: habitSchema,
-               },
+               200: habitsResponse,
             },
          },
       },
       async (req, res) => {
          const userId = req.session.userId;
-         const habits = await selectAllHabits(userId);
-         res.code(200).send(habits);
+         res.code(200).send(await selectAllHabits(userId));
       }
    );
 
@@ -56,11 +58,33 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
             },
          },
       },
+
       async (req, res) => {
-         const [habit] = await insertHabit({
-            ...req.body,
-            userId: req.session.userId,
+         const { trackingStartDate, repeatDays } = req.body;
+
+         const habit = await db.transaction(async (tx) => {
+            const [insertedHabit] = await insertHabit({
+               ...req.body,
+               userId: req.session.userId,
+            });
+
+            let completions: InsertableCompletion[] = [];
+
+            for (let i = 0; i < 7; i++) {
+               const date = dayjs(trackingStartDate).add(i, 'days');
+               if (repeatDays.includes(date.format('dddd') as any)) {
+                  completions.push({
+                     habitId: insertedHabit.id,
+                     completionStatus: 'pending',
+                     scheduledDate: date.format('YYYY-MM-DD'),
+                  });
+               }
+            }
+
+            await insertCompletions(completions);
+            return insertedHabit;
          });
+
          res.code(200).send(habit);
       }
    );
