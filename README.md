@@ -12,19 +12,24 @@ In progress
 
 1. Login as a test user
 2. Create habits and specify a repeat schedule
-3. Mark habits as complete or incomplete
+3. Delete habits
 
+#### Working on
+
+- Editing habits
+- Marking habits complete / incomplete
+- Dashboard
+  
 ## Technologies Used
 
--   Reactjs
--   Chakra UI
--   Node.js
--   Postgresql
+### Frontend
+- TypeScript
+- Reactjs
+- Chakra UI
 
-## Installation
+### Backend
+- TypeScript
+- Node.js
+- Fastify
+- Postgresql
 
-In the project directory, run:
-
-`npm start`
-
-Open http://localhost:3000 to view in browser
