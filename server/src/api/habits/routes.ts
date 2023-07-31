@@ -4,6 +4,7 @@ import {
    insertCompletions,
    insertHabit,
    selectAllHabits,
+   selectCompletions,
 } from './queries';
 
 import {
@@ -20,8 +21,14 @@ import {
    HabitsResponse,
 } from './schemas/habitSchema';
 import { FromSchema } from 'json-schema-to-ts';
-import { InsertableCompletion, completionsTable, db } from '../../db';
+import { InsertableCompletion, db } from '../../db';
 import dayjs from 'dayjs';
+import {
+   completionsQuerySchema,
+   completionsResponseSchema,
+   CompletionsQuery,
+   CompletionsResponse,
+} from './schemas/completionsSchema';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
    // get habits route
@@ -102,6 +109,31 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
       async (req, res) => {
          await deleteHabit(req.params.habitId);
          res.send();
+      }
+   );
+
+   // completions route
+   instance.get<{
+      Querystring: CompletionsQuery;
+      Reply: { 200: CompletionsResponse };
+   }>(
+      '/habits/completions',
+      {
+         schema: {
+            tags: ['habits'],
+            operationId: 'getCompletions',
+            querystring: completionsQuerySchema,
+            response: {
+               200: completionsResponseSchema,
+            },
+         },
+      },
+      async (req, res) => {
+         const completions = await selectCompletions(
+            req.session.userId,
+            req.query.date
+         );
+         res.code(200).send(completions);
       }
    );
 };

@@ -324,6 +324,56 @@
             ],
             "responses": { "200": { "description": "Default Response" } }
          }
+      },
+      "/api/habits/completions": {
+         "get": {
+            "operationId": "getCompletions",
+            "tags": ["habits"],
+            "parameters": [
+               {
+                  "schema": { "type": "string", "format": "date" },
+                  "in": "query",
+                  "name": "date",
+                  "required": false
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Default Response",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {
+                              "type": "object",
+                              "properties": {
+                                 "habitId": { "type": "number" },
+                                 "completionStatus": {
+                                    "type": "string",
+                                    "enum": [
+                                       "complete",
+                                       "incomplete",
+                                       "pending"
+                                    ]
+                                 },
+                                 "scheduledDate": {
+                                    "type": "string",
+                                    "format": "date"
+                                 }
+                              },
+                              "required": [
+                                 "habitId",
+                                 "completionStatus",
+                                 "scheduledDate"
+                              ],
+                              "additionalProperties": false
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
       }
    },
    "security": [{ "cookieAuth": [] }]
