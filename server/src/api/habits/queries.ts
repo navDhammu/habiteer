@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {
    db,
    habitsTable,
@@ -15,16 +16,33 @@ export async function selectAllHabits(userId: UserId) {
    return db.select().from(habitsTable).where(eq(habitsTable.userId, userId));
 }
 
-export async function insertHabit(habit: InsertableHabit) {
-   return db.insert(habitsTable).values(habit).returning();
-}
-
 export async function deleteHabit(id: Habit['id']) {
    return db.delete(habitsTable).where(eq(habitsTable.id, id));
 }
 
-export async function insertCompletions(completions: InsertableCompletion[]) {
-   db.insert(completionsTable).values(completions);
+export async function createHabitTransaction(habit: InsertableHabit) {
+   return db.transaction(async (tx) => {
+      const [insertedHabit] = await tx
+         .insert(habitsTable)
+         .values(habit)
+         .returning();
+
+      let completions: InsertableCompletion[] = [];
+
+      //create completion records one week in advance
+      for (let i = 0; i < 7; i++) {
+         const date = dayjs(habit.trackingStartDate).add(i, 'days');
+         if (habit.repeatDays.includes(date.format('dddd') as any)) {
+            completions.push({
+               habitId: insertedHabit.id,
+               completionStatus: 'pending',
+               scheduledDate: date.format('YYYY-MM-DD'),
+            });
+         }
+      }
+      await tx.insert(completionsTable).values(completions);
+      return insertedHabit;
+   });
 }
 
 export async function selectCompletions(userId: UserId, date?: string) {
@@ -36,7 +54,10 @@ export async function selectCompletions(userId: UserId, date?: string) {
 
    return await db
       .select({
-         habitId: completionsTable.habitId,
+         id: completionsTable.id,
+         name: habitsTable.name,
+         description: habitsTable.description,
+         category: habitsTable.category,
          completionStatus: completionsTable.completionStatus,
          scheduledDate: sql<
             Completion['scheduledDate']
@@ -48,5 +69,6 @@ export async function selectCompletions(userId: UserId, date?: string) {
             date ? eq(completionsTable.scheduledDate, date) : undefined,
             inArray(completionsTable.habitId, db.select().from(subquery))
          )
-      );
+      )
+      .innerJoin(habitsTable, eq(completionsTable.habitId, habitsTable.id));
 }

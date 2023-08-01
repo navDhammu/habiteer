@@ -1,8 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 import {
    deleteHabit,
-   insertCompletions,
-   insertHabit,
+   createHabitTransaction,
    selectAllHabits,
    selectCompletions,
 } from './queries';
@@ -65,33 +64,11 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
             },
          },
       },
-
       async (req, res) => {
-         const { trackingStartDate, repeatDays } = req.body;
-
-         const habit = await db.transaction(async (tx) => {
-            const [insertedHabit] = await insertHabit({
-               ...req.body,
-               userId: req.session.userId,
-            });
-
-            let completions: InsertableCompletion[] = [];
-
-            for (let i = 0; i < 7; i++) {
-               const date = dayjs(trackingStartDate).add(i, 'days');
-               if (repeatDays.includes(date.format('dddd') as any)) {
-                  completions.push({
-                     habitId: insertedHabit.id,
-                     completionStatus: 'pending',
-                     scheduledDate: date.format('YYYY-MM-DD'),
-                  });
-               }
-            }
-
-            await insertCompletions(completions);
-            return insertedHabit;
+         const habit = await createHabitTransaction({
+            ...req.body,
+            userId: req.session.userId,
          });
-
          res.code(200).send(habit);
       }
    );

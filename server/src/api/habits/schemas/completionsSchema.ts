@@ -1,21 +1,45 @@
 import { FromSchema, JSONSchema7 } from 'json-schema-to-ts';
 
-const completionsSchema = {
+export const completionsSchema = {
    type: 'object',
    properties: {
+      id: {
+         type: 'number',
+      },
       habitId: {
          type: 'number',
       },
+      name: {
+         type: 'string',
+      },
+      description: {
+         anyOf: [
+            {
+               type: 'string',
+            },
+            { type: 'null' },
+         ],
+      },
+      category: {
+         anyOf: [{ type: 'string' }, { type: 'null' }],
+      },
       completionStatus: {
          type: 'string',
-         enum: ['complete', 'incomplete', 'pending'],
+         enum: ['complete', 'incomplete', 'pending'] as const,
       },
       scheduledDate: {
          type: 'string',
          format: 'date',
       },
    },
-   required: ['habitId', 'completionStatus', 'scheduledDate'],
+   required: [
+      'id',
+      'completionStatus',
+      'scheduledDate',
+      'name',
+      'category',
+      'description',
+   ],
    additionalProperties: false,
 } as const satisfies JSONSchema7;
 

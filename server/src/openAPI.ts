@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { habitSchema } from './api/habits/schemas/habitSchema';
 import { generate } from 'openapi-typescript-codegen';
 import fs from 'fs';
+import { completionsSchema } from './api/habits/schemas/completionsSchema';
 
 export default function setupOpenAPI(app: FastifyInstance) {
    if (process.env.NODE_ENV === 'production') return;
@@ -11,7 +12,10 @@ export default function setupOpenAPI(app: FastifyInstance) {
       openapi: {
          openapi: '3.1.0',
          components: {
-            schemas: { Habit: habitSchema as {} },
+            schemas: {
+               Habit: habitSchema as {},
+               Completion: completionsSchema as {},
+            },
             securitySchemes: {
                cookieAuth: {
                   type: 'apiKey',

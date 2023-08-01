@@ -51,6 +51,34 @@
                "description",
                "category"
             ]
+         },
+         "Completion": {
+            "type": "object",
+            "properties": {
+               "id": { "type": "number" },
+               "habitId": { "type": "number" },
+               "name": { "type": "string" },
+               "description": {
+                  "anyOf": [{ "type": "string" }, { "type": "null" }]
+               },
+               "category": {
+                  "anyOf": [{ "type": "string" }, { "type": "null" }]
+               },
+               "completionStatus": {
+                  "type": "string",
+                  "enum": ["complete", "incomplete", "pending"]
+               },
+               "scheduledDate": { "type": "string", "format": "date" }
+            },
+            "required": [
+               "id",
+               "completionStatus",
+               "scheduledDate",
+               "name",
+               "category",
+               "description"
+            ],
+            "additionalProperties": false
          }
       },
       "securitySchemes": {
@@ -347,7 +375,21 @@
                            "items": {
                               "type": "object",
                               "properties": {
+                                 "id": { "type": "number" },
                                  "habitId": { "type": "number" },
+                                 "name": { "type": "string" },
+                                 "description": {
+                                    "anyOf": [
+                                       { "type": "string" },
+                                       { "type": "null" }
+                                    ]
+                                 },
+                                 "category": {
+                                    "anyOf": [
+                                       { "type": "string" },
+                                       { "type": "null" }
+                                    ]
+                                 },
                                  "completionStatus": {
                                     "type": "string",
                                     "enum": [
@@ -362,9 +404,12 @@
                                  }
                               },
                               "required": [
-                                 "habitId",
+                                 "id",
                                  "completionStatus",
-                                 "scheduledDate"
+                                 "scheduledDate",
+                                 "name",
+                                 "category",
+                                 "description"
                               ],
                               "additionalProperties": false
                            }
