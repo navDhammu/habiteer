@@ -4,6 +4,9 @@
       "Completion": {
          "additionalProperties": false,
          "properties": {
+            "category": {
+               "type": ["null", "string"]
+            },
             "completionStatus": {
                "enum": ["complete", "incomplete", "pending"],
                "type": "string"
@@ -38,6 +41,7 @@
             }
          },
          "required": [
+            "category",
             "completionStatus",
             "completionStatusTimestamp",
             "description",
@@ -52,6 +56,9 @@
          "items": {
             "additionalProperties": false,
             "properties": {
+               "category": {
+                  "type": ["null", "string"]
+               },
                "completionStatus": {
                   "enum": ["complete", "incomplete", "pending"],
                   "type": "string"
@@ -86,6 +93,7 @@
                }
             },
             "required": [
+               "category",
                "completionStatus",
                "completionStatusTimestamp",
                "description",

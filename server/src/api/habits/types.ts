@@ -38,7 +38,7 @@ export interface CompletionsQuerystring {
 
 export interface Completion
    extends CompletionDb,
-      Pick<HabitDb, 'name' | 'description'> {
+      Pick<HabitDb, 'name' | 'description' | 'category'> {
    /**
     * @format date
     */
