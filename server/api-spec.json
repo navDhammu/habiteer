@@ -4,81 +4,75 @@
    "components": {
       "schemas": {
          "Habit": {
-            "type": "object",
-            "properties": {
-               "id": { "type": "integer" },
-               "name": { "type": "string" },
-               "description": {
-                  "anyOf": [{ "type": "string" }, { "type": "null" }]
-               },
-               "category": {
-                  "anyOf": [{ "type": "string" }, { "type": "null" }]
-               },
-               "created": { "type": "string", "format": "date" },
-               "lastUpdated": {
-                  "anyOf": [
-                     { "type": "string", "format": "date" },
-                     { "type": "null" }
-                  ]
-               },
-               "trackingStartDate": { "type": "string", "format": "date" },
-               "repeatDays": {
-                  "type": "array",
-                  "minItems": 1,
-                  "maxItems": 7,
-                  "items": {
-                     "type": "string",
-                     "enum": [
-                        "Sunday",
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Friday",
-                        "Saturday"
-                     ]
-                  }
-               }
-            },
             "additionalProperties": false,
+            "properties": {
+               "category": { "type": ["null", "string"] },
+               "created": { "type": "string" },
+               "description": { "type": ["null", "string"] },
+               "id": { "type": "number" },
+               "lastUpdated": { "type": ["null", "string"] },
+               "name": { "type": "string" },
+               "repeatDays": {
+                  "items": {
+                     "enum": [
+                        "Friday",
+                        "Monday",
+                        "Saturday",
+                        "Sunday",
+                        "Thursday",
+                        "Tuesday",
+                        "Wednesday"
+                     ],
+                     "type": "string"
+                  },
+                  "type": "array"
+               },
+               "trackingStartDate": { "format": "date", "type": "string" },
+               "userId": { "type": "number" }
+            },
             "required": [
+               "category",
+               "created",
+               "description",
                "id",
+               "lastUpdated",
                "name",
                "repeatDays",
                "trackingStartDate",
-               "created",
-               "lastUpdated",
-               "description",
-               "category"
-            ]
+               "userId"
+            ],
+            "type": "object"
          },
          "Completion": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-               "id": { "type": "number" },
-               "habitId": { "type": "number" },
-               "name": { "type": "string" },
-               "description": {
-                  "anyOf": [{ "type": "string" }, { "type": "null" }]
-               },
-               "category": {
-                  "anyOf": [{ "type": "string" }, { "type": "null" }]
-               },
                "completionStatus": {
-                  "type": "string",
-                  "enum": ["complete", "incomplete", "pending"]
+                  "enum": ["complete", "incomplete", "pending"],
+                  "type": "string"
                },
-               "scheduledDate": { "type": "string", "format": "date" }
+               "completionStatusTimestamp": {
+                  "anyOf": [
+                     { "format": "date-time", "type": "string" },
+                     { "type": "null" }
+                  ],
+                  "format": "date-time"
+               },
+               "description": { "type": ["null", "string"] },
+               "habitId": { "type": "number" },
+               "id": { "type": "number" },
+               "name": { "type": "string" },
+               "scheduledDate": { "format": "date", "type": "string" }
             },
             "required": [
-               "id",
                "completionStatus",
-               "scheduledDate",
+               "completionStatusTimestamp",
+               "description",
+               "habitId",
+               "id",
                "name",
-               "category",
-               "description"
+               "scheduledDate"
             ],
-            "additionalProperties": false
+            "type": "object"
          }
       },
       "securitySchemes": {
@@ -94,15 +88,17 @@
                "content": {
                   "application/json": {
                      "schema": {
-                        "type": "object",
+                        "additionalProperties": false,
                         "properties": {
-                           "email": { "type": "string", "format": "email" },
-                           "password": { "type": "string", "minLength": 6 },
                            "confirmPassword": {
-                              "enum": [{ "$data": "1/password" }]
-                           }
+                              "minLength": 6,
+                              "type": "string"
+                           },
+                           "email": { "format": "email", "type": "string" },
+                           "password": { "minLength": 6, "type": "string" }
                         },
-                        "required": ["email", "password", "confirmPassword"]
+                        "required": ["confirmPassword", "email", "password"],
+                        "type": "object"
                      }
                   }
                },
@@ -119,12 +115,13 @@
                "content": {
                   "application/json": {
                      "schema": {
-                        "type": "object",
+                        "additionalProperties": false,
                         "properties": {
-                           "email": { "type": "string", "format": "email" },
-                           "password": { "type": "string", "minLength": 6 }
+                           "email": { "format": "email", "type": "string" },
+                           "password": { "minLength": 6, "type": "string" }
                         },
-                        "required": ["email", "password"]
+                        "required": ["email", "password"],
+                        "type": "object"
                      }
                   }
                },
@@ -150,68 +147,50 @@
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
                            "items": {
-                              "type": "object",
+                              "additionalProperties": false,
                               "properties": {
-                                 "id": { "type": "integer" },
+                                 "category": { "type": ["null", "string"] },
+                                 "created": { "type": "string" },
+                                 "description": { "type": ["null", "string"] },
+                                 "id": { "type": "number" },
+                                 "lastUpdated": { "type": ["null", "string"] },
                                  "name": { "type": "string" },
-                                 "description": {
-                                    "anyOf": [
-                                       { "type": "string" },
-                                       { "type": "null" }
-                                    ]
-                                 },
-                                 "category": {
-                                    "anyOf": [
-                                       { "type": "string" },
-                                       { "type": "null" }
-                                    ]
-                                 },
-                                 "created": {
-                                    "type": "string",
-                                    "format": "date"
-                                 },
-                                 "lastUpdated": {
-                                    "anyOf": [
-                                       { "type": "string", "format": "date" },
-                                       { "type": "null" }
-                                    ]
+                                 "repeatDays": {
+                                    "items": {
+                                       "enum": [
+                                          "Friday",
+                                          "Monday",
+                                          "Saturday",
+                                          "Sunday",
+                                          "Thursday",
+                                          "Tuesday",
+                                          "Wednesday"
+                                       ],
+                                       "type": "string"
+                                    },
+                                    "type": "array"
                                  },
                                  "trackingStartDate": {
-                                    "type": "string",
-                                    "format": "date"
+                                    "format": "date",
+                                    "type": "string"
                                  },
-                                 "repeatDays": {
-                                    "type": "array",
-                                    "minItems": 1,
-                                    "maxItems": 7,
-                                    "items": {
-                                       "type": "string",
-                                       "enum": [
-                                          "Sunday",
-                                          "Monday",
-                                          "Tuesday",
-                                          "Wednesday",
-                                          "Thursday",
-                                          "Friday",
-                                          "Saturday"
-                                       ]
-                                    }
-                                 }
+                                 "userId": { "type": "number" }
                               },
-                              "additionalProperties": false,
                               "required": [
+                                 "category",
+                                 "created",
+                                 "description",
                                  "id",
+                                 "lastUpdated",
                                  "name",
                                  "repeatDays",
                                  "trackingStartDate",
-                                 "created",
-                                 "lastUpdated",
-                                 "description",
-                                 "category"
-                              ]
-                           }
+                                 "userId"
+                              ],
+                              "type": "object"
+                           },
+                           "type": "array"
                         }
                      }
                   }
@@ -225,45 +204,35 @@
                "content": {
                   "application/json": {
                      "schema": {
-                        "type": "object",
+                        "additionalProperties": false,
                         "properties": {
+                           "category": { "type": ["null", "string"] },
+                           "description": { "type": ["null", "string"] },
                            "name": { "type": "string" },
-                           "description": {
-                              "anyOf": [
-                                 { "type": "string" },
-                                 { "type": "null" }
-                              ]
-                           },
-                           "category": {
-                              "anyOf": [
-                                 { "type": "string" },
-                                 { "type": "null" }
-                              ]
+                           "repeatDays": {
+                              "items": {
+                                 "enum": [
+                                    "Friday",
+                                    "Monday",
+                                    "Saturday",
+                                    "Sunday",
+                                    "Thursday",
+                                    "Tuesday",
+                                    "Wednesday"
+                                 ],
+                                 "type": "string"
+                              },
+                              "maxItems": 7,
+                              "minItems": 1,
+                              "type": "array"
                            },
                            "trackingStartDate": {
-                              "type": "string",
-                              "format": "date"
-                           },
-                           "repeatDays": {
-                              "type": "array",
-                              "minItems": 1,
-                              "maxItems": 7,
-                              "items": {
-                                 "type": "string",
-                                 "enum": [
-                                    "Sunday",
-                                    "Monday",
-                                    "Tuesday",
-                                    "Wednesday",
-                                    "Thursday",
-                                    "Friday",
-                                    "Saturday"
-                                 ]
-                              }
+                              "format": "date",
+                              "type": "string"
                            }
                         },
                         "required": ["name", "repeatDays", "trackingStartDate"],
-                        "additionalProperties": false
+                        "type": "object"
                      }
                   }
                },
@@ -275,62 +244,47 @@
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "object",
+                           "additionalProperties": false,
                            "properties": {
-                              "id": { "type": "integer" },
+                              "category": { "type": ["null", "string"] },
+                              "created": { "type": "string" },
+                              "description": { "type": ["null", "string"] },
+                              "id": { "type": "number" },
+                              "lastUpdated": { "type": ["null", "string"] },
                               "name": { "type": "string" },
-                              "description": {
-                                 "anyOf": [
-                                    { "type": "string" },
-                                    { "type": "null" }
-                                 ]
-                              },
-                              "category": {
-                                 "anyOf": [
-                                    { "type": "string" },
-                                    { "type": "null" }
-                                 ]
-                              },
-                              "created": { "type": "string", "format": "date" },
-                              "lastUpdated": {
-                                 "anyOf": [
-                                    { "type": "string", "format": "date" },
-                                    { "type": "null" }
-                                 ]
+                              "repeatDays": {
+                                 "items": {
+                                    "enum": [
+                                       "Friday",
+                                       "Monday",
+                                       "Saturday",
+                                       "Sunday",
+                                       "Thursday",
+                                       "Tuesday",
+                                       "Wednesday"
+                                    ],
+                                    "type": "string"
+                                 },
+                                 "type": "array"
                               },
                               "trackingStartDate": {
-                                 "type": "string",
-                                 "format": "date"
+                                 "format": "date",
+                                 "type": "string"
                               },
-                              "repeatDays": {
-                                 "type": "array",
-                                 "minItems": 1,
-                                 "maxItems": 7,
-                                 "items": {
-                                    "type": "string",
-                                    "enum": [
-                                       "Sunday",
-                                       "Monday",
-                                       "Tuesday",
-                                       "Wednesday",
-                                       "Thursday",
-                                       "Friday",
-                                       "Saturday"
-                                    ]
-                                 }
-                              }
+                              "userId": { "type": "number" }
                            },
-                           "additionalProperties": false,
                            "required": [
+                              "category",
+                              "created",
+                              "description",
                               "id",
+                              "lastUpdated",
                               "name",
                               "repeatDays",
                               "trackingStartDate",
-                              "created",
-                              "lastUpdated",
-                              "description",
-                              "category"
-                           ]
+                              "userId"
+                           ],
+                           "type": "object"
                         }
                      }
                   }
@@ -344,7 +298,7 @@
             "tags": ["habits"],
             "parameters": [
                {
-                  "schema": { "type": "integer" },
+                  "schema": { "type": "number" },
                   "in": "path",
                   "name": "habitId",
                   "required": true
@@ -359,7 +313,7 @@
             "tags": ["habits"],
             "parameters": [
                {
-                  "schema": { "type": "string", "format": "date" },
+                  "schema": { "format": "date", "type": "string" },
                   "in": "query",
                   "name": "date",
                   "required": false
@@ -371,48 +325,48 @@
                   "content": {
                      "application/json": {
                         "schema": {
-                           "type": "array",
                            "items": {
-                              "type": "object",
+                              "additionalProperties": false,
                               "properties": {
-                                 "id": { "type": "number" },
-                                 "habitId": { "type": "number" },
-                                 "name": { "type": "string" },
-                                 "description": {
-                                    "anyOf": [
-                                       { "type": "string" },
-                                       { "type": "null" }
-                                    ]
-                                 },
-                                 "category": {
-                                    "anyOf": [
-                                       { "type": "string" },
-                                       { "type": "null" }
-                                    ]
-                                 },
                                  "completionStatus": {
-                                    "type": "string",
                                     "enum": [
                                        "complete",
                                        "incomplete",
                                        "pending"
-                                    ]
+                                    ],
+                                    "type": "string"
                                  },
+                                 "completionStatusTimestamp": {
+                                    "anyOf": [
+                                       {
+                                          "format": "date-time",
+                                          "type": "string"
+                                       },
+                                       { "type": "null" }
+                                    ],
+                                    "format": "date-time"
+                                 },
+                                 "description": { "type": ["null", "string"] },
+                                 "habitId": { "type": "number" },
+                                 "id": { "type": "number" },
+                                 "name": { "type": "string" },
                                  "scheduledDate": {
-                                    "type": "string",
-                                    "format": "date"
+                                    "format": "date",
+                                    "type": "string"
                                  }
                               },
                               "required": [
-                                 "id",
                                  "completionStatus",
-                                 "scheduledDate",
+                                 "completionStatusTimestamp",
+                                 "description",
+                                 "habitId",
+                                 "id",
                                  "name",
-                                 "category",
-                                 "description"
+                                 "scheduledDate"
                               ],
-                              "additionalProperties": false
-                           }
+                              "type": "object"
+                           },
+                           "type": "array"
                         }
                      }
                   }

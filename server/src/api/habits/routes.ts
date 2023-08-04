@@ -6,39 +6,26 @@ import {
    selectCompletions,
 } from './queries';
 
+import schema from './schema.json';
 import {
-   CreateHabitType,
-   createHabitSchema,
-} from './schemas/createHabitSchema';
-import {
-   DeleteHabitParamsType,
-   deleteHabitParamsSchema,
-} from './schemas/deleteHabitParamsSchema';
-import {
-   habitSchema,
-   habitsResponse,
-   HabitsResponse,
-} from './schemas/habitSchema';
-import { FromSchema } from 'json-schema-to-ts';
-import { InsertableCompletion, db } from '../../db';
-import dayjs from 'dayjs';
-import {
-   completionsQuerySchema,
-   completionsResponseSchema,
-   CompletionsQuery,
-   CompletionsResponse,
-} from './schemas/completionsSchema';
+   Habit,
+   DeleteHabitParams,
+   CompletionsQuerystring,
+   Completions,
+   Habits,
+   HabitReqBody,
+} from './types';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
    // get habits route
-   instance.get<{ Reply: { 200: HabitsResponse } }>(
+   instance.get<{ Reply: { 200: Habits } }>(
       '/habits',
       {
          schema: {
             operationId: 'getHabits',
             tags: ['habits'],
             response: {
-               200: habitsResponse,
+               200: schema.definitions.Habits,
             },
          },
       },
@@ -50,17 +37,17 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
 
    //create habit route
    instance.post<{
-      Body: CreateHabitType;
-      Reply: { 200: FromSchema<typeof habitSchema> };
+      Body: HabitReqBody;
+      Reply: { 200: Habit };
    }>(
       '/habits',
       {
          schema: {
             tags: ['habits'],
             operationId: 'createHabit',
-            body: createHabitSchema,
+            body: schema.definitions.HabitReqBody,
             response: {
-               200: habitSchema,
+               200: schema.definitions.Habit,
             },
          },
       },
@@ -69,18 +56,19 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
             ...req.body,
             userId: req.session.userId,
          });
+
          res.code(200).send(habit);
       }
    );
 
    //delete habit route
-   instance.delete<{ Params: DeleteHabitParamsType }>(
+   instance.delete<{ Params: DeleteHabitParams }>(
       '/habits/:habitId',
       {
          schema: {
             operationId: 'deleteHabit',
             tags: ['habits'],
-            params: deleteHabitParamsSchema,
+            params: schema.definitions.DeleteHabitParams,
          },
       },
       async (req, res) => {
@@ -91,17 +79,17 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
 
    // completions route
    instance.get<{
-      Querystring: CompletionsQuery;
-      Reply: { 200: CompletionsResponse };
+      Querystring: CompletionsQuerystring;
+      Reply: { 200: Completions };
    }>(
       '/habits/completions',
       {
          schema: {
             tags: ['habits'],
             operationId: 'getCompletions',
-            querystring: completionsQuerySchema,
+            querystring: schema.definitions.CompletionsQuerystring,
             response: {
-               200: completionsResponseSchema,
+               200: schema.definitions.Completions,
             },
          },
       },

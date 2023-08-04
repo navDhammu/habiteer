@@ -1,0 +1,42 @@
+{
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "definitions": {
+      "LoginReqBody": {
+         "additionalProperties": false,
+         "properties": {
+            "email": {
+               "format": "email",
+               "type": "string"
+            },
+            "password": {
+               "minLength": 6,
+               "type": "string"
+            }
+         },
+         "required": ["email", "password"],
+         "type": "object"
+      },
+      "SignupReqBody": {
+         "additionalProperties": false,
+         "properties": {
+            "confirmPassword": {
+               "minLength": 6,
+               "type": "string",
+               "const": {
+                  "$data": "1/password"
+               }
+            },
+            "email": {
+               "format": "email",
+               "type": "string"
+            },
+            "password": {
+               "minLength": 6,
+               "type": "string"
+            }
+         },
+         "required": ["confirmPassword", "email", "password"],
+         "type": "object"
+      }
+   }
+}

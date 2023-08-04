@@ -5,6 +5,9 @@
    "main": "index.js",
    "scripts": {
       "test": "jest --verbose",
+      "tjs": "typescript-json-schema 'tsconfig.json' '*' --refs='false' --noExtraProps --required",
+      "tjs:auth": "npm run tjs -- --include='src/api/auth/types.ts' --out='src/api/auth/schema.json'",
+      "tjs:habits": "npm run tjs -- --include='src/api/habits/types.ts' --out='src/api/habits/schema.json'",
       "dev": "nodemon --ignore api-spec.json --exec node -r @swc-node/register src/index.ts",
       "start": "NODE_ENV=production node dist/index.js",
       "build": "tsc",
@@ -35,9 +38,9 @@
       "@types/cors": "^2.8.13",
       "@types/node": "^20.1.2",
       "drizzle-kit": "^0.19.5",
-      "json-schema-to-ts": "^2.9.1",
       "nodemon": "^2.0.22",
       "openapi-typescript-codegen": "^0.25.0",
-      "typescript": "^5.0.4"
+      "typescript": "^5.0.4",
+      "typescript-json-schema": "^0.59.0"
    }
 }

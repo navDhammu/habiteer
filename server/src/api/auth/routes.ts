@@ -5,22 +5,19 @@ import {
    HookHandlerDoneFunction,
 } from 'fastify';
 import { signup } from './services';
-import {
-   loginBodySchema,
-   signupBodySchema,
-   SignupBodyType,
-   LoginBodyType,
-} from './schemas';
+
 import { login } from './services';
+import { LoginReqBody, SignupReqBody } from './types';
+import schema from './schema.json';
 
 const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
-   fastify.post<{ Body: SignupBodyType }>(
+   fastify.post<{ Body: SignupReqBody }>(
       '/signup',
       {
          schema: {
             tags: ['auth'],
             operationId: 'signup',
-            body: signupBodySchema,
+            body: schema.definitions.SignupReqBody,
          },
          preHandler: handleAlreadySignedIn,
       },
@@ -34,13 +31,13 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
       }
    );
 
-   fastify.post<{ Body: LoginBodyType }>(
+   fastify.post<{ Body: LoginReqBody }>(
       '/login',
       {
          schema: {
             tags: ['auth'],
             operationId: 'login',
-            body: loginBodySchema,
+            body: schema.definitions.LoginReqBody,
          },
          preHandler: handleAlreadySignedIn,
       },

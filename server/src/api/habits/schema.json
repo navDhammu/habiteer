@@ -1,0 +1,276 @@
+{
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "definitions": {
+      "Completion": {
+         "additionalProperties": false,
+         "properties": {
+            "completionStatus": {
+               "enum": ["complete", "incomplete", "pending"],
+               "type": "string"
+            },
+            "completionStatusTimestamp": {
+               "anyOf": [
+                  {
+                     "format": "date-time",
+                     "type": "string"
+                  },
+                  {
+                     "type": "null"
+                  }
+               ],
+               "format": "date-time"
+            },
+            "description": {
+               "type": ["null", "string"]
+            },
+            "habitId": {
+               "type": "number"
+            },
+            "id": {
+               "type": "number"
+            },
+            "name": {
+               "type": "string"
+            },
+            "scheduledDate": {
+               "format": "date",
+               "type": "string"
+            }
+         },
+         "required": [
+            "completionStatus",
+            "completionStatusTimestamp",
+            "description",
+            "habitId",
+            "id",
+            "name",
+            "scheduledDate"
+         ],
+         "type": "object"
+      },
+      "Completions": {
+         "items": {
+            "additionalProperties": false,
+            "properties": {
+               "completionStatus": {
+                  "enum": ["complete", "incomplete", "pending"],
+                  "type": "string"
+               },
+               "completionStatusTimestamp": {
+                  "anyOf": [
+                     {
+                        "format": "date-time",
+                        "type": "string"
+                     },
+                     {
+                        "type": "null"
+                     }
+                  ],
+                  "format": "date-time"
+               },
+               "description": {
+                  "type": ["null", "string"]
+               },
+               "habitId": {
+                  "type": "number"
+               },
+               "id": {
+                  "type": "number"
+               },
+               "name": {
+                  "type": "string"
+               },
+               "scheduledDate": {
+                  "format": "date",
+                  "type": "string"
+               }
+            },
+            "required": [
+               "completionStatus",
+               "completionStatusTimestamp",
+               "description",
+               "habitId",
+               "id",
+               "name",
+               "scheduledDate"
+            ],
+            "type": "object"
+         },
+         "type": "array"
+      },
+      "CompletionsQuerystring": {
+         "additionalProperties": false,
+         "properties": {
+            "date": {
+               "format": "date",
+               "type": "string"
+            }
+         },
+         "type": "object"
+      },
+      "DeleteHabitParams": {
+         "additionalProperties": false,
+         "properties": {
+            "habitId": {
+               "type": "number"
+            }
+         },
+         "required": ["habitId"],
+         "type": "object"
+      },
+      "Habit": {
+         "additionalProperties": false,
+         "properties": {
+            "category": {
+               "type": ["null", "string"]
+            },
+            "created": {
+               "type": "string"
+            },
+            "description": {
+               "type": ["null", "string"]
+            },
+            "id": {
+               "type": "number"
+            },
+            "lastUpdated": {
+               "type": ["null", "string"]
+            },
+            "name": {
+               "type": "string"
+            },
+            "repeatDays": {
+               "items": {
+                  "enum": [
+                     "Friday",
+                     "Monday",
+                     "Saturday",
+                     "Sunday",
+                     "Thursday",
+                     "Tuesday",
+                     "Wednesday"
+                  ],
+                  "type": "string"
+               },
+               "type": "array"
+            },
+            "trackingStartDate": {
+               "format": "date",
+               "type": "string"
+            },
+            "userId": {
+               "type": "number"
+            }
+         },
+         "required": [
+            "category",
+            "created",
+            "description",
+            "id",
+            "lastUpdated",
+            "name",
+            "repeatDays",
+            "trackingStartDate",
+            "userId"
+         ],
+         "type": "object"
+      },
+      "HabitReqBody": {
+         "additionalProperties": false,
+         "properties": {
+            "category": {
+               "type": ["null", "string"]
+            },
+            "description": {
+               "type": ["null", "string"]
+            },
+            "name": {
+               "type": "string"
+            },
+            "repeatDays": {
+               "items": {
+                  "enum": [
+                     "Friday",
+                     "Monday",
+                     "Saturday",
+                     "Sunday",
+                     "Thursday",
+                     "Tuesday",
+                     "Wednesday"
+                  ],
+                  "type": "string"
+               },
+               "maxItems": 7,
+               "minItems": 1,
+               "type": "array"
+            },
+            "trackingStartDate": {
+               "format": "date",
+               "type": "string"
+            }
+         },
+         "required": ["name", "repeatDays", "trackingStartDate"],
+         "type": "object"
+      },
+      "Habits": {
+         "items": {
+            "additionalProperties": false,
+            "properties": {
+               "category": {
+                  "type": ["null", "string"]
+               },
+               "created": {
+                  "type": "string"
+               },
+               "description": {
+                  "type": ["null", "string"]
+               },
+               "id": {
+                  "type": "number"
+               },
+               "lastUpdated": {
+                  "type": ["null", "string"]
+               },
+               "name": {
+                  "type": "string"
+               },
+               "repeatDays": {
+                  "items": {
+                     "enum": [
+                        "Friday",
+                        "Monday",
+                        "Saturday",
+                        "Sunday",
+                        "Thursday",
+                        "Tuesday",
+                        "Wednesday"
+                     ],
+                     "type": "string"
+                  },
+                  "type": "array"
+               },
+               "trackingStartDate": {
+                  "format": "date",
+                  "type": "string"
+               },
+               "userId": {
+                  "type": "number"
+               }
+            },
+            "required": [
+               "category",
+               "created",
+               "description",
+               "id",
+               "lastUpdated",
+               "name",
+               "repeatDays",
+               "trackingStartDate",
+               "userId"
+            ],
+            "type": "object"
+         },
+         "type": "array"
+      }
+   }
+}

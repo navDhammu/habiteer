@@ -39,7 +39,6 @@ const completionsTable = pgTable('completions', {
    habitId: integer('habit_id')
       .notNull()
       .references(() => habitsTable.id),
-   // isComplete: boolean('is_complete'),
    completionStatus: text('completion_status', {
       enum: ['complete', 'incomplete', 'pending'],
    }).notNull(),
@@ -49,20 +48,22 @@ const completionsTable = pgTable('completions', {
    scheduledDate: date('scheduled_date').notNull(),
 });
 
-type User = InferModel<typeof usersTable>;
-type NewUser = InferModel<typeof usersTable, 'insert'>;
-type Habit = InferModel<typeof habitsTable>;
-type InsertableHabit = InferModel<typeof habitsTable, 'insert'>;
-type Completion = InferModel<typeof completionsTable>;
-type InsertableCompletion = InferModel<typeof completionsTable, 'insert'>;
+type UserDb = InferModel<typeof usersTable>;
+type NewUserDb = InferModel<typeof usersTable, 'insert'>;
+
+type HabitDb = InferModel<typeof habitsTable>;
+type InsertableHabitDb = InferModel<typeof habitsTable, 'insert'>;
+
+type CompletionDb = InferModel<typeof completionsTable>;
+type InsertableCompletionDb = InferModel<typeof completionsTable, 'insert'>;
 
 export {
-   Habit,
-   InsertableHabit,
-   User,
-   NewUser,
-   Completion,
-   InsertableCompletion,
+   HabitDb,
+   InsertableHabitDb,
+   UserDb,
+   NewUserDb,
+   CompletionDb,
+   InsertableCompletionDb,
    habitsTable,
    usersTable,
    completionsTable,

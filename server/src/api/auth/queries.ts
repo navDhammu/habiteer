@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
-import { db, User, NewUser, usersTable } from '../../db';
+import { db, UserDb, NewUserDb, usersTable } from '../../db';
 
-async function getUserByEmail(email: User['email']) {
+async function getUserByEmail(email: UserDb['email']) {
    const result = await db
       .select()
       .from(usersTable)
@@ -9,7 +9,7 @@ async function getUserByEmail(email: User['email']) {
    return result[0];
 }
 
-async function insertUser(user: NewUser) {
+async function insertUser(user: NewUserDb) {
    const result = await db
       .insert(usersTable)
       .values(user)

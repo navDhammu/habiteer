@@ -1,9 +1,8 @@
 import fastifySwagger from '@fastify/swagger';
 import { FastifyInstance } from 'fastify';
-import { habitSchema } from './api/habits/schemas/habitSchema';
 import { generate } from 'openapi-typescript-codegen';
 import fs from 'fs';
-import { completionsSchema } from './api/habits/schemas/completionsSchema';
+import schema from './api/habits/schema.json';
 
 export default function setupOpenAPI(app: FastifyInstance) {
    if (process.env.NODE_ENV === 'production') return;
@@ -13,8 +12,8 @@ export default function setupOpenAPI(app: FastifyInstance) {
          openapi: '3.1.0',
          components: {
             schemas: {
-               Habit: habitSchema as {},
-               Completion: completionsSchema as {},
+               Habit: schema.definitions.Habit as {},
+               Completion: schema.definitions.Completion as {},
             },
             securitySchemes: {
                cookieAuth: {
@@ -28,7 +27,7 @@ export default function setupOpenAPI(app: FastifyInstance) {
       },
    });
 
-   //generate api client
+   // generate api client
    app.ready().then(() => {
       const fileLocation = './api-spec.json';
 

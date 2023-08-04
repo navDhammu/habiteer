@@ -2,32 +2,32 @@ import dayjs from 'dayjs';
 import {
    db,
    habitsTable,
-   InsertableHabit,
-   Habit,
+   InsertableHabitDb,
+   HabitDb,
    completionsTable,
-   InsertableCompletion,
-   Completion,
+   InsertableCompletionDb,
+   CompletionDb,
 } from '../../db';
 import { and, eq, inArray, sql } from 'drizzle-orm';
 
-type UserId = Habit['userId'];
+type UserId = HabitDb['userId'];
 
 export async function selectAllHabits(userId: UserId) {
    return db.select().from(habitsTable).where(eq(habitsTable.userId, userId));
 }
 
-export async function deleteHabit(id: Habit['id']) {
+export async function deleteHabit(id: HabitDb['id']) {
    return db.delete(habitsTable).where(eq(habitsTable.id, id));
 }
 
-export async function createHabitTransaction(habit: InsertableHabit) {
+export async function createHabitTransaction(habit: InsertableHabitDb) {
    return db.transaction(async (tx) => {
       const [insertedHabit] = await tx
          .insert(habitsTable)
          .values(habit)
          .returning();
 
-      let completions: InsertableCompletion[] = [];
+      let completions: InsertableCompletionDb[] = [];
 
       //create completion records one week in advance
       for (let i = 0; i < 7; i++) {
@@ -55,12 +55,14 @@ export async function selectCompletions(userId: UserId, date?: string) {
    return await db
       .select({
          id: completionsTable.id,
+         habitId: habitsTable.id,
          name: habitsTable.name,
          description: habitsTable.description,
          category: habitsTable.category,
          completionStatus: completionsTable.completionStatus,
+         completionStatusTimestamp: completionsTable.completionStatusTimestamp,
          scheduledDate: sql<
-            Completion['scheduledDate']
+            CompletionDb['scheduledDate']
          >`to_char(${completionsTable.scheduledDate}, 'YYYY-MM-DD')`,
       })
       .from(completionsTable)
