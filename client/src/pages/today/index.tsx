@@ -1,29 +1,42 @@
 import {
-   Box,
-   Button,
+   AbsoluteCenter,
    Card,
    Container,
+   Spinner,
    TabList,
+   TabPanel,
    TabPanels,
-   TabProps,
    Tabs,
-   useMultiStyleConfig,
-   useTab,
 } from '@chakra-ui/react';
-import { addDays, isAfter, isToday, startOfWeek } from 'date-fns';
-import { forwardRef, useState } from 'react';
-import { getDayOfWeek, getWeekArray } from 'utils/dates';
+import { useEffect, useState } from 'react';
+import { HabitCompletions } from './HabitCompletions';
+import { Completion, HabitsService } from '@api';
+import dayjs from 'dayjs';
 import Header from './Header';
-import WorkInProgress from 'components/WorkInProgress';
-
-export type HabitTodo = {
-   id: string;
-   isComplete: boolean;
-   name: string;
-};
+import DateTab from './DateTab';
 
 export default function Today() {
-   const [date, setDate] = useState(new Date());
+   const [date, setDate] = useState(dayjs());
+   const [completions, setCompletions] = useState<Completion[]>([]);
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState<Completion[]>([]);
+
+   const handleCompletionStatusChange = (updatedCompletion: Completion) =>
+      setCompletions(
+         completions.map((completion) =>
+            completion.id === updatedCompletion.id
+               ? updatedCompletion
+               : completion
+         )
+      );
+
+   useEffect(() => {
+      setIsLoading(true);
+      HabitsService.getCompletions(date.format('YYYY-MM-DD'))
+         .then((result) => setCompletions(result))
+         .catch((err) => setError(err))
+         .finally(() => setIsLoading(false));
+   }, [date]);
 
    return (
       <Container display="flex" flexDirection="column" gap="4">
@@ -32,73 +45,41 @@ export default function Today() {
             variant="unstyled"
             isLazy
             isFitted
-            index={date.getDay()}
-            onChange={(index) => setDate(addDays(startOfWeek(date), index))}
+            index={date.day()}
+            onChange={(index) =>
+               setDate(date.startOf('week').add(index, 'days'))
+            }
          >
             <TabList as={Card} justifyContent="space-evenly">
-               {getWeekArray(date).map((value, index) => (
-                  <DateTab
-                     key={index}
-                     date={value}
-                     isDisabled={isAfter(value, new Date())}
-                     color={isToday(value) ? 'green.400' : 'black'}
-                  />
+               {Array.from({ length: 7 }, (_, i) => (
+                  <DateTab key={i} date={date.startOf('week').add(i, 'days')} />
                ))}
             </TabList>
             <TabPanels mt={8}>
-               <WorkInProgress />
-               {/* {new Array(7).fill(null).map((_, i) => (
-                  <TabPanel className="panel" key={i} p="0" mt="8">
-                     <HabitTodos
-                                todos={[]}
-                                heading="Habit Checklist"
-                                onCheckHabit={(id) => (e) => Promise.resolve()}
-                            />
+               {new Array(7).fill(null).map((_, i) => (
+                  <TabPanel
+                     className="panel"
+                     key={i}
+                     p="0"
+                     mt="8"
+                     position="relative"
+                  >
+                     {isLoading ? (
+                        <AbsoluteCenter>
+                           <Spinner />
+                        </AbsoluteCenter>
+                     ) : (
+                        <HabitCompletions
+                           completionsList={completions}
+                           onCompletionStatusChange={
+                              handleCompletionStatusChange
+                           }
+                        />
+                     )}
                   </TabPanel>
-               ))} */}
+               ))}
             </TabPanels>
          </Tabs>
       </Container>
    );
 }
-
-// custom tab component
-const DateTab = forwardRef<HTMLButtonElement, TabProps & { date: Date }>(
-   (props, ref) => {
-      const tabProps = useTab({ ...props, ref });
-      const isSelected = !!tabProps['aria-selected'];
-      const styles = useMultiStyleConfig('Tabs', tabProps);
-
-      return (
-         <Button
-            __css={styles.tab}
-            {...tabProps}
-            border="none"
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            isDisabled={props.isDisabled}
-         >
-            <Box as="span" color="gray.500">
-               {getDayOfWeek(props.date)[0]}
-            </Box>
-
-            {isSelected ? (
-               <Box
-                  as="span"
-                  bg="green.400"
-                  borderRadius="full"
-                  color="white"
-                  w="8"
-                  h="8"
-                  lineHeight="8"
-               >
-                  {props.date.getDate()}
-               </Box>
-            ) : (
-               <Box fontWeight="bold">{props.date.getDate()}</Box>
-            )}
-         </Button>
-      );
-   }
-);

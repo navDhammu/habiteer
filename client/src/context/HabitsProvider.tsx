@@ -19,7 +19,7 @@ export default function HabitsProvider(props: PropsWithChildren) {
    useEffect(() => {
       if (user) {
          setIsLoading(true);
-         HabitsService.getAllHabits()
+         HabitsService.getHabits()
             .then((habits) => setHabits(habits))
             .catch((err) => {
                setError(err);

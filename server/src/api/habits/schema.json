@@ -279,6 +279,27 @@
             "type": "object"
          },
          "type": "array"
+      },
+      "UpdateCompletionStatusBody": {
+         "additionalProperties": false,
+         "properties": {
+            "completionStatus": {
+               "enum": ["complete", "incomplete", "pending"],
+               "type": "string"
+            }
+         },
+         "required": ["completionStatus"],
+         "type": "object"
+      },
+      "UpdateCompletionStatusParams": {
+         "additionalProperties": false,
+         "properties": {
+            "id": {
+               "type": "number"
+            }
+         },
+         "required": ["id"],
+         "type": "object"
       }
    }
 }

@@ -4,6 +4,7 @@ import {
    createHabitTransaction,
    selectAllHabits,
    selectCompletions,
+   updateCompletionStatus,
 } from './queries';
 
 import schema from './schema.json';
@@ -14,6 +15,9 @@ import {
    Completions,
    Habits,
    HabitReqBody,
+   UpdateCompletionStatusBody,
+   UpdateCompletionStatusParams,
+   Completion,
 } from './types';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
@@ -99,6 +103,32 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
             req.query.date
          );
          res.code(200).send(completions);
+      }
+   );
+
+   instance.patch<{
+      Body: UpdateCompletionStatusBody;
+      Params: UpdateCompletionStatusParams;
+      Reply: Completion;
+   }>(
+      '/habits/completions/:id',
+      {
+         schema: {
+            tags: ['habits'],
+            operationId: 'updateCompletionStatus',
+            body: schema.definitions.UpdateCompletionStatusBody,
+            params: schema.definitions.UpdateCompletionStatusParams,
+            response: {
+               200: schema.definitions.Completion,
+            },
+         },
+      },
+      async (req, res) => {
+         const updatedCompletion = await updateCompletionStatus(
+            req.params.id,
+            req.body.completionStatus
+         );
+         res.code(200).send(updatedCompletion);
       }
    );
 };

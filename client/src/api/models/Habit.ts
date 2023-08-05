@@ -4,13 +4,14 @@
 /* eslint-disable */
 
 export type Habit = {
-    id: number;
-    name: string;
-    description: (string | null);
-    category: (string | null);
+    category: string | null;
     created: string;
-    lastUpdated: (string | null);
+    description: string | null;
+    id: number;
+    lastUpdated: string | null;
+    name: string;
+    repeatDays: Array<'Friday' | 'Monday' | 'Saturday' | 'Sunday' | 'Thursday' | 'Tuesday' | 'Wednesday'>;
     trackingStartDate: string;
-    repeatDays: Array<'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'>;
+    userId: number;
 };
 

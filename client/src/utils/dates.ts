@@ -13,11 +13,11 @@ export function getWeekArray(date: Date) {
 }
 
 export const WEEKDAYS = [
-   'monday',
-   'tuesday',
-   'wednesday',
-   'thursday',
-   'friday',
-   'saturday',
-   'sunday',
+   'Monday',
+   'Tuesday',
+   'Wednesday',
+   'Thursday',
+   'Friday',
+   'Saturday',
+   'Sunday',
 ] as const;

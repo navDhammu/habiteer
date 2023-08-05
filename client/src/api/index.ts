@@ -7,6 +7,7 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { Completion } from './models/Completion';
 export type { Habit } from './models/Habit';
 
 export { AuthService } from './services/AuthService';

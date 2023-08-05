@@ -15,9 +15,9 @@ export class AuthService {
      */
     public static signup(
         requestBody: {
+            confirmPassword: string;
             email: string;
             password: string;
-            confirmPassword: any;
         },
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

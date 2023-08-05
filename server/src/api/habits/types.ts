@@ -50,4 +50,7 @@ export interface Completion
    completionStatusTimestamp: CompletionDb['completionStatusTimestamp'];
 }
 
+export type UpdateCompletionStatusBody = Pick<Completion, 'completionStatus'>;
+export type UpdateCompletionStatusParams = Pick<Completion, 'id'>;
+
 export type Completions = Completion[];

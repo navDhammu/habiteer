@@ -9,6 +9,7 @@ import {
    CompletionDb,
 } from '../../db';
 import { and, eq, inArray, sql } from 'drizzle-orm';
+import createError from '@fastify/error';
 
 type UserId = HabitDb['userId'];
 
@@ -73,4 +74,35 @@ export async function selectCompletions(userId: UserId, date?: string) {
          )
       )
       .innerJoin(habitsTable, eq(completionsTable.habitId, habitsTable.id));
+}
+
+export async function updateCompletionStatus(
+   id: CompletionDb['id'],
+   status: CompletionDb['completionStatus']
+) {
+   const [updatedCompletion] = await db
+      .update(completionsTable)
+      .set({ completionStatus: status })
+      .where(eq(completionsTable.id, id))
+      .returning();
+
+   if (!updatedCompletion) {
+      const CustomError = createError(
+         'NOT_FOUND',
+         `completion with id ${id} not found`,
+         404
+      );
+      throw new CustomError();
+   }
+
+   const [habitDetails] = await db
+      .select({
+         name: habitsTable.name,
+         description: habitsTable.description,
+         category: habitsTable.category,
+      })
+      .from(habitsTable)
+      .where(eq(habitsTable.id, updatedCompletion.habitId));
+
+   return { ...updatedCompletion, ...habitDetails };
 }

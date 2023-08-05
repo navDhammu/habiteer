@@ -6,6 +6,7 @@ import {
    date,
    integer,
    timestamp,
+   pgEnum,
 } from 'drizzle-orm/pg-core';
 import { WEEKDAYS } from '../utils';
 
