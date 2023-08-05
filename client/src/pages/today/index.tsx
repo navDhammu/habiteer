@@ -19,7 +19,6 @@ export default function Today() {
    const [date, setDate] = useState(dayjs());
    const [completions, setCompletions] = useState<Completion[]>([]);
    const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState<Completion[]>([]);
 
    const handleCompletionStatusChange = (updatedCompletion: Completion) =>
       setCompletions(
@@ -34,7 +33,7 @@ export default function Today() {
       setIsLoading(true);
       HabitsService.getCompletions(date.format('YYYY-MM-DD'))
          .then((result) => setCompletions(result))
-         .catch((err) => setError(err))
+         .catch((err) => console.log(err))
          .finally(() => setIsLoading(false));
    }, [date]);
 
