@@ -1,5 +1,4 @@
 import { Habit, HabitsService } from '@api';
-import { UseDisclosureReturn, useToast } from '@chakra-ui/react';
 import {
    AlertDialog,
    AlertDialogBody,
@@ -7,8 +6,10 @@ import {
    AlertDialogFooter,
    AlertDialogHeader,
    AlertDialogOverlay,
-   Box,
    Button,
+   Highlight,
+   UseDisclosureReturn,
+   useToast,
 } from '@chakra-ui/react';
 
 import { useHabitsContext } from 'context/HabitsContext';
@@ -67,11 +68,17 @@ export default function ConfirmDeleteHabit({
                   Delete Habit
                </AlertDialogHeader>
                <AlertDialogBody>
-                  Are you sure you want to delete habit{' '}
-                  <Box as="em" bg="gray.200" p="1">
-                     {deleteHabitName}
-                  </Box>{' '}
-                  ? This cannot be undone.
+                  <Highlight
+                     query={deleteHabitName}
+                     styles={{
+                        px: '1',
+                        py: '1',
+                        bg: 'orange.100',
+                     }}
+                  >
+                     {`Are you sure you want to delete habit ${deleteHabitName}? All associated data with this habit will be permanently
+                  removed.`}
+                  </Highlight>
                </AlertDialogBody>
                <AlertDialogFooter>
                   <Button onClick={alertDialog.onClose} ref={cancelRef}>

@@ -39,7 +39,7 @@ const completionsTable = pgTable('completions', {
    id: serial('id').primaryKey(),
    habitId: integer('habit_id')
       .notNull()
-      .references(() => habitsTable.id),
+      .references(() => habitsTable.id, { onDelete: 'cascade' }),
    completionStatus: text('completion_status', {
       enum: ['complete', 'incomplete', 'pending'],
    }).notNull(),
