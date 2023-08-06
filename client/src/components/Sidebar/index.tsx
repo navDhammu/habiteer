@@ -1,49 +1,29 @@
-import { AddIcon } from '@chakra-ui/icons';
 import {
    Box,
    Button,
    Card,
    Divider,
-   HStack,
+   Heading,
    Icon,
    Link,
    List,
-   ListIcon,
    ListItem,
-   Text,
+   VStack,
 } from '@chakra-ui/react';
 import {
    IconCalendarEvent,
+   IconChartBar,
+   IconExternalLink,
    IconFolder,
-   IconLayoutDashboard,
+   IconPlus,
    IconSeeding,
 } from '@tabler/icons-react';
 
 import HabitFormDrawer from 'components/HabitForm/HabitFormDrawer';
 import { useState } from 'react';
-import { Link as WouterLink } from 'wouter';
-import User from './User';
 import { useHabitsContext } from 'context/HabitsContext';
-import { Habit } from '@api';
-
-const links = [
-   {
-      to: 'dashboard',
-      icon: IconLayoutDashboard,
-      displayName: 'dashboard',
-   },
-   {
-      to: 'today',
-      icon: IconCalendarEvent,
-      displayName: 'today',
-   },
-   {
-      to: 'habits',
-      icon: IconFolder,
-      displayName: 'habits',
-      getStat: (habits: Habit[]) => habits.length || null,
-   },
-];
+import SidebarLink from './SidebarLink';
+import SidebarLogout from './SidebarLogout';
 
 type SidebarProps =
    | {
@@ -67,78 +47,71 @@ export default function Sidebar(props: SidebarProps) {
          h="full"
          borderColor="gray.200"
          overflow="hidden"
+         px="6"
       >
-         <HStack spacing="3" py="3">
+         <VStack>
             <Icon as={IconSeeding} color="green.300" w="12" h="12" />
-            <Text fontSize="xl" fontWeight="bold" textTransform="uppercase">
+            <Heading
+               size="md"
+               fontWeight="bold"
+               textTransform="capitalize"
+               color="gray.700"
+            >
                Habiteer
-            </Text>
-         </HStack>
+            </Heading>
+         </VStack>
          <Divider orientation="horizontal" mt="3" />
-         <Box as="nav" flex="1" p="4">
+         <Box as="nav" flex="1" mx="-6">
             <List>
-               {links.map((link) => (
+               <ListItem>
+                  <SidebarLink to="today" icon={IconCalendarEvent}>
+                     today
+                  </SidebarLink>
+               </ListItem>
+               <ListItem>
+                  <SidebarLink
+                     to="habits"
+                     icon={IconFolder}
+                     stat={habits.length.toString()}
+                  >
+                     habits
+                  </SidebarLink>
                   <ListItem>
-                     <Link
-                        onClick={props.onClose}
-                        display="flex"
-                        alignItems="center"
-                        gap="2"
-                        fontSize={13}
-                        color="gray.500"
-                        textTransform="uppercase"
-                        as={WouterLink}
-                        _activeLink={{
-                           bg: 'gray.100',
-                           fontWeight: 'bold',
-                           borderLeft: '4px',
-                           borderLeftColor: 'green.500',
-                           color: 'green.500',
-                           py: '3',
-                           '& > span': {
-                              background: 'green.300',
-                              color: 'white',
-                              fontWeight: 'normal',
-                           },
-                           '& > svg': {
-                              boxSize: '6',
-                           },
-                        }}
-                        p="2"
-                        to={link.to}
-                     >
-                        <ListIcon as={link.icon} fontSize="2xl" />
-                        {link.displayName}
-                        <Box
-                           ml="auto"
-                           as="span"
-                           bg="gray.100"
-                           rounded="full"
-                           color="gray.500"
-                           paddingX="2"
-                        >
-                           {link.getStat?.(habits)}
-                        </Box>
-                     </Link>
+                     <SidebarLink to="stats" icon={IconChartBar}>
+                        Stats
+                     </SidebarLink>
                   </ListItem>
-               ))}
+               </ListItem>
             </List>
          </Box>
          <Button
+            p="4"
             onClick={() => setIsDrawerOpen(true)}
-            w="80%"
-            alignSelf="center"
-            colorScheme="green"
-            leftIcon={<AddIcon />}
+            // alignSelf="center"
+            colorScheme="teal"
+            leftIcon={<IconPlus />}
          >
-            Create Habit
+            Create New Habit
          </Button>
+         {/* <User /> */}
+
+         <Divider orientation="horizontal" mt="6" />
+         <VStack align="flex-start" spacing={4} my="6" fontSize="sm">
+            <Button
+               as={Link}
+               variant="link"
+               leftIcon={<IconExternalLink />}
+               href="https://github.com/navDhammu/habiteer/"
+               target="_blank"
+            >
+               Github
+            </Button>
+            <SidebarLogout />
+         </VStack>
          <HabitFormDrawer
             isDrawerOpen={isDrawerOpen}
             onCloseDrawer={() => setIsDrawerOpen(false)}
          />
-         <Divider orientation="horizontal" mt="3" />
-         <User />
       </Card>
    );
 }
