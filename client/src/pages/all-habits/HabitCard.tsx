@@ -10,6 +10,7 @@ import {
    CardFooter,
    HStack,
    Badge,
+   Box,
 } from '@chakra-ui/react';
 
 import { Icon } from '@chakra-ui/icons';
@@ -20,19 +21,21 @@ import { WorkInProgressPopover } from 'components/WorkInProgress';
 
 export default function HabitCard(props: Habit) {
    return (
-      <Card>
-         <CardHeader as={Flex} alignItems="center">
-            <HStack>
-               <Heading size="sm">{props.name}</Heading>
-               {props.category && <Tag>{props.category}</Tag>}
-               <Badge variant="outline" colorScheme="green">
-                  active
-               </Badge>
-            </HStack>
-            <HabitCardMenuDropdown habit={props} />
-         </CardHeader>
+      <Card size="sm">
          <CardBody fontSize="sm" py="0">
-            <Text fontSize="md">{props.description}</Text>
+            <Flex>
+               <HStack>
+                  <Heading size="sm">{props.name}</Heading>
+                  {props.category && <Tag>{props.category}</Tag>}
+                  <Badge variant="outline" colorScheme="green">
+                     active
+                  </Badge>
+               </HStack>
+               <HabitCardMenuDropdown habit={props} />
+            </Flex>
+            <Text fontSize="md" color="gray.500" fontStyle="italic" my="1">
+               {props.description}
+            </Text>
             <HStack>
                <Icon as={IconCalendarRepeat} boxSize={5} />
                <Text textTransform="capitalize">
@@ -49,16 +52,16 @@ export default function HabitCard(props: Habit) {
                <Icon as={IconClock} boxSize={5} />
                <Text size="sm"> Tracking since: {props.trackingStartDate}</Text>
             </HStack>
+            <Box float="right">
+               <WorkInProgressPopover
+                  trigger={
+                     <Button ml="auto" variant="ghost" colorScheme="green">
+                        See details
+                     </Button>
+                  }
+               />
+            </Box>
          </CardBody>
-         <CardFooter alignItems="center">
-            <WorkInProgressPopover
-               trigger={
-                  <Button ml="auto" variant="ghost" colorScheme="green">
-                     See details
-                  </Button>
-               }
-            />
-         </CardFooter>
       </Card>
    );
 }
