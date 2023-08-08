@@ -21,7 +21,7 @@
       "prettier-plugin-organize-imports": "^3.2.3"
    },
    "lint-staged": {
-      "*": "prettier --write --plugin=prettier-plugin-organize-imports"
+      "*.{js,jsx,ts,tsx}": "prettier --write --plugin=prettier-plugin-organize-imports"
    },
    "config": {
       "commitizen": {
