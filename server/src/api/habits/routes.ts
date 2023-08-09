@@ -1,23 +1,24 @@
 import { FastifyPluginAsync } from 'fastify';
 import {
-   deleteHabit,
    createHabitTransaction,
+   deleteHabit,
    selectAllHabits,
-   selectCompletions,
+   selectCompletionsByDate,
+   selectCompletionsByDateRange,
    updateCompletionStatus,
 } from './queries';
 
 import schema from './schema.json';
 import {
-   Habit,
-   DeleteHabitParams,
-   CompletionsQuerystring,
+   Completion,
    Completions,
-   Habits,
+   CompletionsQuerystring,
+   DeleteHabitParams,
+   Habit,
    HabitReqBody,
+   Habits,
    UpdateCompletionStatusBody,
    UpdateCompletionStatusParams,
-   Completion,
 } from './types';
 
 const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
@@ -98,11 +99,21 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
          },
       },
       async (req, res) => {
-         const completions = await selectCompletions(
-            req.session.userId,
-            req.query.date
-         );
-         res.code(200).send(completions);
+         let completions;
+         if (req.query.date) {
+            completions = await selectCompletionsByDate(
+               req.session.userId,
+               req.query.date
+            );
+         } else if (req.query.from) {
+            completions = await selectCompletionsByDateRange(
+               req.session.userId,
+               req.query.from,
+               req.query.to
+            );
+         }
+
+         return res.code(200).send(completions);
       }
    );
 

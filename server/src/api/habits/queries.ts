@@ -1,17 +1,24 @@
+import createError from '@fastify/error';
 import dayjs from 'dayjs';
+import { and, between, eq, inArray, sql } from 'drizzle-orm';
 import {
+   CompletionDb,
+   HabitDb,
+   InsertableCompletionDb,
+   InsertableHabitDb,
+   completionsTable,
    db,
    habitsTable,
-   InsertableHabitDb,
-   HabitDb,
-   completionsTable,
-   InsertableCompletionDb,
-   CompletionDb,
 } from '../../db';
-import { and, eq, inArray, sql } from 'drizzle-orm';
-import createError from '@fastify/error';
 
 type UserId = HabitDb['userId'];
+
+const selectHabitsByUserSubquery = (userId: UserId) =>
+   db
+      .select({ habitId: habitsTable.id })
+      .from(habitsTable)
+      .where(eq(habitsTable.userId, userId))
+      .as('sq');
 
 export async function selectAllHabits(userId: UserId) {
    return db.select().from(habitsTable).where(eq(habitsTable.userId, userId));
@@ -46,12 +53,12 @@ export async function createHabitTransaction(habit: InsertableHabitDb) {
    });
 }
 
-export async function selectCompletions(userId: UserId, date?: string) {
-   const subquery = db
-      .select({ habitId: habitsTable.id })
-      .from(habitsTable)
-      .where(eq(habitsTable.userId, userId))
-      .as('sq');
+export async function selectCompletionsByDateRange(
+   userId: UserId,
+   from: string,
+   to: string
+) {
+   const subquery = selectHabitsByUserSubquery(userId);
 
    return await db
       .select({
@@ -69,7 +76,32 @@ export async function selectCompletions(userId: UserId, date?: string) {
       .from(completionsTable)
       .where(
          and(
-            date ? eq(completionsTable.scheduledDate, date) : undefined,
+            between(completionsTable.scheduledDate, from, to),
+            inArray(completionsTable.habitId, db.select().from(subquery))
+         )
+      )
+      .innerJoin(habitsTable, eq(completionsTable.habitId, habitsTable.id));
+}
+
+export async function selectCompletionsByDate(userId: UserId, date: string) {
+   const subquery = selectHabitsByUserSubquery(userId);
+   return db
+      .select({
+         id: completionsTable.id,
+         habitId: habitsTable.id,
+         name: habitsTable.name,
+         description: habitsTable.description,
+         category: habitsTable.category,
+         completionStatus: completionsTable.completionStatus,
+         completionStatusTimestamp: completionsTable.completionStatusTimestamp,
+         scheduledDate: sql<
+            CompletionDb['scheduledDate']
+         >`to_char(${completionsTable.scheduledDate}, 'YYYY-MM-DD')`,
+      })
+      .from(completionsTable)
+      .where(
+         and(
+            eq(completionsTable.scheduledDate, date),
             inArray(completionsTable.habitId, db.select().from(subquery))
          )
       )
