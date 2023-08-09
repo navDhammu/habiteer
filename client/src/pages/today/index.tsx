@@ -1,3 +1,4 @@
+import { Completion, HabitsService } from '@api';
 import {
    AbsoluteCenter,
    Card,
@@ -8,17 +9,18 @@ import {
    TabPanels,
    Tabs,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { HabitCompletions } from './HabitCompletions';
-import { Completion, HabitsService } from '@api';
 import dayjs from 'dayjs';
-import Header from './Header';
+import { useEffect, useState } from 'react';
 import DateTab from './DateTab';
+import { HabitCompletions } from './HabitCompletions';
+import Header from './Header';
 
 export default function Today() {
    const [date, setDate] = useState(dayjs());
    const [completions, setCompletions] = useState<Completion[]>([]);
    const [isLoading, setIsLoading] = useState(false);
+
+   const dateString = date.format('YYYY-MM-DD');
 
    const handleCompletionStatusChange = (updatedCompletion: Completion) =>
       setCompletions(
@@ -31,7 +33,7 @@ export default function Today() {
 
    useEffect(() => {
       setIsLoading(true);
-      HabitsService.getCompletions(date.format('YYYY-MM-DD'))
+      HabitsService.getCompletions(dateString, dateString)
          .then((result) => setCompletions(result))
          .catch((err) => console.log(err))
          .finally(() => setIsLoading(false));

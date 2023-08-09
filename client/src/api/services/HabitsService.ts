@@ -100,11 +100,15 @@ export class HabitsService {
    }
 
    /**
-    * @param date
+    * @param from
+    * @param to
     * @returns any Default Response
     * @throws ApiError
     */
-   public static getCompletions(date?: string): CancelablePromise<
+   public static getCompletions(
+      from: string,
+      to: string
+   ): CancelablePromise<
       Array<{
          category: string | null;
          completionStatus: 'complete' | 'incomplete' | 'pending';
@@ -120,7 +124,8 @@ export class HabitsService {
          method: 'GET',
          url: '/api/habits/completions',
          query: {
-            date: date,
+            from: from,
+            to: to,
          },
       });
    }
