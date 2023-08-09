@@ -1,7 +1,7 @@
 import fastifySwagger from '@fastify/swagger';
 import { FastifyInstance } from 'fastify';
-import { generate } from 'openapi-typescript-codegen';
 import fs from 'fs';
+import { generate } from 'openapi-typescript-codegen';
 import schema from './api/habits/schema.json';
 
 export default function setupOpenAPI(app: FastifyInstance) {
@@ -44,6 +44,7 @@ export default function setupOpenAPI(app: FastifyInstance) {
             generate({
                input: fileLocation,
                output: '../client/src/api',
+               useUnionTypes: true,
             });
          }
       });

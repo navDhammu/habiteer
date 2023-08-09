@@ -3,7 +3,6 @@ import {
    createHabitTransaction,
    deleteHabit,
    selectAllHabits,
-   selectCompletionsByDate,
    selectCompletionsByDateRange,
    updateCompletionStatus,
 } from './queries';
@@ -99,21 +98,15 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
          },
       },
       async (req, res) => {
-         let completions;
-         if (req.query.date) {
-            completions = await selectCompletionsByDate(
-               req.session.userId,
-               req.query.date
+         return res
+            .code(200)
+            .send(
+               await selectCompletionsByDateRange(
+                  req.session.userId,
+                  req.query.from,
+                  req.query.to
+               )
             );
-         } else if (req.query.from) {
-            completions = await selectCompletionsByDateRange(
-               req.session.userId,
-               req.query.from,
-               req.query.to
-            );
-         }
-
-         return res.code(200).send(completions);
       }
    );
 

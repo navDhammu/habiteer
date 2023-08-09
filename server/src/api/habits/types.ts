@@ -29,26 +29,17 @@ export interface DeleteHabitParams {
    habitId: HabitDb['id'];
 }
 
-export type CompletionsQuerystring =
-   | {
-        /**
-         * @format date
-         */
-        date: string;
-        from?: never;
-        to?: never;
-     }
-   | {
-        date?: never;
-        /**
-         * @format date
-         */
-        from: string;
-        /**
-         * @format date
-         */
-        to: string;
-     };
+export interface CompletionsQuerystring {
+   /**
+    * @format date
+    */
+   from: string;
+
+   /**
+    * @format date
+    */
+   to: string;
+}
 
 export interface Completion
    extends CompletionDb,

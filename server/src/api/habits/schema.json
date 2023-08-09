@@ -107,34 +107,19 @@
          "type": "array"
       },
       "CompletionsQuerystring": {
-         "anyOf": [
-            {
-               "additionalProperties": false,
-               "properties": {
-                  "date": {
-                     "format": "date",
-                     "type": "string"
-                  }
-               },
-               "required": ["date"],
-               "type": "object"
+         "additionalProperties": false,
+         "properties": {
+            "from": {
+               "format": "date",
+               "type": "string"
             },
-            {
-               "additionalProperties": false,
-               "properties": {
-                  "from": {
-                     "format": "date",
-                     "type": "string"
-                  },
-                  "to": {
-                     "format": "date",
-                     "type": "string"
-                  }
-               },
-               "required": ["from", "to"],
-               "type": "object"
+            "to": {
+               "format": "date",
+               "type": "string"
             }
-         ]
+         },
+         "required": ["from", "to"],
+         "type": "object"
       },
       "DeleteHabitParams": {
          "additionalProperties": false,

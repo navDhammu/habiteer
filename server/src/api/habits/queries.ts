@@ -13,13 +13,6 @@ import {
 
 type UserId = HabitDb['userId'];
 
-const selectHabitsByUserSubquery = (userId: UserId) =>
-   db
-      .select({ habitId: habitsTable.id })
-      .from(habitsTable)
-      .where(eq(habitsTable.userId, userId))
-      .as('sq');
-
 export async function selectAllHabits(userId: UserId) {
    return db.select().from(habitsTable).where(eq(habitsTable.userId, userId));
 }
@@ -58,7 +51,11 @@ export async function selectCompletionsByDateRange(
    from: string,
    to: string
 ) {
-   const subquery = selectHabitsByUserSubquery(userId);
+   const subquery = db
+      .select({ habitId: habitsTable.id })
+      .from(habitsTable)
+      .where(eq(habitsTable.userId, userId))
+      .as('sq');
 
    return await db
       .select({
@@ -77,31 +74,6 @@ export async function selectCompletionsByDateRange(
       .where(
          and(
             between(completionsTable.scheduledDate, from, to),
-            inArray(completionsTable.habitId, db.select().from(subquery))
-         )
-      )
-      .innerJoin(habitsTable, eq(completionsTable.habitId, habitsTable.id));
-}
-
-export async function selectCompletionsByDate(userId: UserId, date: string) {
-   const subquery = selectHabitsByUserSubquery(userId);
-   return db
-      .select({
-         id: completionsTable.id,
-         habitId: habitsTable.id,
-         name: habitsTable.name,
-         description: habitsTable.description,
-         category: habitsTable.category,
-         completionStatus: completionsTable.completionStatus,
-         completionStatusTimestamp: completionsTable.completionStatusTimestamp,
-         scheduledDate: sql<
-            CompletionDb['scheduledDate']
-         >`to_char(${completionsTable.scheduledDate}, 'YYYY-MM-DD')`,
-      })
-      .from(completionsTable)
-      .where(
-         and(
-            eq(completionsTable.scheduledDate, date),
             inArray(completionsTable.habitId, db.select().from(subquery))
          )
       )
