@@ -20,8 +20,8 @@ import {
 } from '@tabler/icons-react';
 
 import HabitFormDrawer from 'components/HabitForm/HabitFormDrawer';
-import { useState } from 'react';
 import { useHabitsContext } from 'context/HabitsContext';
+import { useState } from 'react';
 import SidebarLink from './SidebarLink';
 import SidebarLogout from './SidebarLogout';
 
@@ -65,7 +65,7 @@ export default function Sidebar(props: SidebarProps) {
             <List>
                <ListItem>
                   <SidebarLink to="today" icon={IconCalendarEvent}>
-                     today
+                     day
                   </SidebarLink>
                </ListItem>
                <ListItem>

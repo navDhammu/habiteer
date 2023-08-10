@@ -1,15 +1,15 @@
+import { AbsoluteCenter } from '@chakra-ui/react';
 import AppLayout from 'components/AppLayout';
-import { Route, Switch } from 'wouter';
-import PageNotFound from 'pages/404';
-import LoginPage from 'pages/login';
-import Today from 'pages/today';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
+import WorkInProgress from 'components/WorkInProgress';
 import AuthProvider from 'context/AuthContext.tsx';
 import HabitsProvider from 'context/HabitsProvider';
+import PageNotFound from 'pages/404';
 import AllHabitsPage from 'pages/all-habits/AllHabitsPage';
-import WorkInProgress from 'components/WorkInProgress';
-import { AbsoluteCenter } from '@chakra-ui/react';
+import Day from 'pages/day/Day';
+import LoginPage from 'pages/login';
+import { Route, Switch } from 'wouter';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
 
 function App() {
    return (
@@ -23,7 +23,7 @@ function App() {
                   <LoginPage />
                </PublicRoute>
                <PrivateRoute path="/app/today">
-                  <AppLayout view={<Today />} />
+                  <AppLayout view={<Day />} />
                </PrivateRoute>
                <PrivateRoute path="/app/stats">
                   <AppLayout

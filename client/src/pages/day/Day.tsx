@@ -12,8 +12,8 @@ import {
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import DateTab from './DateTab';
+import DayHeader from './DayHeader';
 import { HabitCompletions } from './HabitCompletions';
-import Header from './Header';
 
 export default function Today() {
    const [date, setDate] = useState(dayjs());
@@ -21,6 +21,8 @@ export default function Today() {
    const [isLoading, setIsLoading] = useState(false);
 
    const dateString = date.format('YYYY-MM-DD');
+
+   console.log(date);
 
    const handleCompletionStatusChange = (updatedCompletion: Completion) =>
       setCompletions(
@@ -41,7 +43,7 @@ export default function Today() {
 
    return (
       <Container display="flex" flexDirection="column" gap="4">
-         <Header date={date} onDateChange={(date) => setDate(date)} />
+         <DayHeader date={date} onDateChange={(date) => setDate(date)} />
          <Tabs
             variant="unstyled"
             isLazy

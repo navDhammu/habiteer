@@ -1,3 +1,4 @@
+import { Completion } from '@api';
 import {
    Card,
    CardBody,
@@ -8,7 +9,6 @@ import {
    Text,
    VStack,
 } from '@chakra-ui/react';
-import { Completion } from '@api';
 import HabitCompletion from './HabitCompletion';
 
 type HabitCompletionsProps = {
