@@ -17,7 +17,6 @@ type DayHeaderProps = { date: Dayjs; onDateChange: (date: Dayjs) => void };
 
 export default function DayHeader({ date, onDateChange }: DayHeaderProps) {
    const isDateToday = date.isSame(dayjs(), 'date');
-   // const isDateYesterday = date.isSame(dayjs().subtract(1, 'days'), 'date');
 
    const handleLeftArrowClick = () => onDateChange(date.subtract(1, 'day'));
    const handleRightArrowClick = () => onDateChange(date.add(1, 'day'));
@@ -45,7 +44,6 @@ export default function DayHeader({ date, onDateChange }: DayHeaderProps) {
                   onClick={handleLeftArrowClick}
                />
                <IconButton
-                  isDisabled={isDateToday}
                   aria-label="next day"
                   icon={<ChevronRightIcon boxSize="7" />}
                   onClick={handleRightArrowClick}
