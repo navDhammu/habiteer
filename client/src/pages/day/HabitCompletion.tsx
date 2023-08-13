@@ -72,7 +72,7 @@ export default function HabitCompletion({
             completionOptions[completion.completionStatus].borderColor
          }
       >
-         <HStack>
+         <HStack flexWrap="wrap">
             {completionOptions[completion.completionStatus].icon}
             <Heading size="sm">{completion.name}</Heading>
             <Badge
@@ -89,7 +89,13 @@ export default function HabitCompletion({
          <Text fontStyle="italic" color="gray.500" my="1">
             {completion.description}
          </Text>
-         <ButtonGroup size="sm" isAttached ml="auto" variant="outline">
+         <ButtonGroup
+            size="sm"
+            isAttached
+            ml="auto"
+            variant="outline"
+            flexWrap="wrap"
+         >
             <Button
                isLoading={updatingStatus === 'complete'}
                isDisabled={completion.completionStatus === 'complete'}

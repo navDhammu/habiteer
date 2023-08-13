@@ -32,12 +32,12 @@ export default function Today() {
 
    return (
       <Container
-         maxW="4xl"
+         maxW="6xl"
          display="flex"
          flexDir={{ base: 'column', xl: 'row' }}
          gap="8"
       >
-         <VStack align="left" flexGrow={1} maxW="50%">
+         <VStack align="left" w={{ base: 'full', xl: '50%' }}>
             <DayHeader date={date} onDateChange={(date) => setDate(date)} />
             <Skeleton isLoaded={!isLoading}>
                <HabitCompletions
