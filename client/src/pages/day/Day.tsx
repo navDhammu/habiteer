@@ -37,7 +37,7 @@ export default function Today() {
          flexDir={{ base: 'column', xl: 'row' }}
          gap="8"
       >
-         <VStack align="left">
+         <VStack align="left" flexGrow={1} maxW="50%">
             <DayHeader date={date} onDateChange={(date) => setDate(date)} />
             <Skeleton isLoaded={!isLoading}>
                <HabitCompletions

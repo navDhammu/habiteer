@@ -51,24 +51,32 @@ export default function HabitCompletion({
       pending: {
          icon: <TimeIcon color="gray.500" />,
          badgeColorScheme: 'gray',
+         borderColor: 'gray.50',
       },
       complete: {
          icon: <CheckIcon color="green.500" />,
          badgeColorScheme: 'green',
+         borderColor: 'green.50',
       },
       incomplete: {
          icon: <SmallCloseIcon color="red.400" />,
          badgeColorScheme: 'red',
+         borderColor: 'red.50',
       },
    };
 
    return (
-      <Box>
+      <Box
+         p="1"
+         borderColor={
+            completionOptions[completion.completionStatus].borderColor
+         }
+      >
          <HStack>
             {completionOptions[completion.completionStatus].icon}
             <Heading size="sm">{completion.name}</Heading>
             <Badge
-               variant="solid"
+               variant="subtle"
                colorScheme={
                   completionOptions[completion.completionStatus]
                      .badgeColorScheme
