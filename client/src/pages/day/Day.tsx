@@ -2,7 +2,6 @@ import { Completion, HabitsService } from '@api';
 import { Container, Skeleton, VStack } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import Calendar from './Calendar';
 import Chart from './Chart';
 import DayHeader from './DayHeader';
 import { HabitCompletions } from './HabitCompletions';
@@ -47,13 +46,7 @@ export default function Today() {
                />
             </Skeleton>
          </VStack>
-         <VStack>
-            <Calendar
-               date={date.toDate()}
-               selected={date.toDate()}
-               onJumpToToday={() => setDate(dayjs())}
-               onDateSelected={(date) => setDate(dayjs(date.date))}
-            />
+         <VStack w={{ base: 'full', xl: '50%' }}>
             <Chart />
          </VStack>
       </Container>

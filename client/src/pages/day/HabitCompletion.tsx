@@ -84,7 +84,9 @@ export default function HabitCompletion({
             >
                {completion.completionStatus}
             </Badge>
-            <Tag textTransform="capitalize">{completion.category}</Tag>
+            {completion.category ? (
+               <Tag textTransform="capitalize">{completion.category}</Tag>
+            ) : null}
          </HStack>
          <Text fontStyle="italic" color="gray.500" my="1">
             {completion.description}

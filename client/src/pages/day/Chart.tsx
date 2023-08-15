@@ -84,7 +84,7 @@ export default function Chart() {
    const isCurrentWeek = week === currentWeek;
 
    return (
-      <Card w="full" h="96">
+      <Card h="96">
          <CardHeader>
             <Heading size="sm">Completion Rate (%)</Heading>
             <HStack align="center">

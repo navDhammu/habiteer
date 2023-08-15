@@ -35,7 +35,7 @@ const monthNamesShort = [
 
 const weekdayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-export default function Calendar(props: Props & { onJumpToToday: () => void }) {
+export default function Calendar(props: Props) {
    const [offset, setOffset] = useState(0);
 
    const { calendars, getBackProps, getForwardProps, getDateProps } = useDayzed(
