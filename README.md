@@ -1,35 +1,42 @@
 <img width="250" src="https://user-images.githubusercontent.com/73000930/222848320-993ebde7-67ef-4e5a-9cea-f9b4dba03f9b.png">
 
-## About
+## Project Overview
 
-Habiteer is a web app that helps users build and maintain good habits through progress tracking and data visualization.
+Habiteer is a web app that helps users build and maintain good habits through progress tracking and data visualization. This project is currently in development phase. To test the current features, simply visit link below and login as a test user.
 
-## Project Status
+[Live Demo](https://habiteer-iqtxo.ondigitalocean.app/)
 
-In progress
+## Current Features
 
-#### Current features
+-  **User Authentication:** Log in as a test user and access your personalized habit tracking.
 
-1. Login as a test user
-2. Create habits and specify a repeat schedule
-3. Delete habits
+-  **Habit Management:** Create habits and set repeat schedules tailored to your routine.
 
-#### Working on
+-  **Easy Deletion:** Effortlessly remove habits that are no longer relevant.
 
-- Editing habits
-- Marking habits complete / incomplete
-- Dashboard
-  
+-  **Progress Tracking:** Mark habits as complete, incomplete, or pending, maintaining a clear view of your journey.
+
+-  **Insightful Visualization:** Get an overview of your weekly completion rates through intuitive charts.
+
+## Future Enhancements
+
+-  **Data Trends**: Detailed analysis of your habit trends over time to identify patterns and areas for improvement.
+
+-  **Notifications**: Get timely reminders and encouragement to help you stay consistent with your habits.
+
+-  **Community Engagement**: Form habit tracking groups.
+
 ## Technologies Used
 
 ### Frontend
-- TypeScript
-- Reactjs
-- Chakra UI
+
+-  TypeScript
+-  Reactjs
+-  Chakra UI
 
 ### Backend
-- TypeScript
-- Node.js
-- Fastify
-- Postgresql
 
+-  TypeScript
+-  Node.js
+-  Fastify
+-  Postgresql
