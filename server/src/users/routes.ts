@@ -1,25 +1,20 @@
 import {
-   FastifyPluginAsync,
-   FastifyReply,
-   FastifyRequest,
-   HookHandlerDoneFunction,
-} from 'fastify';
-import { signup } from './services';
+   FastifyPluginAsyncTypebox,
+   Type,
+} from '@fastify/type-provider-typebox';
+import { insertUserSchema } from './dbSchema';
+import { login, signup } from './services';
 
-import { login } from './services';
-import { LoginReqBody, SignupReqBody } from './types';
-import schema from './schema.json';
-
-const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
-   fastify.post<{ Body: SignupReqBody }>(
+const usersRoutes: FastifyPluginAsyncTypebox = async (instance, opts) => {
+   instance.decorateRequest;
+   instance.post(
       '/signup',
       {
          schema: {
             tags: ['auth'],
             operationId: 'signup',
-            body: schema.definitions.SignupReqBody,
+            body: Type.Omit(insertUserSchema, ['id']),
          },
-         preHandler: handleAlreadySignedIn,
       },
       async (req, res) => {
          const insertedId = await signup({
@@ -31,15 +26,14 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
       }
    );
 
-   fastify.post<{ Body: LoginReqBody }>(
+   instance.post(
       '/login',
       {
          schema: {
             tags: ['auth'],
             operationId: 'login',
-            body: schema.definitions.LoginReqBody,
+            body: Type.Pick(insertUserSchema, ['email', 'password']),
          },
-         preHandler: handleAlreadySignedIn,
       },
       async (req, res) => {
          const { email, password } = req.body;
@@ -49,7 +43,7 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
       }
    );
 
-   fastify.post(
+   instance.post(
       '/logout',
       {
          schema: {
@@ -64,16 +58,4 @@ const authRoutes: FastifyPluginAsync = async (fastify, opts) => {
    );
 };
 
-function handleAlreadySignedIn(
-   req: FastifyRequest,
-   res: FastifyReply,
-   done: HookHandlerDoneFunction
-) {
-   const user = req.session.get<any>('user');
-   if (user) {
-      res.send(user);
-   }
-   done();
-}
-
-export default authRoutes;
+export default usersRoutes;

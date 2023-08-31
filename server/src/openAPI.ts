@@ -2,7 +2,8 @@ import fastifySwagger from '@fastify/swagger';
 import { FastifyInstance } from 'fastify';
 import fs from 'fs';
 import { generate } from 'openapi-typescript-codegen';
-import schema from './api/habits/schema.json';
+import { selectCompletionSchema } from './completions/dbSchema';
+import { selectHabitSchema } from './habits/dbSchema';
 
 export default function setupOpenAPI(app: FastifyInstance) {
    if (process.env.NODE_ENV === 'production') return;
@@ -12,8 +13,8 @@ export default function setupOpenAPI(app: FastifyInstance) {
          openapi: '3.1.0',
          components: {
             schemas: {
-               Habit: schema.definitions.Habit as {},
-               Completion: schema.definitions.Completion as {},
+               Habit: selectHabitSchema,
+               Completion: selectCompletionSchema,
             },
             securitySchemes: {
                cookieAuth: {

@@ -5,9 +5,6 @@
    "main": "index.js",
    "scripts": {
       "test": "jest --verbose",
-      "tjs": "typescript-json-schema 'tsconfig.json' '*' --refs='false' --noExtraProps --required",
-      "tjs:auth": "npm run tjs -- --include='src/api/auth/types.ts' --out='src/api/auth/schema.json'",
-      "tjs:habits": "npm run tjs -- --include='src/api/habits/types.ts' --out='src/api/habits/schema.json'",
       "dev": "nodemon --ignore api-spec.json --exec node -r @swc-node/register src/index.ts",
       "start": "NODE_ENV=production node dist/index.js",
       "build": "tsc",
@@ -24,10 +21,13 @@
       "@fastify/error": "^3.3.0",
       "@fastify/session": "^10.4.0",
       "@fastify/swagger": "^8.8.0",
+      "@fastify/type-provider-typebox": "^3.5.0",
+      "@sinclair/typebox": "^0.31.3",
       "bcrypt": "^5.1.0",
       "dayjs": "^1.11.9",
       "dotenv": "^16.0.3",
-      "drizzle-orm": "^0.27.2",
+      "drizzle-orm": "^0.28.5",
+      "drizzle-typebox": "^0.1.1",
       "fastify": "^4.19.2",
       "postgres": "^3.3.5"
    },
@@ -40,7 +40,6 @@
       "drizzle-kit": "^0.19.5",
       "nodemon": "^2.0.22",
       "openapi-typescript-codegen": "^0.25.0",
-      "typescript": "^5.0.4",
-      "typescript-json-schema": "^0.59.0"
+      "typescript": "^5.0.4"
    }
 }

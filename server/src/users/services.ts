@@ -1,11 +1,11 @@
-import bcrypt from 'bcrypt';
 import { createError } from '@fastify/error';
+import bcrypt from 'bcrypt';
+import type { InsertableUser } from './dbSchema';
 import { getUserByEmail, insertUser } from './queries';
-import type { NewUserDb } from '../../db';
 
 type Credentials = {
-   email: NewUserDb['email'];
-   password: NewUserDb['password'];
+   email: InsertableUser['email'];
+   password: InsertableUser['password'];
 };
 
 export async function signup(userDetails: Credentials) {

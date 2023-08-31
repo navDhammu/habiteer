@@ -2,33 +2,31 @@ import createError from '@fastify/error';
 import dayjs from 'dayjs';
 import { and, between, eq, inArray, sql } from 'drizzle-orm';
 import {
-   CompletionDb,
-   HabitDb,
-   InsertableCompletionDb,
-   InsertableHabitDb,
+   InsertableCompletion,
+   SelectableCompletion,
    completionsTable,
-   db,
-   habitsTable,
-} from '../../db';
+} from '../completions/dbSchema';
+import db from '../db';
+import { InsertableHabit, SelectableHabit, habitsTable } from './dbSchema';
 
-type UserId = HabitDb['userId'];
+type UserId = SelectableHabit['userId'];
 
 export async function selectAllHabits(userId: UserId) {
    return db.select().from(habitsTable).where(eq(habitsTable.userId, userId));
 }
 
-export async function deleteHabit(id: HabitDb['id']) {
+export async function deleteHabit(id: SelectableHabit['id']) {
    return db.delete(habitsTable).where(eq(habitsTable.id, id));
 }
 
-export async function createHabitTransaction(habit: InsertableHabitDb) {
+export async function createHabitTransaction(habit: InsertableHabit) {
    return db.transaction(async (tx) => {
       const [insertedHabit] = await tx
          .insert(habitsTable)
          .values(habit)
          .returning();
 
-      let completions: InsertableCompletionDb[] = [];
+      let completions: InsertableCompletion[] = [];
 
       //create completion records one week in advance
       for (let i = 0; i < 7; i++) {
@@ -65,9 +63,10 @@ export async function selectCompletionsByDateRange(
          description: habitsTable.description,
          category: habitsTable.category,
          completionStatus: completionsTable.completionStatus,
+         // completionStatusTimestamp: sql<string | null>`to_char(${completionsTable.completionStatusTimestamp}, 'YYYY-MM-DD"T"HH24:MI:SS+TZH:TZM')`,
          completionStatusTimestamp: completionsTable.completionStatusTimestamp,
          scheduledDate: sql<
-            CompletionDb['scheduledDate']
+            SelectableCompletion['scheduledDate']
          >`to_char(${completionsTable.scheduledDate}, 'YYYY-MM-DD')`,
       })
       .from(completionsTable)
@@ -81,8 +80,8 @@ export async function selectCompletionsByDateRange(
 }
 
 export async function updateCompletionStatus(
-   id: CompletionDb['id'],
-   status: CompletionDb['completionStatus']
+   id: SelectableCompletion['id'],
+   status: SelectableCompletion['completionStatus']
 ) {
    const [updatedCompletion] = await db
       .update(completionsTable)

@@ -1,4 +1,9 @@
-import { FastifyPluginAsync } from 'fastify';
+import {
+   FastifyPluginAsyncTypebox,
+   Type,
+} from '@fastify/type-provider-typebox';
+import { selectCompletionSchema } from '../completions/dbSchema';
+import { insertHabitSchema, selectHabitSchema } from './dbSchema';
 import {
    createHabitTransaction,
    deleteHabit,
@@ -7,51 +12,36 @@ import {
    updateCompletionStatus,
 } from './queries';
 
-import schema from './schema.json';
-import {
-   Completion,
-   Completions,
-   CompletionsQuerystring,
-   DeleteHabitParams,
-   Habit,
-   HabitReqBody,
-   Habits,
-   UpdateCompletionStatusBody,
-   UpdateCompletionStatusParams,
-} from './types';
-
-const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
+const habitsRoutes: FastifyPluginAsyncTypebox = async (instance, opts) => {
    // get habits route
-   instance.get<{ Reply: { 200: Habits } }>(
+   instance.get(
       '/habits',
       {
          schema: {
             operationId: 'getHabits',
             tags: ['habits'],
             response: {
-               200: schema.definitions.Habits,
+               200: Type.Array(selectHabitSchema),
             },
          },
       },
       async (req, res) => {
          const userId = req.session.userId;
-         res.code(200).send(await selectAllHabits(userId));
+         const habits = await selectAllHabits(userId);
+         res.code(200).send(habits);
       }
    );
 
    //create habit route
-   instance.post<{
-      Body: HabitReqBody;
-      Reply: { 200: Habit };
-   }>(
+   instance.post(
       '/habits',
       {
          schema: {
             tags: ['habits'],
             operationId: 'createHabit',
-            body: schema.definitions.HabitReqBody,
+            body: Type.Omit(insertHabitSchema, ['id']),
             response: {
-               200: schema.definitions.Habit,
+               200: selectHabitSchema,
             },
          },
       },
@@ -60,70 +50,63 @@ const habitsRoutes: FastifyPluginAsync = async (instance, opts) => {
             ...req.body,
             userId: req.session.userId,
          });
-
          res.code(200).send(habit);
       }
    );
 
    //delete habit route
-   instance.delete<{ Params: DeleteHabitParams }>(
+   instance.delete(
       '/habits/:habitId',
       {
          schema: {
             operationId: 'deleteHabit',
             tags: ['habits'],
-            params: schema.definitions.DeleteHabitParams,
+            params: Type.Pick(selectHabitSchema, ['id']),
          },
       },
       async (req, res) => {
-         await deleteHabit(req.params.habitId);
+         await deleteHabit(req.params.id);
          res.send();
       }
    );
 
    // completions route
-   instance.get<{
-      Querystring: CompletionsQuerystring;
-      Reply: { 200: Completions };
-   }>(
+   instance.get(
       '/habits/completions',
       {
          schema: {
             tags: ['habits'],
             operationId: 'getCompletions',
-            querystring: schema.definitions.CompletionsQuerystring,
+            querystring: Type.Object({
+               from: Type.String({ format: 'date' }),
+               to: Type.String({ format: 'date' }),
+            }),
             response: {
-               200: schema.definitions.Completions,
+               200: Type.Array(selectCompletionSchema),
             },
          },
       },
       async (req, res) => {
-         return res
-            .code(200)
-            .send(
-               await selectCompletionsByDateRange(
-                  req.session.userId,
-                  req.query.from,
-                  req.query.to
-               )
-            );
+         const completions = await selectCompletionsByDateRange(
+            req.session.userId,
+            req.query.from,
+            req.query.to
+         );
+
+         return res.code(200).send(completions);
       }
    );
 
-   instance.patch<{
-      Body: UpdateCompletionStatusBody;
-      Params: UpdateCompletionStatusParams;
-      Reply: Completion;
-   }>(
+   instance.patch(
       '/habits/completions/:id',
       {
          schema: {
             tags: ['habits'],
             operationId: 'updateCompletionStatus',
-            body: schema.definitions.UpdateCompletionStatusBody,
-            params: schema.definitions.UpdateCompletionStatusParams,
+            body: Type.Pick(selectCompletionSchema, ['completionStatus']),
+            params: Type.Pick(selectCompletionSchema, ['id']),
             response: {
-               200: schema.definitions.Completion,
+               200: selectCompletionSchema,
             },
          },
       },

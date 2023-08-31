@@ -1,13 +1,12 @@
-import fastify from 'fastify';
-import authRoutes from './api/auth/routes';
-import habitsRoutes from './api/habits/routes';
 import fastifyCookie from '@fastify/cookie';
 import fastifySession from '@fastify/session';
+import fastify from 'fastify';
+import habitsRoutes from './habits/routes';
 import setupOpenAPI from './openAPI';
+import usersRoutes from './users/routes';
 
 const app = fastify({
    logger: true,
-
    ajv: { customOptions: { $data: true } },
 });
 
@@ -21,7 +20,7 @@ app.register(fastifySession, {
 
 app.get('/', (_, res) => res.code(200).send('health check'));
 
-app.register(authRoutes, { prefix: '/api' });
+app.register(usersRoutes, { prefix: '/api' });
 app.register(habitsRoutes, { prefix: '/api' });
 
 app.addHook('onRequest', async (req, res) => {
