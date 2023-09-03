@@ -1,55 +1,54 @@
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { Box, HStack, Heading, Icon, List, ListItem } from '@chakra-ui/react';
 import {
-   Box,
-   Drawer,
-   DrawerContent,
-   DrawerOverlay,
-   IconButton,
-   useDisclosure,
-} from '@chakra-ui/react';
-import Sidebar from './Sidebar';
-import { Avatar, HStack, Text } from '@chakra-ui/react';
-import { useAuthContext } from 'context/AuthContext';
+   IconCalendarEvent,
+   IconFolder,
+   IconSeeding,
+} from '@tabler/icons-react';
+import CreateHabitButton from './CreateHabitButton';
+import NavLink from './NavLink';
+import UserMenu from './UserMenu';
 
 export default function Header() {
-   const { isOpen: isMobileSidebarOpen, onClose, onOpen } = useDisclosure();
-   const { user } = useAuthContext();
-
    return (
-      <>
-         <Box
-            px={[3, null, 6]}
-            py={[2, null, 4]}
-            as="header"
-            display="flex"
-            justifyContent="space-between"
-            // display={['block', null, 'none']}
-         >
-            <IconButton
-               // display={[null, null, 'none']}
-               visibility={[null, null, 'hidden']}
-               aria-label="menu"
-               icon={<HamburgerIcon boxSize={6} />}
-               variant="unstyled"
-               boxSize="8"
-               onClick={onOpen}
-            />
-            <HStack>
-               <Avatar size="sm" />
-               <Text>{user?.name || user?.email}</Text>
-            </HStack>
+      <Box
+         px={[3, null, 6]}
+         h="16"
+         as="header"
+         bg="white"
+         display="flex"
+         alignItems="center"
+         justifyContent="space-between"
+      >
+         <HStack>
+            <Icon as={IconSeeding} color="green.300" w="12" h="12" />
+            <Heading
+               display={{ base: 'none', md: 'block' }}
+               size="md"
+               fontWeight="bold"
+               textTransform="capitalize"
+               color="gray.700"
+            >
+               Habiteer
+            </Heading>
+         </HStack>
+         <Box as="nav" h="full">
+            <List display="flex" h="full" gap={{ base: 2, md: 6 }}>
+               <ListItem>
+                  <NavLink href="today" icon={IconCalendarEvent}>
+                     Day
+                  </NavLink>
+               </ListItem>
+               <ListItem>
+                  <NavLink href="habits" icon={IconFolder}>
+                     Habits
+                  </NavLink>
+               </ListItem>
+            </List>
          </Box>
-         <Drawer
-            isOpen={isMobileSidebarOpen}
-            onClose={onClose}
-            placement="left"
-            size="xs"
-         >
-            <DrawerOverlay />
-            <DrawerContent>
-               <Sidebar isMobile onClose={onClose} />
-            </DrawerContent>
-         </Drawer>
-      </>
+         <HStack spacing={{ base: 2, md: 8 }}>
+            <CreateHabitButton />
+            <UserMenu />
+         </HStack>
+      </Box>
    );
 }
