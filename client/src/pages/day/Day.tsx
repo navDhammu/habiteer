@@ -1,10 +1,15 @@
 import { Completion, HabitsService } from '@api';
-import { Container, Skeleton, VStack } from '@chakra-ui/react';
+import {
+   Box,
+   Container,
+   Heading,
+   Skeleton,
+   Text,
+   VStack,
+} from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
-import Chart from './Chart';
-import DayHeader from './DayHeader';
-import { HabitCompletions } from './HabitCompletions';
+import Completions from './Completions';
 
 export default function Today() {
    const [date, setDate] = useState(dayjs());
@@ -31,23 +36,20 @@ export default function Today() {
    }, [date]);
 
    return (
-      <Container
-         maxW="6xl"
-         display="flex"
-         flexDir={{ base: 'column', xl: 'row' }}
-         gap="8"
-      >
-         <VStack align="left" w={{ base: 'full', xl: '50%' }}>
-            <DayHeader date={date} onDateChange={(date) => setDate(date)} />
+      <Container maxW="6xl" gap="8">
+         <Box mb="6">
+            <Heading>Welcome back Test User</Heading>
+            <Text>Today is {dayjs().format('ddd MMM MM, YYYY')}</Text>
+         </Box>
+         <VStack align="left" w={{ base: 'full', xl: '50%' }} mx="auto">
             <Skeleton isLoaded={!isLoading}>
-               <HabitCompletions
+               <Completions
+                  date={date}
+                  onDateChange={(d) => setDate(d)}
                   completionsList={completions}
                   onCompletionStatusChange={handleCompletionStatusChange}
                />
             </Skeleton>
-         </VStack>
-         <VStack w={{ base: 'full', xl: '50%' }}>
-            <Chart />
          </VStack>
       </Container>
    );

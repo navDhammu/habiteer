@@ -2,31 +2,35 @@ import { Completion, HabitsService } from '@api';
 import { CheckIcon, SmallCloseIcon, TimeIcon } from '@chakra-ui/icons';
 import {
    Badge,
-   Box,
    Button,
    ButtonGroup,
    HStack,
    Heading,
+   ListItem,
    Tag,
    Text,
    useToast,
 } from '@chakra-ui/react';
+import { useHabitsContext } from 'context/HabitsContext';
 import { useState } from 'react';
 
-type HabitCompletionProps = {
+type CompletionsListItemProps = {
    completion: Completion;
    onCompletionStatusChange: (completion: Completion) => void;
 };
 
-export default function HabitCompletion({
+export default function CompletionsListItem({
    completion,
    onCompletionStatusChange,
-}: HabitCompletionProps) {
+}: CompletionsListItemProps) {
    const [updatingStatus, setUpdatingStatus] = useState('');
+   const { habits } = useHabitsContext();
    const toast = useToast();
 
+   const habit = habits.find((habit) => habit.id === completion.habitId);
+
    const handleStatusBtnClick =
-      (status: HabitCompletionProps['completion']['completionStatus']) =>
+      (status: CompletionsListItemProps['completion']['completionStatus']) =>
       async () => {
          setUpdatingStatus(status);
          try {
@@ -66,7 +70,7 @@ export default function HabitCompletion({
    };
 
    return (
-      <Box
+      <ListItem
          p="1"
          borderColor={
             completionOptions[completion.completionStatus].borderColor
@@ -74,9 +78,9 @@ export default function HabitCompletion({
       >
          <HStack flexWrap="wrap">
             {completionOptions[completion.completionStatus].icon}
-            <Heading size="sm">{completion.name}</Heading>
+            <Heading size="sm">{habit?.name}</Heading>
             <Badge
-               variant="subtle"
+               variant="solid"
                colorScheme={
                   completionOptions[completion.completionStatus]
                      .badgeColorScheme
@@ -84,12 +88,12 @@ export default function HabitCompletion({
             >
                {completion.completionStatus}
             </Badge>
-            {completion.category ? (
-               <Tag textTransform="capitalize">{completion.category}</Tag>
+            {habit?.category ? (
+               <Tag textTransform="capitalize">{habit.category}</Tag>
             ) : null}
          </HStack>
          <Text fontStyle="italic" color="gray.500" my="1">
-            {completion.description}
+            {habit?.description}
          </Text>
          <ButtonGroup
             size="sm"
@@ -120,6 +124,6 @@ export default function HabitCompletion({
                Mark Pending
             </Button>
          </ButtonGroup>
-      </Box>
+      </ListItem>
    );
 }
