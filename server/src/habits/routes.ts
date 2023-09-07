@@ -39,7 +39,7 @@ const habitsRoutes: FastifyPluginAsyncTypebox = async (instance, opts) => {
          schema: {
             tags: ['habits'],
             operationId: 'createHabit',
-            body: Type.Omit(insertHabitSchema, ['id']),
+            body: Type.Omit(insertHabitSchema, ['id', 'userId']),
             response: {
                200: selectHabitSchema,
             },

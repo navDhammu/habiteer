@@ -57,7 +57,6 @@ export class HabitsService {
       >;
       created?: string;
       lastUpdated?: string | null;
-      userId: number;
       category?: string | null;
       trackingStartDate: string;
    }): CancelablePromise<{
