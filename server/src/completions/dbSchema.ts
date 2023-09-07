@@ -1,4 +1,4 @@
-import { Static, Type } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import {
    date,
    integer,
@@ -39,7 +39,3 @@ export const selectCompletionSchema = createSelectSchema(completionsTable, {
          format: 'date-time',
       }),
    });
-
-type a = Static<typeof selectCompletionSchema>;
-
-selectCompletionSchema.properties.completionStatusTimestamp;
