@@ -86,7 +86,7 @@ export default function Chart() {
    return (
       <Card h="96">
          <CardHeader>
-            <Heading size="sm">Completion Rate (%)</Heading>
+            <Heading size="md">Weekly Completion Rate (%)</Heading>
             <HStack align="center">
                <Skeleton isLoaded={!isLoading}>
                   <Text fontWeight="bold" color="blackAlpha.600">

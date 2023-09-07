@@ -1,6 +1,7 @@
 import { Box, HStack, Heading, Icon, List, ListItem } from '@chakra-ui/react';
 import {
    IconCalendarEvent,
+   IconChartBar,
    IconFolder,
    IconSeeding,
 } from '@tabler/icons-react';
@@ -32,7 +33,7 @@ export default function Header() {
             </Heading>
          </HStack>
          <Box as="nav" h="full">
-            <List display="flex" h="full" gap={{ base: 2, md: 6 }}>
+            <List display="flex" h="full" gap="6">
                <ListItem>
                   <NavLink href="today" icon={IconCalendarEvent}>
                      Day
@@ -41,6 +42,11 @@ export default function Header() {
                <ListItem>
                   <NavLink href="habits" icon={IconFolder}>
                      Habits
+                  </NavLink>
+               </ListItem>
+               <ListItem>
+                  <NavLink href="progress" icon={IconChartBar}>
+                     Progress
                   </NavLink>
                </ListItem>
             </List>
