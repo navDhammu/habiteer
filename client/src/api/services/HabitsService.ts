@@ -13,23 +13,23 @@ export class HabitsService {
     */
    public static getHabits(): CancelablePromise<
       Array<{
-         category: string | null;
-         created: string;
-         description: string | null;
          id: number;
-         lastUpdated: string | null;
          name: string;
+         description: string | null;
          repeatDays: Array<
-            | 'Friday'
-            | 'Monday'
-            | 'Saturday'
             | 'Sunday'
-            | 'Thursday'
+            | 'Monday'
             | 'Tuesday'
             | 'Wednesday'
+            | 'Thursday'
+            | 'Friday'
+            | 'Saturday'
          >;
-         trackingStartDate: string;
+         created: string;
+         lastUpdated: string | null;
          userId: number;
+         category: string | null;
+         trackingStartDate: string;
       }>
    > {
       return __request(OpenAPI, {
@@ -44,37 +44,40 @@ export class HabitsService {
     * @throws ApiError
     */
    public static createHabit(requestBody: {
-      category?: string | null;
-      description?: string | null;
       name: string;
+      description?: string | null;
       repeatDays: Array<
-         | 'Friday'
-         | 'Monday'
-         | 'Saturday'
          | 'Sunday'
-         | 'Thursday'
+         | 'Monday'
          | 'Tuesday'
          | 'Wednesday'
+         | 'Thursday'
+         | 'Friday'
+         | 'Saturday'
       >;
+      created?: string;
+      lastUpdated?: string | null;
+      userId: number;
+      category?: string | null;
       trackingStartDate: string;
    }): CancelablePromise<{
-      category: string | null;
-      created: string;
-      description: string | null;
       id: number;
-      lastUpdated: string | null;
       name: string;
+      description: string | null;
       repeatDays: Array<
-         | 'Friday'
-         | 'Monday'
-         | 'Saturday'
          | 'Sunday'
-         | 'Thursday'
+         | 'Monday'
          | 'Tuesday'
          | 'Wednesday'
+         | 'Thursday'
+         | 'Friday'
+         | 'Saturday'
       >;
-      trackingStartDate: string;
+      created: string;
+      lastUpdated: string | null;
       userId: number;
+      category: string | null;
+      trackingStartDate: string;
    }> {
       return __request(OpenAPI, {
          method: 'POST',
@@ -85,16 +88,16 @@ export class HabitsService {
    }
 
    /**
-    * @param habitId
+    * @param id
     * @returns any Default Response
     * @throws ApiError
     */
-   public static deleteHabit(habitId: number): CancelablePromise<any> {
+   public static deleteHabit(id: number): CancelablePromise<any> {
       return __request(OpenAPI, {
          method: 'DELETE',
          url: '/api/habits/{habitId}',
          path: {
-            habitId: habitId,
+            id: id,
          },
       });
    }
@@ -110,13 +113,10 @@ export class HabitsService {
       to: string
    ): CancelablePromise<
       Array<{
-         category: string | null;
+         id: number;
+         habitId: number;
          completionStatus: 'complete' | 'incomplete' | 'pending';
          completionStatusTimestamp: string | null;
-         description: string | null;
-         habitId: number;
-         id: number;
-         name: string;
          scheduledDate: string;
       }>
    > {
@@ -142,13 +142,10 @@ export class HabitsService {
          completionStatus: 'complete' | 'incomplete' | 'pending';
       }
    ): CancelablePromise<{
-      category: string | null;
+      id: number;
+      habitId: number;
       completionStatus: 'complete' | 'incomplete' | 'pending';
       completionStatusTimestamp: string | null;
-      description: string | null;
-      habitId: number;
-      id: number;
-      name: string;
       scheduledDate: string;
    }> {
       return __request(OpenAPI, {
