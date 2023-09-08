@@ -1,12 +1,12 @@
-import { AbsoluteCenter } from '@chakra-ui/react';
 import AppLayout from 'components/AppLayout';
-import WorkInProgress from 'components/WorkInProgress';
 import AuthProvider from 'context/AuthContext.tsx';
 import HabitsProvider from 'context/HabitsProvider';
 import PageNotFound from 'pages/404';
 import AllHabitsPage from 'pages/all-habits/AllHabitsPage';
 import Day from 'pages/day/Day';
-import LoginPage from 'pages/login';
+import Login from 'pages/login';
+import Progress from 'pages/progress/Progress';
+import Signup from 'pages/signup';
 import { Route, Switch } from 'wouter';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
@@ -17,23 +17,19 @@ function App() {
          <HabitsProvider>
             <Switch>
                <PublicRoute path="/">
-                  <LoginPage />
+                  <Login />
                </PublicRoute>
                <PublicRoute path="/login">
-                  <LoginPage />
+                  <Login />
+               </PublicRoute>
+               <PublicRoute path="/signup">
+                  <Signup />
                </PublicRoute>
                <PrivateRoute path="/app/today">
                   <AppLayout view={<Day />} />
                </PrivateRoute>
-               <PrivateRoute path="/app/stats">
-                  <AppLayout
-                     view={
-                        <AbsoluteCenter>
-                           {' '}
-                           <WorkInProgress />
-                        </AbsoluteCenter>
-                     }
-                  />
+               <PrivateRoute path="/app/progress">
+                  <AppLayout view={<Progress />} />
                </PrivateRoute>
                <PrivateRoute path="/app/habits">
                   <AppLayout view={<AllHabitsPage />} />

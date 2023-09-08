@@ -1,18 +1,17 @@
 import {
    Alert,
    AlertIcon,
+   Box,
    Button,
-   Card,
-   CardBody,
    Checkbox,
    FormControl,
    FormErrorMessage,
    FormLabel,
    Input,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { IconLogin } from '@tabler/icons-react';
 import { useAuthContext } from 'context/AuthContext';
+import { useState } from 'react';
 
 const testCredentials = {
    email: 'test@email.com',
@@ -52,7 +51,7 @@ export default function LoginForm() {
    const isPasswordValid = !formData.errors.password;
 
    return (
-      <Card
+      <Box
          as="form"
          display="flex"
          flexDirection="column"
@@ -60,84 +59,82 @@ export default function LoginForm() {
          noValidate
          onSubmit={handleSubmit}
       >
-         <CardBody display="flex" flexDirection="column" gap="4">
-            <FormControl isInvalid={!isEmailValid}>
-               <FormLabel>Email</FormLabel>
-               <Input
-                  type="email"
-                  isRequired
-                  value={formData.email}
-                  onInvalid={(e) =>
-                     handleError(
-                        'email',
-                        (e.target as HTMLInputElement).validationMessage
-                     )
-                  }
-                  onChange={(e) =>
-                     setFormData({ ...formData, email: e.target.value })
-                  }
-                  placeholder="name@domain.com"
-               />
-               <FormErrorMessage>{formData.errors.email}</FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={!isPasswordValid}>
-               <FormLabel>Password</FormLabel>
-               <Input
-                  value={formData.password}
-                  onInvalid={(e) =>
-                     handleError(
-                        'password',
-                        (e.target as HTMLInputElement).validationMessage
-                     )
-                  }
-                  isRequired
-                  onChange={(e) =>
-                     setFormData({
-                        ...formData,
-                        password: e.target.value,
-                     })
-                  }
-                  type="password"
-                  minLength={6}
-                  placeholder="atleast 8 characters"
-               />
-               <FormErrorMessage>{formData.errors.password}</FormErrorMessage>
-            </FormControl>
-            {error && (
-               <Alert status="error">
-                  <AlertIcon />
-                  {error}
-               </Alert>
-            )}
-            <Checkbox
-               isChecked={
-                  formData.email === testCredentials.email &&
-                  formData.password === testCredentials.password
-               }
-               onChange={(e) =>
-                  setFormData(
-                     e.target.checked
-                        ? testCredentials
-                        : {
-                             email: '',
-                             password: '',
-                             errors: { email: '', password: '' },
-                          }
+         <FormControl isInvalid={!isEmailValid}>
+            <FormLabel>Email</FormLabel>
+            <Input
+               type="email"
+               isRequired
+               value={formData.email}
+               onInvalid={(e) =>
+                  handleError(
+                     'email',
+                     (e.target as HTMLInputElement).validationMessage
                   )
                }
-            >
-               Use test login credentials
-            </Checkbox>
-            <Button
-               isLoading={isLoading}
-               colorScheme="green"
-               type="submit"
-               disabled={isLoading}
-               rightIcon={<IconLogin />}
-            >
-               Login
-            </Button>
-         </CardBody>
-      </Card>
+               onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+               }
+               placeholder="name@domain.com"
+            />
+            <FormErrorMessage>{formData.errors.email}</FormErrorMessage>
+         </FormControl>
+         <FormControl isInvalid={!isPasswordValid}>
+            <FormLabel>Password</FormLabel>
+            <Input
+               value={formData.password}
+               onInvalid={(e) =>
+                  handleError(
+                     'password',
+                     (e.target as HTMLInputElement).validationMessage
+                  )
+               }
+               isRequired
+               onChange={(e) =>
+                  setFormData({
+                     ...formData,
+                     password: e.target.value,
+                  })
+               }
+               type="password"
+               minLength={6}
+               placeholder="atleast 8 characters"
+            />
+            <FormErrorMessage>{formData.errors.password}</FormErrorMessage>
+         </FormControl>
+         {error && (
+            <Alert status="error">
+               <AlertIcon />
+               {error}
+            </Alert>
+         )}
+         <Checkbox
+            isChecked={
+               formData.email === testCredentials.email &&
+               formData.password === testCredentials.password
+            }
+            onChange={(e) =>
+               setFormData(
+                  e.target.checked
+                     ? testCredentials
+                     : {
+                          email: '',
+                          password: '',
+                          errors: { email: '', password: '' },
+                       }
+               )
+            }
+         >
+            Use test login credentials
+         </Checkbox>
+         <Button
+            type="submit"
+            isLoading={isLoading}
+            disabled={isLoading}
+            colorScheme="teal"
+            rightIcon={<IconLogin />}
+         >
+            Login
+         </Button>
+      </Box>
    );
 }
