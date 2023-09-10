@@ -3,18 +3,21 @@ import {
    Box,
    Container,
    Heading,
-   Skeleton,
+   Spinner,
    Text,
    VStack,
 } from '@chakra-ui/react';
+import EmptyState from 'components/EmptyState';
+import { useHabitsContext } from 'context/HabitsContext';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import Completions from './Completions';
 
 export default function Today() {
    const [date, setDate] = useState(dayjs());
+   const { habits } = useHabitsContext();
    const [completions, setCompletions] = useState<Completion[]>([]);
-   const [isLoading, setIsLoading] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
 
    const dateString = date.format('YYYY-MM-DD');
 
@@ -28,7 +31,6 @@ export default function Today() {
       );
 
    useEffect(() => {
-      setIsLoading(true);
       HabitsService.getCompletions(dateString, dateString)
          .then((result) => setCompletions(result))
          .catch((err) => console.log(err))
@@ -41,16 +43,20 @@ export default function Today() {
             <Heading>Welcome back Test User</Heading>
             <Text>Today is {dayjs().format('ddd MMM MM, YYYY')}</Text>
          </Box>
-         <VStack align="left" w={{ base: 'full', xl: '50%' }} mx="auto">
-            <Skeleton isLoaded={!isLoading}>
+         {isLoading ? (
+            <Spinner />
+         ) : !habits.length ? (
+            <EmptyState />
+         ) : (
+            <VStack align="left" w={{ base: 'full', xl: '50%' }} mx="auto">
                <Completions
                   date={date}
                   onDateChange={(d) => setDate(d)}
                   completionsList={completions}
                   onCompletionStatusChange={handleCompletionStatusChange}
                />
-            </Skeleton>
-         </VStack>
+            </VStack>
+         )}
       </Container>
    );
 }
