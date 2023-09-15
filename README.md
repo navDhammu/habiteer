@@ -2,9 +2,17 @@
 
 ## Project Overview
 
-Habiteer is a web app that helps users build and maintain good habits through progress tracking and data visualization. This project is currently in development phase. To test the current features, simply visit link below and login as a test user.
+Habiteer is a habit tracking web app that helps users build and maintain good habits through progress tracking and data visualization.
 
-[Live Demo](https://habiteer-iqtxo.ondigitalocean.app/)
+## Why?
+
+Many people use fitness trackers to log their workouts, I wondered, why not have something similar for tracking your everyday habits? After some research I noticed there are habit tracking apps for android and ios but very few and with limited functionality for the web. So I decided to make a web based habit tracker that allows you to track your habits directly from the browser.
+
+## Live Demo
+
+To explore the current features and test the app, visit the [Live Demo](https://habiteer-iqtxo.ondigitalocean.app/) and log in as a test user.
+
+_Note_ - Some features may currently be broken / incomplete
 
 ## Current Features
 
@@ -16,9 +24,9 @@ Habiteer is a web app that helps users build and maintain good habits through pr
 
 -  **Progress Tracking:** Mark habits as complete, incomplete, or pending, maintaining a clear view of your journey.
 
--  **Insightful Visualization:** Get an overview of your weekly completion rates through intuitive charts.
-
 ## Future Enhancements
+
+-  **Insightful Visualization:** Get an overview of your weekly completion rates through intuitive charts.
 
 -  **Data Trends**: Detailed analysis of your habit trends over time to identify patterns and areas for improvement.
 
