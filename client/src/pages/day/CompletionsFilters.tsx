@@ -32,7 +32,7 @@ export default function CompletionsFilters({
 }: HabitCompletionFiltersProps) {
    return (
       <Box>
-         <HStack spacing="2" my="3" flexWrap="wrap">
+         <HStack spacing="2" flexWrap="wrap">
             <Menu closeOnSelect={false}>
                <MenuButton
                   as={Button}

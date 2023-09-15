@@ -72,6 +72,7 @@ export default function CompletionsListItem({
    return (
       <ListItem
          p="1"
+         my="2"
          borderColor={
             completionOptions[completion.completionStatus].borderColor
          }

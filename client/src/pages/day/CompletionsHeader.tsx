@@ -4,6 +4,7 @@ import {
    ChevronRightIcon,
 } from '@chakra-ui/icons';
 import {
+   Box,
    Button,
    ButtonGroup,
    Flex,
@@ -16,6 +17,7 @@ import {
    PopoverContent,
    PopoverTrigger,
    Portal,
+   Text,
    useDisclosure,
 } from '@chakra-ui/react';
 import dayjs, { Dayjs } from 'dayjs';
@@ -42,20 +44,23 @@ export default function CompletionsHeader({
    return (
       <>
          <Flex justifyContent="space-between" gap="4">
-            <Heading
-               textTransform="capitalize"
-               color="gray.800"
-               fontWeight="bold"
-               size="lg"
-            >
-               {date.calendar(null, {
-                  sameDay: '[Today]',
-                  nextDay: '[Tomorrow]',
-                  nextWeek: '[Next] dddd',
-                  lastDay: '[Yesterday]',
-                  lastWeek: '[Last] dddd',
-               })}
-            </Heading>
+            <Box>
+               <Heading
+                  textTransform="capitalize"
+                  color="gray.800"
+                  fontWeight="bold"
+                  size="lg"
+               >
+                  {date.calendar(null, {
+                     sameDay: '[Today]',
+                     nextDay: '[Tomorrow]',
+                     nextWeek: '[Next] dddd',
+                     lastDay: '[Yesterday]',
+                     lastWeek: '[Last] dddd',
+                  })}
+               </Heading>
+               <Text>{date.format('ddd MMM MM, YYYY')}</Text>
+            </Box>
             <ButtonGroup variant="outline" isAttached>
                <Popover isOpen={isOpen} onClose={onClose}>
                   <PopoverTrigger>
