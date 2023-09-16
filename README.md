@@ -1,7 +1,5 @@
 <img width="250" src="https://user-images.githubusercontent.com/73000930/222848320-993ebde7-67ef-4e5a-9cea-f9b4dba03f9b.png">
 
-## Project Overview
-
 Habiteer is a habit tracking web app that helps users build and maintain good habits through progress tracking and data visualization.
 
 ## Why?
@@ -20,31 +18,24 @@ _Note_ - Some features may currently be broken / incomplete
 
 -  **Habit Management:** Create habits and set repeat schedules tailored to your routine.
 
--  **Easy Deletion:** Effortlessly remove habits that are no longer relevant.
+-  **Easy Deletion:** Remove habits that are no longer relevant.
 
 -  **Progress Tracking:** Mark habits as complete, incomplete, or pending, maintaining a clear view of your journey.
 
 ## Future Enhancements
 
--  **Insightful Visualization:** Get an overview of your weekly completion rates through intuitive charts.
-
--  **Data Trends**: Detailed analysis of your habit trends over time to identify patterns and areas for improvement.
+-  **Data Visualization and trends:** Detailed analysis of your completion rates and habit trends over time to identify patterns and areas for improvement.
 
 -  **Notifications**: Get timely reminders and encouragement to help you stay consistent with your habits.
 
--  **Community Engagement**: Form habit tracking groups.
+-  **Community Engagement**: Invite your friends and complete common habit goals together.
 
-## Technologies Used
+## Tech Stack
 
-### Frontend
+**Frontend:** TypeScript, React.js, Chakra UI
 
--  TypeScript
--  Reactjs
--  Chakra UI
+**Backend:** TypeScript, Node.js, Fastify.js, Postgresql
 
-### Backend
+## API Documenation
 
--  TypeScript
--  Node.js
--  Fastify
--  Postgresql
+The [Api documentation](https://navdhammu.github.io/habiteer-api-docs/) is hosted using swagger ui
