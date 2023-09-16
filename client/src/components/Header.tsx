@@ -21,13 +21,13 @@ export default function Header() {
          justifyContent="space-between"
       >
          <HStack>
-            <Icon as={IconSeeding} color="green.300" w="12" h="12" />
+            <Icon as={IconSeeding} color="teal.300" w="12" h="12" />
             <Heading
                display={{ base: 'none', md: 'block' }}
                size="md"
                fontWeight="bold"
                textTransform="capitalize"
-               color="gray.700"
+               color="teal.400"
             >
                Habiteer
             </Heading>
