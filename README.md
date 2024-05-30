@@ -6,12 +6,6 @@ Habiteer is a habit tracking web app that helps users build and maintain good ha
 
 Many people use fitness trackers to log their workouts, I wondered, why not have something similar for tracking your everyday habits? After some research I noticed there are habit tracking apps for android and ios but very few and with limited functionality for the web. So I decided to make a web based habit tracker that allows you to track your habits directly from the browser.
 
-## Live Demo
-
-To explore the current features and test the app, visit the [Live Demo](https://habiteer-iqtxo.ondigitalocean.app/) and log in as a test user.
-
-_Note_ - Some features may currently be broken / incomplete
-
 ## Current Features
 
 -  **User Authentication:** Log in as a test user and access your personalized habit tracking.
